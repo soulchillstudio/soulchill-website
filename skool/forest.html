@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的森林｜Soul Chill 全人計畫</title>
+<meta name="description" content="全人計畫的遊戲化紀錄頁：你這個月種了什麼，森林就長成什麼樣子。">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="../assets/mascot.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=LXGW+WenKai+TC:wght@400;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   我的森林 — 全人計畫遊戲化頁（水彩風）
+   森林不是一張圖，是資料畫出來的：改 MEMBERS 的數字，樹就跟著長。
+   水彩是 SVG 濾鏡做的：邊緣位移（暈開）+ 邊緣沉澱 + 顏料顆粒 + 紙紋。
+   三種配色：warm 暖紙 / aqua 水藍 / sketch 素描，右上角切換。
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --forest: #0f3e36;
+  --ink-soft: rgba(15, 62, 54, .72);
+  --ink-faint: rgba(15, 62, 54, .46);
+  --kai:  "LXGW WenKai TC", "Noto Serif TC", serif;
+  --sans: "Noto Sans TC", sans-serif;
+  --mono: "Roboto Mono", ui-monospace, monospace;
+
+  /* 由 data-look 覆寫 */
+  --paper:     #f3eee0;
+  --wash-a:    rgba(206, 196, 152, .60);
+  --wash-b:    rgba(190, 206, 160, .42);
+  --wash-c:    rgba(224, 210, 168, .55);
+  --card-bg:   rgba(255, 253, 244, .50);
+  --card-line: rgba(15, 62, 54, .17);
+  --accent:    #4c7a52;
+  --title:     #3f7350;
+  --radar-fill: rgba(122, 152, 96, .46);
+  --radar-line: #6b8c56;
+  --grain-op:  .55;
+}
+body[data-look="aqua"] {
+  --paper:     #e9f2f1;
+  --wash-a:    rgba(150, 200, 200, .60);
+  --wash-b:    rgba(180, 214, 190, .48);
+  --wash-c:    rgba(198, 224, 222, .62);
+  --card-bg:   rgba(255, 255, 255, .44);
+  --card-line: rgba(15, 62, 54, .15);
+  --accent:    #2c766f;
+  --title:     #2b7269;
+  --radar-fill: rgba(70, 146, 142, .44);
+  --radar-line: #35837c;
+  --grain-op:  .42;
+}
+body[data-look="sketch"] {
+  --paper:     #f6f2e4;
+  --wash-a:    rgba(224, 214, 172, .40);
+  --wash-b:    rgba(204, 216, 174, .30);
+  --wash-c:    rgba(232, 220, 182, .42);
+  --card-bg:   rgba(255, 254, 246, .38);
+  --card-line: rgba(15, 62, 54, .22);
+  --accent:    #4c7a52;
+  --title:     #4a7a55;
+  --radar-fill: rgba(122, 152, 96, .34);
+  --radar-line: #6b8c56;
+  --grain-op:  .75;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--sans);
+  color: var(--forest);
+  background: var(--paper);
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  transition: background .6s ease;
+}
+svg { display: block; }
+
+/* ── 紙：底色 + 暈開的色塊 + 紙紋顆粒 ── */
+.paper-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+/* 橢圓 + SVG 位移濾鏡：咬出水彩邊。用方塊會露出濾鏡區域的直角，所以一定要 50% 圓角 */
+.paper-bg .blot { position: absolute; border-radius: 50%; transition: background .6s ease; }
+.blot-1 { width: 62vw; height: 44vw; background: var(--wash-a); top: -16vw; left: -18vw;   filter: url(#blotEdge) blur(24px); }
+.blot-2 { width: 50vw; height: 38vw; background: var(--wash-b); bottom: -17vw; right: -14vw; filter: url(#blotEdge2) blur(28px); }
+.blot-3 { width: 38vw; height: 28vw; background: var(--wash-c); top: 44%; left: 34%;        filter: url(#blotEdge) blur(32px); }
+/* SVG 是替換元素，只寫 inset:0 會退回 300×150 的內建尺寸，紙紋就只鋪左上角一小塊 */
+.grain {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  z-index: 1; pointer-events: none; mix-blend-mode: multiply;
+  opacity: var(--grain-op); transition: opacity .6s ease;
+}
+
+/* 面板在視窗裡置中，像參考稿那張橫幅卡片；內容變長時自然往下長 */
+.page {
+  position: relative; z-index: 2; max-width: 1120px; margin: 0 auto;
+  padding: 30px 26px 104px;
+  min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+}
+
+/* ── 配色切換（正式上線可拿掉） ── */
+.looks { position: fixed; top: 14px; right: 16px; z-index: 20; display: flex; gap: 6px; }
+.looks button {
+  font-family: var(--sans); font-size: 12px; letter-spacing: .08em;
+  padding: 5px 13px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--card-line); background: rgba(255,255,255,.5);
+  color: var(--ink-soft); backdrop-filter: blur(6px);
+  transition: background .2s, color .2s;
+}
+.looks button[aria-pressed="true"] { background: var(--forest); color: #fff; border-color: var(--forest); }
+
+/* ── 標題 ── */
+.head h1 {
+  font-family: var(--kai); font-weight: 700;
+  font-size: clamp(33px, 5.4vw, 52px); letter-spacing: .17em; line-height: 1.28;
+  color: var(--title); transition: color .6s ease;
+}
+.head .dates {
+  font-family: var(--mono); font-size: clamp(10.5px, 1.5vw, 12.5px);
+  letter-spacing: .1em; color: var(--ink-faint); margin-top: 2px;
+}
+
+/* ── 版面：左森林 / 右資料 ── */
+.grid { display: grid; grid-template-columns: 1.12fr 1fr; gap: 26px; align-items: start; margin-top: 4px; }
+.forest-wrap svg { width: 100%; height: auto; }
+
+/* ── 雷達圖 ── */
+.radar-head {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .24em;
+  color: var(--ink-soft); text-align: center; margin: 10px 0 0;
+}
+.radar-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center; }
+.radar-note {
+  font-family: var(--kai); font-size: clamp(12.5px, 1.5vw, 14.5px);
+  line-height: 2.05; color: var(--ink-soft); letter-spacing: .03em;
+}
+
+/* ── 這個月種了什麼 ── */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 16px; }
+.stat {
+  background: var(--card-bg); border: 1px solid var(--card-line); border-radius: 12px;
+  padding: 10px 12px 11px; position: relative;
+  transition: transform .3s ease, background .6s ease;
+}
+.stat:hover { transform: translateY(-3px) rotate(-.6deg); }
+.stat b { display: block; font-family: var(--kai); font-size: 15.5px; font-weight: 700; letter-spacing: .06em; }
+.stat span { font-size: 11px; color: var(--ink-faint); letter-spacing: .03em; }
+.stat i {
+  position: absolute; right: 11px; bottom: 7px; font-style: normal;
+  font-family: var(--mono); font-size: 21px; color: var(--accent); line-height: 1;
+  transition: color .6s ease;
+}
+
+/* ── 底部導覽 ── */
+.tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 15;
+  display: flex; justify-content: center; gap: clamp(18px, 7vw, 62px);
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--paper) 84%, transparent);
+  backdrop-filter: blur(9px);
+  border-top: 1px solid var(--card-line);
+}
+.tab { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; color: var(--ink-faint); background: none; border: none; font-family: var(--sans); }
+.tab svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.tab span { font-family: var(--kai); font-size: 12px; letter-spacing: .1em; }
+.tab[aria-selected="true"] { color: var(--accent); }
+.tab[aria-selected="true"] span { font-weight: 700; }
+
+/* ── demo：換人，證明同一頁不同資料長不同森林 ── */
+.who { margin-top: 22px; padding-top: 16px; border-top: 1px dashed var(--card-line); }
+.who p { font-size: 12px; color: var(--ink-faint); letter-spacing: .05em; margin-bottom: 8px; }
+.who-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.who-btns button {
+  font-family: var(--kai); font-size: 13.5px; letter-spacing: .06em;
+  padding: 5px 16px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--card-line); background: var(--card-bg); color: var(--ink-soft);
+  transition: transform .25s ease;
+}
+.who-btns button:hover { transform: translateY(-2px); }
+.who-btns button[aria-pressed="true"] { background: var(--forest); color: #fff; border-color: var(--forest); }
+
+@media (max-width: 880px) {
+  .grid { grid-template-columns: 1fr; gap: 16px; }
+  .radar-row { grid-template-columns: 1fr; gap: 6px; }
+  #radar { max-width: 250px; margin: 0 auto; }   /* 單欄時會被拉滿版，要收住 */
+  .radar-note { text-align: center; max-width: 400px; margin: 0 auto; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .looks { top: 10px; right: 10px; }   /* 標題靠左，右上角是空的，放這裡不會壓到卡片 */
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+@keyframes twinkle { 0%, 100% { opacity: .12; } 50% { opacity: .95; } }
+</style>
+</head>
+<body data-look="warm">
+
+<div class="paper-bg" aria-hidden="true">
+  <div class="blot blot-1"></div>
+  <div class="blot blot-2"></div>
+  <div class="blot blot-3"></div>
+</div>
+
+<!-- 全站共用的濾鏡：紙紋、背景色塊的水彩邊 -->
+<svg class="grain" aria-hidden="true">
+  <defs>
+    <!-- 冷壓水彩紙的紋理：粗顆粒 + 細顆粒疊起來 -->
+    <filter id="paperGrain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="4" stitchTiles="stitch" result="fine"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" stitchTiles="stitch" result="coarse"/>
+      <feBlend in="fine" in2="coarse" mode="multiply" result="mix"/>
+      <feColorMatrix in="mix" type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.22"/></feComponentTransfer>
+    </filter>
+    <!-- 背景色塊的不規則水彩邊 -->
+    <filter id="blotEdge" x="-40%" y="-40%" width="180%" height="180%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.006" numOctaves="4" seed="5" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="120" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="blotEdge2" x="-40%" y="-40%" width="180%" height="180%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="4" seed="29" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="100" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <rect width="100%" height="100%" filter="url(#paperGrain)"/>
+</svg>
+
+<div class="looks" role="group" aria-label="配色">
+  <button data-look="warm"   aria-pressed="true">暖紙</button>
+  <button data-look="aqua"   aria-pressed="false">水藍</button>
+  <button data-look="sketch" aria-pressed="false">素描</button>
+</div>
+
+<main class="page">
+
+  <div class="head">
+    <h1>我的森林</h1>
+    <div class="dates">記錄 <span id="d-start">—</span> · 今天 <span id="d-today">—</span></div>
+  </div>
+
+  <div class="grid">
+
+    <!-- ═══ 左：水彩森林（全部由資料生成） ═══ -->
+    <div class="forest-wrap">
+      <svg id="forest" viewBox="20 62 840 508" role="img" aria-labelledby="forest-alt">
+        <title id="forest-alt">你這個月的森林：每一棵樹是一次練習</title>
+        <defs id="fdefs"></defs>
+        <g id="island"></g>
+        <g id="trees"></g>
+        <g id="critters"></g>
+        <g id="sparkles"></g>
+      </svg>
+    </div>
+
+    <!-- ═══ 右：MY MIX 雷達 + 統計 ═══ -->
+    <div>
+      <div class="radar-head">MY MIX · 我種了什麼</div>
+      <div class="radar-row">
+        <svg id="radar" viewBox="0 0 300 275" role="img" aria-labelledby="radar-alt">
+          <title id="radar-alt">六個面向的分佈圖</title>
+        </svg>
+        <p class="radar-note">
+          這不是打分，六個不一定都要做。<br>
+          每個人需要的東西不一樣 —— 這張圖只為了讓你看見：你有沒有在線纜上紮根，還有你缺的那個，你有沒有真的去練。
+        </p>
+      </div>
+
+      <div class="stats" id="stats"></div>
+
+      <div class="who">
+        <p>DEMO · 換個人看看（同一頁，資料不同，森林就不同）</p>
+        <div class="who-btns" id="who-btns"></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<nav class="tabbar" aria-label="主導覽">
+  <button class="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24"><path d="M12 21V11"/><path d="M12 11C12 7 9 5 5 5c0 4 3 6 7 6z"/><path d="M12 13c0-3.2 2.6-5 6-5 0 3.2-2.6 5-6 5z"/></svg>
+    <span>本週</span>
+  </button>
+  <button class="tab" aria-selected="true">
+    <svg viewBox="0 0 24 24"><path d="M12 20v-4"/><path d="M12 16 6.5 9.5h3L5 3.5h14L14.5 9.5h3L12 16z"/></svg>
+    <span>森林</span>
+  </button>
+  <button class="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24"><circle cx="6" cy="17" r="2.6"/><circle cx="18" cy="7" r="2.6"/><path d="M8.2 15.4 15.8 9"/></svg>
+    <span>紀錄</span>
+  </button>
+  <button class="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24"><path d="M3 17.5 9 11l4 3.5L21 6"/><path d="M15.5 6H21v5.5"/></svg>
+    <span>變化</span>
+  </button>
+  <button class="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c1.2-3.6 4-5.4 7-5.4s5.8 1.8 7 5.4"/></svg>
+    <span>我的</span>
+  </button>
+</nav>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   1. 資料層 —— 正式接的時候換成 Google Sheet / API 拉回來的 JSON。
+      六個面向的數字驅動一切：雷達圖、統計卡、森林裡的每一棵樹。
+   ═══════════════════════════════════════════════════════════════ */
+const AXES = [
+  { key: "呼吸", note: "七葉",       tone: 0 },
+  { key: "加油", note: "運動後營養", tone: 1 },
+  { key: "彈性", note: "睡前放鬆",   tone: 2 },
+  { key: "肌力", note: "推拉蹲",     tone: 3 },
+  { key: "腳步", note: "慢慢跑",     tone: 4 },
+  { key: "筋膜", note: "鬆柔",       tone: 5 }
+];
+
+const MEMBERS = {
+  jesse:  { name: "Jesse", start: "2026-08-03", today: "2026-08-27",
+            v: { 呼吸: 3, 加油: 4, 彈性: 5, 肌力: 2, 腳步: 2, 筋膜: 3 },
+            cards: ["呼吸", "筋膜", "彈性", "加油"] },
+  fish:   { name: "Fish",  start: "2026-08-01", today: "2026-08-27",
+            v: { 呼吸: 5, 加油: 2, 彈性: 4, 肌力: 1, 腳步: 3, 筋膜: 5 },
+            cards: ["呼吸", "筋膜", "彈性", "腳步"] },
+  newbie: { name: "剛加入的人", start: "2026-08-22", today: "2026-08-27",
+            v: { 呼吸: 1, 加油: 1, 彈性: 0, 肌力: 1, 腳步: 2, 筋膜: 0 },
+            cards: ["腳步", "呼吸", "肌力", "加油"] }
+};
+const MAX = 6;   // 每個面向的滿格
+
+/* 三種配色各自的森林用色：葉 ×6、草地、泥土、水池 */
+const PALETTES = {
+  warm: {
+    leaf: ["#7ea474", "#a4bb6d", "#6b9a86", "#578257", "#8fae66", "#7fa688"],
+    grass: ["#d3dda8", "#a9c383", "#7f9d68"], soil: ["#a08b62", "#6f6244"],
+    pond: ["#93c6d6", "#5093b2", "#3d7b9e"], ink: "#3c5b46"
+  },
+  aqua: {
+    leaf: ["#6da49b", "#8fb787", "#4d8f8c", "#3d7b73", "#7cae95", "#5f9f97"],
+    grass: ["#c8ddc4", "#9dc3ac", "#6f9e8c"], soil: ["#8f9a8c", "#5f7268"],
+    pond: ["#96cfdd", "#5f9fbb", "#3a83a6"], ink: "#2f5b56"
+  },
+  sketch: {
+    leaf: ["#93b389", "#b6c98a", "#84ab9c", "#719878", "#a3bd83", "#96b79c"],
+    grass: ["#dde5bd", "#bcd0a0", "#9bb488"], soil: ["#b6a583", "#8a7c60"],
+    pond: ["#b3d9e4", "#79b1c8", "#5d97b4"], ink: "#4a6b52"
+  }
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   2. 工具
+   ═══════════════════════════════════════════════════════════════ */
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs) => { const n = document.createElementNS(NS, tag);
+  for (const k in attrs) if (attrs[k] != null) n.setAttribute(k, attrs[k]); return n; };
+
+/* 固定亂數：同一個人每次打開，森林長得一模一樣 */
+function rng(seed) {
+  let s = seed >>> 0;
+  return () => { s = (s + 0x6d2b79f5) >>> 0; let t = s;
+    t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+const hash = s => [...s].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7);
+function shade(hex, amt) {
+  const n = parseInt(hex.slice(1), 16);
+  return "#" + [n >> 16, (n >> 8) & 255, n & 255]
+    .map(v => Math.max(0, Math.min(255, v + amt)).toString(16).padStart(2, "0")).join("");
+}
+const look = () => document.body.dataset.look;
+const pal  = () => PALETTES[look()];
+
+/* ═══════════════════════════════════════════════════════════════
+   3. 水彩濾鏡
+      一次水彩筆觸包含三件事，缺一個就會變成「乾淨的向量圖」：
+        a. 邊緣暈開 —— feTurbulence + feDisplacementMap 把邊咬掉
+        b. 邊緣沉澱 —— 顏料會往邊上積，所以外圈要比中間深
+        c. 顏料顆粒 —— 紙的凹凸讓顏色不均勻，用高頻雜訊打亮
+      濾鏡是套在「一整棵樹的 group」上，不是每片葉子各套一次（效能差 4 倍）。
+   ═══════════════════════════════════════════════════════════════ */
+function watercolorFilter(id, { seed, freq, scale, rim, grain }) {
+  const f = el("filter", { id, x: "-30%", y: "-30%", width: "160%", height: "160%",
+                           "color-interpolation-filters": "sRGB" });
+
+  // a. 邊緣暈開
+  f.appendChild(el("feTurbulence", { type: "fractalNoise", baseFrequency: freq,
+                                     numOctaves: "4", seed, result: "n" }));
+  f.appendChild(el("feDisplacementMap", { in: "SourceGraphic", in2: "n", scale,
+    xChannelSelector: "R", yChannelSelector: "G", result: "wet" }));
+
+  // b. 邊緣沉澱：把形狀往內縮一圈，用 out 取得外圈，塗深色疊回去
+  f.appendChild(el("feMorphology", { in: "wet", operator: "erode", radius: rim, result: "core" }));
+  f.appendChild(el("feComposite", { in: "wet", in2: "core", operator: "out", result: "ring" }));
+  f.appendChild(el("feFlood", { "flood-color": "#2b4634", "flood-opacity": ".26", result: "dark" }));
+  f.appendChild(el("feComposite", { in: "dark", in2: "ring", operator: "in", result: "rimDark" }));
+  f.appendChild(el("feGaussianBlur", { in: "rimDark", stdDeviation: "1.1", result: "rimSoft" }));
+
+  // c. 顏料顆粒：高頻雜訊轉成半透明白點，剪進形狀裡
+  f.appendChild(el("feTurbulence", { type: "fractalNoise", baseFrequency: "0.72",
+                                     numOctaves: "3", seed, result: "g" }));
+  f.appendChild(el("feColorMatrix", { in: "g", type: "matrix", result: "gw",
+    values: `0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 ${grain} 0` }));
+  f.appendChild(el("feComposite", { in: "gw", in2: "wet", operator: "in", result: "grainIn" }));
+
+  const m = el("feMerge");
+  ["wet", "rimSoft", "grainIn"].forEach(i => m.appendChild(el("feMergeNode", { in: i })));
+  f.appendChild(m);
+  return f;
+}
+
+function buildFilters() {
+  const defs = document.getElementById("fdefs");
+  defs.textContent = "";
+  // 樹用：四種 seed 讓每棵樹的暈染都不一樣
+  const seeds = [7, 21, 43, 88];
+  seeds.forEach((seed, i) => defs.appendChild(watercolorFilter(`wcLeaf${i}`,
+    { seed, freq: "0.028", scale: "13", rim: "2.4", grain: ".2" })));
+  // 大面積（草地、泥土、水池）：位移比例要小，不然整座島會爛掉
+  defs.appendChild(watercolorFilter("wcGrass", { seed: 13, freq: "0.008", scale: "26", rim: "5", grain: ".14" }));
+  defs.appendChild(watercolorFilter("wcSoil",  { seed: 31, freq: "0.011", scale: "20", rim: "4", grain: ".2"  }));
+  defs.appendChild(watercolorFilter("wcPond",  { seed: 61, freq: "0.017", scale: "15", rim: "3", grain: ".16" }));
+  // 線稿專用：只要抖動，不要沉澱（不然線會糊掉）
+  const line = el("filter", { id: "wcLine", x: "-30%", y: "-30%", width: "160%", height: "160%" });
+  line.appendChild(el("feTurbulence", { type: "fractalNoise", baseFrequency: "0.03", numOctaves: "3", seed: "17", result: "n" }));
+  line.appendChild(el("feDisplacementMap", { in: "SourceGraphic", in2: "n", scale: "6",
+    xChannelSelector: "R", yChannelSelector: "G" }));
+  defs.appendChild(line);
+
+  const p = pal();
+  const gg = el("radialGradient", { id: "gGrass", cx: "40%", cy: "32%", r: "76%" });
+  [[0, p.grass[0]], [56, p.grass[1]], [100, p.grass[2]]].forEach(([o, c]) =>
+    gg.appendChild(el("stop", { offset: o + "%", "stop-color": c })));
+  defs.appendChild(gg);
+
+  const gs = el("linearGradient", { id: "gSoil", x1: "0", y1: "0", x2: "0", y2: "1" });
+  gs.appendChild(el("stop", { offset: "0%",   "stop-color": p.soil[0] }));
+  gs.appendChild(el("stop", { offset: "100%", "stop-color": p.soil[1], "stop-opacity": ".5" }));
+  defs.appendChild(gs);
+
+  const gp = el("radialGradient", { id: "gPond", cx: "36%", cy: "30%", r: "72%" });
+  [[0, p.pond[0]], [68, p.pond[1]], [100, p.pond[2]]].forEach(([o, c]) =>
+    gp.appendChild(el("stop", { offset: o + "%", "stop-color": c })));
+  defs.appendChild(gp);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   4. 島：草地 + 泥土斷面 + 水池 + 小徑
+   ═══════════════════════════════════════════════════════════════ */
+const ISLE = { cx: 430, cy: 300, rx: 328, ry: 140 };
+const POND = { cx: 566, cy: 388, rx: 118, ry: 50 };
+
+function drawIsland() {
+  const g = document.getElementById("island");
+  g.textContent = "";
+  const { cx, cy, rx, ry } = ISLE;
+  const p = pal(), sketch = look() === "sketch";
+
+  // ── 泥土斷面（島被切下來的那一塊） ──
+  // 開放路徑給描邊用；閉合版（加 Z）給填色用。用同一條會多出一條橫貫島中央的直線
+  const soilEdge = `M ${cx - rx} ${cy} C ${cx - rx + 10} ${cy + 122} ${cx - 148} ${cy + 202} ${cx - 4} ${cy + 210}
+                    C ${cx + 150} ${cy + 204} ${cx + rx - 12} ${cy + 118} ${cx + rx} ${cy}`;
+  const soil = el("g", { filter: "url(#wcSoil)" });
+  soil.appendChild(el("path", { d: soilEdge + " Z", fill: "url(#gSoil)", opacity: ".9" }));
+  g.appendChild(soil);
+
+  // ── 草地：兩層薄塗疊出水彩的層次 ──
+  const grass = el("g", { filter: "url(#wcGrass)" });
+  grass.appendChild(el("ellipse", { cx, cy, rx, ry, fill: "url(#gGrass)" }));
+  grass.appendChild(el("ellipse", { cx: cx - 52, cy: cy - 18, rx: rx * .68, ry: ry * .7,
+    fill: p.grass[0], opacity: ".42", style: "mix-blend-mode:multiply" }));
+  grass.appendChild(el("ellipse", { cx: cx + 96, cy: cy + 30, rx: rx * .46, ry: ry * .5,
+    fill: p.grass[2], opacity: ".3", style: "mix-blend-mode:multiply" }));
+  g.appendChild(grass);
+
+  // ── 素描版：泥土斷面上的鉛筆排線 ──
+  // 要畫在草地「之後」才不會被蓋掉，再用遮罩把草地那一塊挖掉，線就只留在泥土帶上
+  if (sketch) {
+    const mask = el("mask", { id: "soilOnly", maskUnits: "userSpaceOnUse" });
+    mask.appendChild(el("path", { d: soilEdge + " Z", fill: "#fff" }));
+    mask.appendChild(el("ellipse", { cx, cy, rx, ry, fill: "#000" }));
+    document.getElementById("fdefs").appendChild(mask);
+
+    // 兩個角度、間距與濃淡都帶抖動，才像鉛筆排線；等距同角度會變成木柵欄
+    const hr = rng(99);
+    const h = el("g", { mask: "url(#soilOnly)", filter: "url(#wcLine)" });
+    [[-58, 15], [34, 27]].forEach(([dx, step], pass) => {
+      for (let i = -20; i <= 20; i++) {
+        const x = cx + i * step + (hr() - .5) * 9;
+        h.appendChild(el("path", { d: `M ${x} ${cy - 10} l ${dx + (hr() - .5) * 14} 250`,
+          stroke: p.ink, "stroke-width": (pass ? .7 : .95).toFixed(2), fill: "none",
+          "stroke-linecap": "round", opacity: (.2 + hr() * .3).toFixed(2) }));
+      }
+    });
+    g.appendChild(h);
+  }
+
+  // ── 島的輪廓線（手繪感） ──
+  const ink = el("g", { filter: "url(#wcLine)", opacity: sketch ? ".8" : ".34" });
+  ink.appendChild(el("ellipse", { cx, cy, rx, ry, fill: "none",
+    stroke: p.ink, "stroke-width": sketch ? "1.6" : "1.2" }));
+  ink.appendChild(el("path", { d: soilEdge, fill: "none",
+    stroke: p.ink, "stroke-width": sketch ? "1.6" : "1.1" }));
+  g.appendChild(ink);
+
+  // ── 小徑 ──
+  g.appendChild(el("path", {
+    d: `M ${cx - 244} ${cy + 48} C ${cx - 126} ${cy + 6} ${cx - 38} ${cy + 70} ${cx + 70} ${cy + 38}`,
+    stroke: "#f2ecd6", "stroke-width": "7", fill: "none",
+    "stroke-linecap": "round", "stroke-dasharray": "2 12", opacity: ".85", filter: "url(#wcLine)"
+  }));
+
+  // ── 水池 ──
+  const pond = el("g", { filter: "url(#wcPond)" });
+  pond.appendChild(el("ellipse", { ...POND, fill: "url(#gPond)", opacity: ".92" }));
+  pond.appendChild(el("ellipse", { cx: POND.cx - 32, cy: POND.cy - 11, rx: 42, ry: 14,
+    fill: "#d8ecf2", opacity: ".5" }));
+  g.appendChild(pond);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   5. 樹：一次練習 = 一棵樹
+   ═══════════════════════════════════════════════════════════════ */
+function treeShape(x, y, scale, tone, fi, rand) {
+  const p = pal();
+  const g = el("g", { transform: `translate(${x} ${y}) scale(${scale})` });
+
+  // 樹幹（不進水彩濾鏡，才不會斷掉）
+  g.appendChild(el("path", { d: "M 0 0 C -1.6 -14 -1 -23 0 -36",
+    stroke: shade(p.soil[1], 26), "stroke-width": "3.4", fill: "none",
+    "stroke-linecap": "round", opacity: ".7" }));
+
+  // 樹冠：整組套一次水彩濾鏡
+  const crown = el("g", { filter: `url(#wcLeaf${fi})` });
+  const dark = shade(tone, -26), light = shade(tone, 30);
+  const conifer = rand() > .46;
+  if (conifer) {
+    for (let i = 0; i < 3; i++) {
+      const w = 33 - i * 6.5, h = 32 - i * 3, top = -36 - i * 21;
+      crown.appendChild(el("path", { d: `M 0 ${top - h} L ${w} ${top + 7} L ${-w} ${top + 7} Z`,
+        fill: i === 0 ? dark : (i === 1 ? tone : light), opacity: ".9",
+        style: "mix-blend-mode:multiply" }));
+    }
+  } else {
+    const r = 27 + rand() * 9;
+    crown.appendChild(el("ellipse", { cx: -11, cy: -52, rx: r * .82, ry: r * .74, fill: dark,  opacity: ".9",  style: "mix-blend-mode:multiply" }));
+    crown.appendChild(el("ellipse", { cx: 13,  cy: -60, rx: r * .8,  ry: r * .72, fill: tone,  opacity: ".86", style: "mix-blend-mode:multiply" }));
+    crown.appendChild(el("ellipse", { cx: 0,   cy: -77, rx: r * .63, ry: r * .57, fill: light, opacity: ".8",  style: "mix-blend-mode:multiply" }));
+  }
+  g.appendChild(crown);
+
+  // 手繪線稿：勾一下樹冠的形
+  const ink = el("g", { filter: "url(#wcLine)", opacity: look() === "sketch" ? ".65" : ".28" });
+  if (conifer) {
+    ink.appendChild(el("path", { d: "M 0 -110 L 27 -29 L -27 -29 Z",
+      fill: "none", stroke: p.ink, "stroke-width": "1.1" }));
+  } else {
+    ink.appendChild(el("ellipse", { cx: 1, cy: -60, rx: 28, ry: 25,
+      fill: "none", stroke: p.ink, "stroke-width": "1.1" }));
+  }
+  g.appendChild(ink);
+  return g;
+}
+
+/* 次數是 0 的面向：只長一叢小草，提醒你那一格還空著 */
+function tuftShape(x, y, scale, tone, fi) {
+  const g = el("g", { transform: `translate(${x} ${y}) scale(${scale})`, filter: `url(#wcLeaf${fi})` });
+  for (let i = -2; i <= 2; i++) {
+    g.appendChild(el("path", { d: `M ${i * 5} 0 Q ${i * 6.5} -13 ${i * 9.5} -21`,
+      stroke: tone, "stroke-width": "2.6", fill: "none", "stroke-linecap": "round", opacity: ".78" }));
+  }
+  return g;
+}
+
+function drawTrees(member) {
+  const g = document.getElementById("trees");
+  g.textContent = "";
+  const rand = rng(hash(member.name));
+  const leaf = pal().leaf;
+
+  // 把六個面向攤平成一棵一棵：呼吸做了 3 次 = 3 棵呼吸色的樹
+  const items = [];
+  AXES.forEach(ax => {
+    const n = member.v[ax.key] || 0;
+    for (let i = 0; i < n; i++) items.push({ tone: leaf[ax.tone], big: true });
+    if (n === 0) items.push({ tone: leaf[ax.tone], big: false });
+  });
+
+  // 在橢圓內找位置：避開水池、彼此不重疊
+  const placed = [], nodes = [];
+  items.forEach((it, idx) => {
+    let p = null;
+    for (let t = 0; t < 240 && !p; t++) {
+      const a = rand() * Math.PI * 2, r = Math.sqrt(rand()) * .82;
+      const x = ISLE.cx + Math.cos(a) * ISLE.rx * r;
+      const y = ISLE.cy + Math.sin(a) * ISLE.ry * r;
+      const inPond = ((x - POND.cx) ** 2) / ((POND.rx + 30) ** 2)
+                   + ((y - POND.cy) ** 2) / ((POND.ry + 24) ** 2) < 1;
+      if (inPond) continue;
+      if (placed.some(q => Math.hypot(q.x - x, (q.y - y) * 2.2) < 44)) continue;
+      p = { x, y };
+    }
+    if (!p) return;
+    placed.push(p);
+    const depth = (p.y - (ISLE.cy - ISLE.ry)) / (ISLE.ry * 2);   // 越前面越大 = 景深
+    nodes.push({ ...p, it, fi: idx % 4, scale: (it.big ? .92 : 1) + depth * .46 });
+  });
+
+  // 由遠而近畫，後面的擋前面的；再一棵一棵長出來
+  nodes.sort((a, b) => a.y - b.y).forEach((n, i) => {
+    const shape = n.it.big
+      ? treeShape(n.x, n.y, n.scale, n.it.tone, n.fi, rand)
+      : tuftShape(n.x, n.y, n.scale, n.it.tone, n.fi);
+    shape.style.opacity = "0";
+    g.appendChild(shape);
+    requestAnimationFrame(() => {
+      shape.style.transition = "opacity .65s ease";
+      shape.style.transitionDelay = (i * 50) + "ms";
+      shape.style.opacity = "1";
+    });
+  });
+
+  drawCritters();
+  drawSparkles(rand, nodes.length);
+}
+
+/* 青蛙：小徑上的常客 */
+function drawCritters() {
+  const g = document.getElementById("critters");
+  g.textContent = "";
+  const f = el("g", { transform: `translate(${ISLE.cx - 22} ${ISLE.cy + 40}) scale(1.05)`,
+                      filter: "url(#wcLeaf3)" });
+  const skin = look() === "aqua" ? "#6aa08c" : "#79a05e";
+  f.appendChild(el("ellipse", { cx: 0, cy: -6, rx: 13, ry: 9, fill: skin, opacity: ".93" }));
+  f.appendChild(el("ellipse", { cx: -5, cy: -14, rx: 4.6, ry: 4.6, fill: skin, opacity: ".93" }));
+  f.appendChild(el("ellipse", { cx: 5,  cy: -14, rx: 4.6, ry: 4.6, fill: skin, opacity: ".93" }));
+  f.appendChild(el("circle", { cx: -5, cy: -15, r: 1.5, fill: "#22402a" }));
+  f.appendChild(el("circle", { cx: 5,  cy: -15, r: 1.5, fill: "#22402a" }));
+  g.appendChild(f);
+}
+
+/* 螢火蟲：樹越多越亮 */
+function drawSparkles(rand, count) {
+  const g = document.getElementById("sparkles");
+  g.textContent = "";
+  const n = Math.min(26, 4 + Math.round(count * 1.4));
+  for (let i = 0; i < n; i++) {
+    const a = rand() * Math.PI * 2, r = Math.sqrt(rand()) * .95;
+    const c = el("circle", {
+      cx: ISLE.cx + Math.cos(a) * ISLE.rx * r,
+      cy: ISLE.cy + Math.sin(a) * ISLE.ry * r - rand() * 58,
+      r: 1.3 + rand() * 1.7, fill: "#f7e6a2", opacity: ".85"
+    });
+    c.style.animation = `twinkle ${2.4 + rand() * 3}s ease-in-out ${rand() * 3}s infinite`;
+    g.appendChild(c);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   6. 雷達圖
+   ═══════════════════════════════════════════════════════════════ */
+function drawRadar(member) {
+  const svg = document.getElementById("radar");
+  [...svg.children].forEach(n => { if (n.tagName !== "title") n.remove(); });
+  const cx = 150, cy = 140, R = 78;
+  const cs = getComputedStyle(document.body);
+  const fill = cs.getPropertyValue("--radar-fill").trim();
+  const line = cs.getPropertyValue("--radar-line").trim();
+  const pt = (i, k) => {
+    const a = -Math.PI / 2 + i * (Math.PI / 3);
+    return [cx + Math.cos(a) * R * k, cy + Math.sin(a) * R * k];
+  };
+
+  [1 / 3, 2 / 3, 1].forEach(k => svg.appendChild(el("polygon", {
+    points: AXES.map((_, i) => pt(i, k).join(",")).join(" "),
+    fill: "none", stroke: "rgba(15,62,54,.2)", "stroke-width": k === 1 ? "1.1" : ".7" })));
+  AXES.forEach((_, i) => {
+    const [x, y] = pt(i, 1);
+    svg.appendChild(el("line", { x1: cx, y1: cy, x2: x, y2: y,
+      stroke: "rgba(15,62,54,.16)", "stroke-width": ".7" }));
+  });
+
+  // 數值多邊形：也上一層水彩，跟森林同一支筆
+  svg.appendChild(el("polygon", {
+    points: AXES.map((ax, i) => pt(i, Math.max(.05, (member.v[ax.key] || 0) / MAX)).join(",")).join(" "),
+    fill, stroke: line, "stroke-width": "1.6", "stroke-linejoin": "round", filter: "url(#wcLine)" }));
+
+  AXES.forEach((ax, i) => {
+    const [x, y] = pt(i, 1.36);
+    const t = el("text", { x, y: y + 5, "text-anchor": "middle",
+      "font-family": "var(--kai)", "font-size": "14",
+      fill: "rgba(15,62,54,.78)", "letter-spacing": ".08em" });
+    t.textContent = ax.key;
+    svg.appendChild(t);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   7. 統計卡 + 組裝
+   ═══════════════════════════════════════════════════════════════ */
+function drawStats(member) {
+  const box = document.getElementById("stats");
+  box.textContent = "";
+  member.cards.forEach(key => {
+    const ax = AXES.find(a => a.key === key);
+    const d = document.createElement("div");
+    d.className = "stat";
+    d.innerHTML = `<b>${ax.key}</b><span>${ax.note}</span><i>${member.v[ax.key] ?? 0}</i>`;
+    box.appendChild(d);
+  });
+}
+
+let current = "jesse";
+function render(id = current) {
+  current = id;
+  const m = MEMBERS[id];
+  document.getElementById("d-start").textContent = m.start;
+  document.getElementById("d-today").textContent = m.today;
+  buildFilters();
+  drawIsland();
+  drawTrees(m);
+  drawRadar(m);
+  drawStats(m);
+  document.querySelectorAll("#who-btns button")
+    .forEach(b => b.setAttribute("aria-pressed", String(b.dataset.id === id)));
+}
+
+const whoBox = document.getElementById("who-btns");
+Object.entries(MEMBERS).forEach(([id, m]) => {
+  const b = document.createElement("button");
+  b.dataset.id = id; b.textContent = m.name;
+  b.setAttribute("aria-pressed", String(id === current));
+  b.addEventListener("click", () => render(id));
+  whoBox.appendChild(b);
+});
+
+document.querySelectorAll(".looks button").forEach(b => {
+  b.addEventListener("click", () => {
+    document.body.dataset.look = b.dataset.look;
+    document.querySelectorAll(".looks button")
+      .forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    render();   // 換配色 = 整座森林重畫（葉色、泥土、線稿都跟著變）
+  });
+});
+
+document.querySelectorAll(".tab").forEach(t => {
+  t.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-selected", "false"));
+    t.setAttribute("aria-selected", "true");
+  });
+});
+
+render();
+</script>
+
+</body>
+</html>
