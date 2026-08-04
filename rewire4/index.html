@@ -4,35 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>身體就是大腦｜REWIRE 神經可塑性 第 4 場</title>
-<meta name="description" content="階段三 增強積極性 — 六個主題，一張可以轉動的網。讀過的兩站之間，線會通電。">
+<meta name="description" content="階段三 增強積極性 — 潛進大腦，六個主題是六個神經元。讀過的兩站之間，突觸會通電。">
 <meta property="og:title" content="身體就是大腦｜REWIRE 第 4 場">
-<meta property="og:description" content="六個主題，一張可以轉動的網。讀過的兩站之間，線會通電。">
-<meta name="theme-color" content="#04060f">
+<meta property="og:description" content="潛進大腦。六個主題是六個神經元，讀過的兩站之間，突觸會通電。">
+<meta name="theme-color" content="#07060e">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cactus+Classical+Serif&family=Noto+Sans+TC:wght@200;300;400;500&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 :root{
-  --void:#04060f; --ink:#e9edfa; --dim:#909bbd; --faint:#5a6488;
-  --cool:#5ec8ff; --warm:#ffb35c;
-  --hair:rgba(233,237,250,.14);
+  --tissue:#07060e; --ink:#eceaf6; --dim:#9992b4; --faint:#635c82;
+  --hair:rgba(236,234,246,.13);
   --serif:"Cactus Classical Serif","Noto Serif TC",serif;
   --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
   --mono:"IBM Plex Mono","SFMono-Regular",Menlo,monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;overscroll-behavior:none}
-body{background:var(--void);color:var(--ink);font-family:var(--sans);font-weight:300;
+body{background:var(--tissue);color:var(--ink);font-family:var(--sans);font-weight:300;
   -webkit-font-smoothing:antialiased;overflow:hidden}
 canvas{position:fixed;inset:0;display:block;touch-action:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 :focus-visible{outline:1px solid var(--ink);outline-offset:4px}
 
-/* ================= 星圖層 UI ================= */
-#ui{position:fixed;inset:0;pointer-events:none;z-index:2}
+/* ===================== 星圖層 ===================== */
+#ui{position:fixed;inset:0;pointer-events:none;z-index:2;
+  transition:opacity .5s ease,filter .5s ease}
 #ui > *{pointer-events:auto}
+body.reading #ui{opacity:0;pointer-events:none}
 
-.masthead{position:absolute;top:clamp(22px,4.2vh,44px);left:clamp(22px,4vw,60px);max-width:min(38ch,62vw)}
+.masthead{position:absolute;top:clamp(22px,4.2vh,44px);left:clamp(22px,4vw,60px);max-width:min(38ch,64vw)}
 .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.34em;color:var(--faint);
   text-transform:uppercase;margin-bottom:16px}
 h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1.12;
@@ -41,30 +42,27 @@ h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1
 .epigraph{font-family:var(--serif);font-size:clamp(14px,1.35vw,17px);line-height:2;color:var(--dim);
   margin-top:22px;padding-left:16px;border-left:1px solid var(--hair);max-width:30ch}
 
-/* 節點標籤（3D 投影定位） */
 #labels{position:absolute;inset:0;pointer-events:none}
 .lab{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;cursor:pointer;
   text-align:center;white-space:nowrap;padding:10px 18px;transition:opacity .35s;isolation:isolate}
-/* 字後面墊一團暗暈，粒子再亮也讀得到 */
-.lab::after{content:"";position:absolute;left:50%;top:50%;width:190%;height:230%;
+.lab::after{content:"";position:absolute;left:50%;top:50%;width:200%;height:250%;
   transform:translate(-50%,-50%);z-index:-1;border-radius:50%;
-  background:radial-gradient(ellipse at center,rgba(4,6,15,.92) 0%,rgba(4,6,15,.72) 42%,rgba(4,6,15,0) 72%)}
+  background:radial-gradient(ellipse at center,rgba(7,6,14,.94) 0%,rgba(7,6,14,.74) 42%,rgba(7,6,14,0) 72%)}
 .lab .nm{font-family:var(--serif);font-size:clamp(16px,1.55vw,21px);letter-spacing:.06em;
-  display:block;text-shadow:0 1px 12px rgba(4,6,15,1),0 0 26px rgba(4,6,15,.9)}
-.lab .meta{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--faint);
-  display:block;margin-top:6px;text-shadow:0 0 12px rgba(4,6,15,1)}
-.lab .peek{display:block;max-width:24ch;margin:9px auto 0;font-size:12.5px;line-height:1.7;
-  color:var(--dim);white-space:normal;opacity:0;transform:translateY(-4px);
-  transition:opacity .3s,transform .3s;text-shadow:0 0 12px rgba(4,6,15,1)}
-.lab.hot .peek{opacity:1;transform:none}
+  display:block;text-shadow:0 1px 12px rgba(7,6,14,1),0 0 26px rgba(7,6,14,.9)}
+.lab .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;color:var(--faint);
+  display:block;margin-top:7px;text-shadow:0 0 12px rgba(7,6,14,1)}
+.lab .peek{position:absolute;left:50%;top:100%;width:23ch;font-size:12.5px;line-height:1.7;
+  color:var(--dim);white-space:normal;opacity:0;pointer-events:none;
+  transform:translate(-50%,-4px);transition:opacity .3s,transform .3s;
+  text-shadow:0 0 12px rgba(7,6,14,1)}
+.lab.hot .peek{opacity:1;transform:translate(-50%,2px)}
 .lab.hot .nm{color:#fff}
-.lab .ring{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;
+.lab .ring{position:absolute;left:50%;top:50%;width:48px;height:48px;margin:-24px 0 0 -24px;
   border-radius:50%;border:1px solid currentColor;opacity:0;transform:scale(.6);
   transition:opacity .3s,transform .3s;pointer-events:none}
-.lab:hover .ring,.lab:focus-visible .ring{opacity:.45;transform:scale(1)}
-.lab.read .nm{text-shadow:0 0 26px currentColor,0 0 10px rgba(4,6,15,1)}
+.lab:hover .ring,.lab:focus-visible .ring{opacity:.4;transform:scale(1)}
 
-/* 底部工具列 */
 .deck{position:absolute;left:clamp(22px,4vw,60px);right:clamp(22px,4vw,60px);
   bottom:calc(clamp(18px,3vh,34px) + env(safe-area-inset-bottom));
   display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
@@ -79,91 +77,98 @@ h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1
 .taskbtn{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--dim);
   border:1px solid var(--hair);padding:9px 16px;transition:.3s;white-space:nowrap}
 .taskbtn:hover{border-color:var(--ink);color:var(--ink)}
-.taskbtn[data-done="1"]{border-color:var(--warm);color:var(--warm)}
+.taskbtn[data-done="1"]{border-color:#ffb15c;color:#ffb15c}
 
-/* ================= 內容面板 ================= */
-#panel{position:fixed;top:0;right:0;bottom:0;width:min(620px,100%);z-index:6;font-size:15.5px;
-  background:linear-gradient(180deg,rgba(6,9,20,.97),rgba(4,6,15,.99));
-  border-left:1px solid var(--hair);
-  transform:translateX(102%);transition:transform .62s cubic-bezier(.16,1,.3,1);
-  overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
-  padding:clamp(26px,4.4vh,52px) clamp(26px,3.6vw,56px) 120px}
-#panel.open{transform:none}
-#panel::-webkit-scrollbar{width:3px}
-#panel::-webkit-scrollbar-thumb{background:var(--hair)}
+/* ===================== 中央簡報 ===================== */
+#stagew{position:fixed;inset:0;z-index:5;overflow-y:auto;overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  background:radial-gradient(ellipse 120% 80% at center,
+    rgba(7,6,14,.95) 0%,rgba(7,6,14,.9) 48%,rgba(7,6,14,.66) 100%);
+  opacity:0;visibility:hidden;transition:opacity .55s ease,visibility .55s}
+#stagew.open{opacity:1;visibility:visible}
+.slide{max-width:min(880px,92vw);margin:0 auto;
+  padding:clamp(70px,11vh,130px) clamp(20px,3vw,32px) clamp(90px,14vh,150px);
+  font-size:17px}
+:root[data-big="1"] .slide{font-size:21px}
 
-:root[data-big="1"] #panel{font-size:19.5px}
-:root[data-big="1"] #panel{padding-bottom:150px}
-.psize{position:sticky;top:0;float:right;font-family:var(--mono);font-size:11px;
-  letter-spacing:.14em;color:var(--faint);padding:6px 16px 6px 2px;z-index:3;
-  background:linear-gradient(90deg,transparent,rgba(6,9,20,.97) 30%)}
-.psize:hover{color:var(--ink)}
-.psize[data-on="1"]{color:var(--ink)}
-.pclose{position:sticky;top:0;float:right;font-family:var(--mono);font-size:11px;
-  letter-spacing:.2em;color:var(--dim);padding:6px 2px 6px 14px;z-index:3;
-  background:linear-gradient(90deg,transparent,rgba(6,9,20,.97) 30%)}
-.pclose:hover{color:var(--ink)}
-.pdir{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.24em;
-  padding:5px 11px;border:1px solid currentColor;margin-bottom:22px}
-#panel h2{font-family:var(--serif);font-size:2.45em;line-height:1.32;
-  letter-spacing:.02em;font-weight:400;margin-bottom:10px}
-.ploc{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--faint);margin-bottom:34px}
-.thesis{font-family:var(--serif);font-size:1.42em;line-height:1.92;
-  padding:26px 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);margin-bottom:38px}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:7;display:flex;align-items:center;
+  gap:18px;padding:16px clamp(20px,3.4vw,40px);
+  background:linear-gradient(180deg,rgba(7,6,14,.96),rgba(7,6,14,.72) 65%,transparent);
+  opacity:0;visibility:hidden;transition:opacity .45s,visibility .45s}
+#stagew.open ~ .topbar,.topbar.on{opacity:1;visibility:visible}
+.topbar .back{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:var(--dim);
+  padding:8px 0;white-space:nowrap}
+.topbar .back:hover{color:var(--ink)}
+.topbar .dots{display:flex;gap:9px;margin-left:auto;align-items:center}
+.tdot{width:9px;height:9px;border-radius:50%;border:1px solid currentColor;opacity:.4;
+  transition:opacity .3s,background .3s,transform .3s}
+.tdot.read{background:currentColor;opacity:.8}
+.tdot.cur{opacity:1;transform:scale(1.5)}
+.topbar .sz{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--faint);
+  border:1px solid var(--hair);padding:7px 13px;white-space:nowrap}
+.topbar .sz:hover{color:var(--ink);border-color:var(--ink)}
+.topbar .sz[data-on="1"]{color:var(--ink)}
+
+.sdir{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;
+  padding:6px 13px;border:1px solid currentColor;margin-bottom:26px}
+.slide h2{font-family:var(--serif);font-size:3.1em;line-height:1.24;letter-spacing:.02em;
+  font-weight:400;margin-bottom:38px}
+.thesis{font-family:var(--serif);font-size:1.55em;line-height:1.85;
+  padding:30px 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);
+  margin-bottom:52px;color:var(--ink)}
 .thesis em{font-style:normal;color:currentColor}
 
-.pt{display:flex;gap:18px;margin-bottom:24px;align-items:baseline}
-.pt .src{flex:none;width:46px;text-align:right;font-family:var(--mono);font-size:10px;
-  color:var(--faint);letter-spacing:.04em;padding-top:5px}
-.pt p{font-size:1em;line-height:1.95;color:#d3daee}
+.pt{margin-bottom:30px;padding-left:26px;border-left:1px solid var(--hair)}
+.pt p{font-size:1em;line-height:1.95;color:#cfcbe4}
 .pt p strong{font-weight:400;color:var(--ink)}
+.pt.run{border-left-color:currentColor}
 .pt.run p{color:var(--ink)}
-.pt.run .src::before{content:"▸ ";color:currentColor}
+.pt.run::before{content:attr(data-note);display:block;font-family:var(--mono);font-size:.6em;
+  letter-spacing:.24em;color:currentColor;margin-bottom:11px}
 
-.slab{border:1px solid var(--hair);padding:24px 26px;margin:36px 0;background:rgba(255,255,255,.018)}
-.slab h4{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:currentColor;margin-bottom:16px}
+.slab{border:1px solid var(--hair);padding:30px 32px;margin:48px 0;
+  background:rgba(255,255,255,.022)}
+.slab h4{font-family:var(--mono);font-size:.66em;letter-spacing:.24em;color:currentColor;margin-bottom:20px}
 .slab ul{list-style:none}
-.slab li{font-size:.97em;line-height:1.9;padding:6px 0 6px 20px;position:relative;color:#d3daee}
-.slab li::before{content:"";position:absolute;left:0;top:16px;width:8px;height:1px;background:currentColor}
-.slab.quote p{font-family:var(--serif);font-size:18.5px;line-height:1.9}
+.slab li{font-size:.97em;line-height:1.9;padding:8px 0 8px 22px;position:relative;color:#cfcbe4}
+.slab li::before{content:"";position:absolute;left:0;top:19px;width:9px;height:1px;background:currentColor}
 
-.ask{border:1px solid currentColor;padding:26px 28px;margin-top:44px}
-.ask .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.28em;margin-bottom:13px}
-.ask p{font-family:var(--serif);font-size:1.16em;line-height:1.9;color:var(--ink)}
+.ask{border:1px solid currentColor;padding:34px 36px;margin-top:56px}
+.ask .lbl{font-family:var(--mono);font-size:.62em;letter-spacing:.3em;margin-bottom:16px}
+.ask p{font-family:var(--serif);font-size:1.32em;line-height:1.85;color:var(--ink)}
 
-.links{margin-top:46px;padding-top:24px;border-top:1px solid var(--hair)}
-.links h5{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--faint);margin-bottom:6px}
-.links .sub{font-size:12.5px;color:var(--faint);margin-bottom:18px;line-height:1.8}
-.lk{display:block;width:100%;text-align:left;padding:14px 0 14px 20px;border-bottom:1px solid var(--hair);
-  position:relative;transition:padding-left .3s}
-.lk:hover{padding-left:28px}
-.lk::before{content:"";position:absolute;left:0;top:22px;width:11px;height:1px;background:currentColor}
-.lk .to{font-family:var(--serif);font-size:1.1em;letter-spacing:.04em}
-.lk .why{display:block;font-size:.82em;color:var(--dim);margin-top:5px;line-height:1.75}
-.backstar{display:block;width:100%;margin-top:40px;padding:16px;border:1px solid var(--hair);
-  font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--dim);transition:.3s}
+.links{margin-top:60px;padding-top:28px;border-top:1px solid var(--hair)}
+.links h5{font-family:var(--mono);font-size:.64em;letter-spacing:.24em;color:var(--faint);margin-bottom:8px}
+.links .sub{font-size:.78em;color:var(--faint);margin-bottom:22px;line-height:1.8}
+.lk{display:block;width:100%;text-align:left;padding:17px 0 17px 24px;
+  border-bottom:1px solid var(--hair);position:relative;transition:padding-left .3s}
+.lk:hover{padding-left:32px}
+.lk::before{content:"";position:absolute;left:0;top:27px;width:13px;height:1px;background:currentColor}
+.lk .to{font-family:var(--serif);font-size:1.16em;letter-spacing:.04em}
+.lk .why{display:block;font-size:.8em;color:var(--dim);margin-top:6px;line-height:1.75}
+.backstar{display:block;width:100%;margin-top:52px;padding:19px;border:1px solid var(--hair);
+  font-family:var(--mono);font-size:.68em;letter-spacing:.22em;color:var(--dim);transition:.3s}
 .backstar:hover{border-color:var(--ink);color:var(--ink)}
 
-/* ================= 作業面板 ================= */
+/* ===================== 作業 ===================== */
 #task{position:fixed;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;
-  padding:26px;background:rgba(4,6,15,.86);backdrop-filter:blur(14px);
+  padding:26px;background:rgba(7,6,14,.88);backdrop-filter:blur(16px);
   opacity:0;visibility:hidden;transition:opacity .5s,visibility .5s}
 #task.open{opacity:1;visibility:visible}
-.taskbox{max-width:660px;width:100%;max-height:88svh;overflow-y:auto;
-  border:1px solid var(--hair);background:rgba(6,9,20,.96);padding:clamp(28px,4vw,48px)}
+.taskbox{max-width:680px;width:100%;max-height:88svh;overflow-y:auto;
+  border:1px solid var(--hair);background:rgba(11,9,22,.96);padding:clamp(28px,4vw,48px)}
 .taskbox .eyebrow{margin-bottom:12px}
 .taskbox h3{font-family:var(--serif);font-size:clamp(24px,3vw,32px);font-weight:400;margin-bottom:12px}
 .taskbox > p{font-size:14.5px;color:var(--dim);line-height:1.95;margin-bottom:30px}
-.opt{display:block;width:100%;text-align:left;border:1px solid var(--hair);padding:20px 22px;
+.opt{display:block;width:100%;text-align:left;border:1px solid var(--hair);padding:22px 24px;
   margin-bottom:14px;transition:.3s}
 .opt:hover{border-color:var(--dim)}
-.opt.sel{border-color:var(--warm);background:rgba(255,179,92,.06)}
-.opt .h{font-family:var(--serif);font-size:18px;margin-bottom:7px;display:flex;
-  align-items:baseline;gap:11px}
+.opt.sel{border-color:#ffb15c;background:rgba(255,177,92,.06)}
+.opt .h{font-family:var(--serif);font-size:19px;margin-bottom:8px;display:flex;
+  align-items:baseline;gap:12px}
 .opt .h .mk{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--faint)}
-.opt.sel .h .mk{color:var(--warm)}
+.opt.sel .h .mk{color:#ffb15c}
 .opt .d{font-size:13.5px;color:var(--dim);line-height:1.85}
-.opt .ref{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.1em;margin-top:9px;display:block}
 .taskfoot{margin-top:26px;padding-top:20px;border-top:1px solid var(--hair);
   display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
 .taskfoot .note{font-size:12.5px;color:var(--faint);line-height:1.8;max-width:34em}
@@ -171,18 +176,17 @@ h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1
   border:1px solid var(--hair);padding:11px 20px;transition:.3s;white-space:nowrap}
 .taskfoot button:hover{border-color:var(--ink);color:var(--ink)}
 
-/* ================= 開場 ================= */
-#intro{position:fixed;inset:0;z-index:9;background:var(--void);display:flex;
+/* ===================== 開場 / 退路 ===================== */
+#intro{position:fixed;inset:0;z-index:9;background:var(--tissue);display:flex;
   align-items:center;justify-content:center;flex-direction:column;gap:26px;
-  transition:opacity 1.4s ease,visibility 1.4s}
+  transition:opacity 1.5s ease,visibility 1.5s}
 #intro.gone{opacity:0;visibility:hidden}
 #intro .mark{font-family:var(--mono);font-size:11px;letter-spacing:.4em;color:var(--faint)}
 #intro .bar{width:150px;height:1px;background:var(--hair);position:relative;overflow:hidden}
 #intro .bar i{position:absolute;inset:0;background:var(--ink);transform:scaleX(0);
-  transform-origin:left;transition:transform .5s}
+  transform-origin:left;transition:transform .6s}
 
-/* ================= 無 WebGL 退路 ================= */
-#fallback{position:fixed;inset:0;z-index:10;background:var(--void);overflow-y:auto;
+#fallback{position:fixed;inset:0;z-index:10;background:var(--tissue);overflow-y:auto;
   padding:8vh 26px 12vh;display:none}
 #fallback.on{display:block}
 .fb{max-width:680px;margin:0 auto}
@@ -201,23 +205,20 @@ h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1
   h1.title{font-size:clamp(30px,8.6vw,44px)}
   .stage-sub{font-size:10px;letter-spacing:.18em;margin-top:9px}
   .epigraph{display:none}
-  #panel{width:100%;top:auto;height:86svh;border-left:0;border-top:1px solid var(--hair);
-    transform:translateY(102%)}
-  #panel.open{transform:none}
-  body.reading .masthead{opacity:0;transition:opacity .4s}
   .deck{flex-direction:column;align-items:stretch;gap:12px}
   .hint br{display:none}
   .hint b{display:block}
   .gauge{justify-content:space-between}
   .lab{padding:8px 12px}
-  .lab .meta,.lab .peek{display:none}
+  .lab .tag,.lab .peek{display:none}
   .lab .nm{font-size:15px}
+  .slide{font-size:16px;padding-top:86px}
+  :root[data-big="1"] .slide{font-size:19px}
+  .slide h2{font-size:2.5em}
+  .topbar .dots{display:none}
 }
 @media(max-height:520px){ .epigraph,.stage-sub{display:none} }
-@media(prefers-reduced-motion:reduce){
-  *{transition-duration:.01ms!important}
-  #panel{transition:none}
-}
+@media(prefers-reduced-motion:reduce){ *{transition-duration:.01ms!important} }
 </style>
 </head>
 <body>
@@ -236,8 +237,8 @@ h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1
 
   <div class="deck">
     <div class="hint">
-      拖曳轉動這張網　·　滾輪或雙指縮放<br>
-      <b>點一顆星進去。讀過的兩站之間，線會通電。</b>
+      拖曳游動這片組織　·　滾輪或雙指推進<br>
+      <b>點一個神經元進去。讀過的兩站之間，突觸會通電。</b>
     </div>
     <div class="gauge">
       <button class="taskbtn" id="taskopen">這個月的身體實驗</button>
@@ -247,7 +248,13 @@ h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1
   </div>
 </div>
 
-<aside id="panel" aria-hidden="true"></aside>
+<div id="stagew" aria-hidden="true"><div class="slide" id="slide"></div></div>
+
+<div class="topbar" id="topbar">
+  <button class="back" onclick="closeSlide()">← 回到神經網</button>
+  <div class="dots" id="tdots"></div>
+  <button class="sz" id="szbtn" onclick="toggleBig()">字級 標準</button>
+</div>
 
 <div id="task" aria-hidden="true">
   <div class="taskbox">
@@ -256,7 +263,7 @@ h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1
     <p>挑一個做一個月，把跑步或身體實踐跟書裡的框架接起來觀察。下個月回來講：選了什麼、做了幾次、遇到什麼阻力。阻力才是最好的分享素材。</p>
     <div id="opts"></div>
     <div class="taskfoot">
-      <span class="note" id="tasknote">選一個，它會被記在這張網的中心。</span>
+      <span class="note" id="tasknote">選一個，它會被記在這片組織的中心。</span>
       <button id="taskclose">關閉</button>
     </div>
   </div>
@@ -271,7 +278,7 @@ h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1
   <div class="fb">
     <h1>身體就是大腦</h1>
     <div class="stage-sub">REWIRE 神經可塑性 · 第 4 場 · 階段三</div>
-    <p class="note">這個裝置沒辦法跑 3D 星圖，下面是同一份內容的清單版。點任一站看內容。</p>
+    <p class="note">這個裝置沒辦法跑 3D，下面是同一份內容的清單版。點任一站看內容。</p>
     <div id="fblist"></div>
   </div>
 </div>
@@ -289,29 +296,27 @@ h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1
    內容
    ========================================================================= */
 const DIR = {
-  down: { label:'大腦 → 身體　自上而下', color:'#5ec8ff' },
-  up:   { label:'身體 → 大腦　自下而上', color:'#ffb35c' }
+  down: { label:'大腦 → 身體　自上而下' },
+  up:   { label:'身體 → 大腦　自下而上' }
 };
 
 const T = [
 {
-  id:'resilience', name:'心靈韌性', dir:'down', color:'#5ec8ff',
-  loc:'位置 374–392', pos:[-3.3, 2.7, 0.9],
+  id:'resilience', name:'心靈韌性', dir:'down', color:'#4fd6e8', pos:[-3.3, 2.7, 0.9],
   thesis:'壓力不是敵人。<em>自願選來的壓力，是可以練的能力。</em>',
   points:[
-    ['374','心靈韌性＝面對逆境、創傷、威脅時的<strong>適應良好過程</strong>。有人天生較高，但它是動態特徵，任何人都能靠努力增強。'],
-    ['375','<strong>自願壓力</strong>——運動、呼吸、冷水浴、桑拿——會增強免疫系統。急性壓力不會削弱免疫，反而增強你應對未來壓力的能力。'],
-    ['376','克拉姆的心態實驗：被告知「壓力是正面的」那組，工作表現改善、負面症狀變少。生理上心臟效率提高、輸氧改善，<strong>壓力事件期間血壓還下降</strong>。'],
-    ['379','溫霍夫式訓練兩週後：腎上腺素（身體）高的時候，大腦釋放的<strong>正腎上腺素反而比對照組低</strong>。體內充滿壓力荷爾蒙，心靈仍然平靜——就像上了擂台的拳擊手。'],
-    ['381','<strong>自上而下調節</strong>：前額葉皮質可以調節杏仁核與下丘腦，抑制過度的壓力反應。但前提是你還沒被淹沒、而且對狀況有心理準備。'],
-    ['383','訓練自己承受壓力，會提高你對壓力的承受程度。機制是：腎上腺素不會減少（它是必要的），<strong>但大腦釋放的正腎上腺素會減少</strong>——兩個系統之間的連結被削弱了。', 1],
-    ['385','抗壓性不是單一因素決定的。社會支持、應對技巧、個人經歷都算。冥想能加強前額葉皮質，從而增強自上而下的調節。'],
-    ['387','作者承認：有些人身邊真的沒有能提供情感支持的人。她的建議是去找——公益機構、支持團體，或者<strong>加入一個運動團體、一個讀書會、一個跑步會</strong>。'],
-    ['389','培理博士的結論：無論孩子經歷過什麼，日後能茁壯的都是得到過支持的人。書裡改寫了那句老話——不是「除非你愛自己否則沒人會愛你」，而是<strong>「除非你以前被別人愛過，否則你無法學會愛自己」</strong>。'],
-    ['390','每次失敗，靠經驗依賴可塑性，大腦會把「未來如何反應」寫進經驗資料庫。<strong>失敗對未來的成功是必要的。</strong>']
+    ['心靈韌性＝面對逆境、創傷、威脅時的<strong>適應良好過程</strong>。有人天生較高，但它是動態特徵，任何人都能靠努力增強。'],
+    ['<strong>自願壓力</strong>——運動、呼吸、冷水浴、桑拿——會增強免疫系統。急性壓力不會削弱免疫，反而增強你應對未來壓力的能力。'],
+    ['克拉姆的心態實驗：被告知「壓力是正面的」那組，工作表現改善、負面症狀變少。生理上心臟效率提高、輸氧改善，<strong>壓力事件期間血壓還下降</strong>。'],
+    ['溫霍夫式訓練兩週後：腎上腺素（身體）高的時候，大腦釋放的<strong>正腎上腺素反而比對照組低</strong>。體內充滿壓力荷爾蒙，心靈仍然平靜——就像上了擂台的拳擊手。'],
+    ['<strong>自上而下調節</strong>：前額葉皮質可以調節杏仁核與下丘腦，抑制過度的壓力反應。但前提是你還沒被淹沒、而且對狀況有心理準備。'],
+    ['訓練自己承受壓力，會提高你對壓力的承受程度。機制是：腎上腺素不會減少（它是必要的），<strong>但大腦釋放的正腎上腺素會減少</strong>——兩個系統之間的連結被削弱了。', '給跑者的一段'],
+    ['抗壓性不是單一因素決定的。社會支持、應對技巧、個人經歷都算。冥想能加強前額葉皮質，從而增強自上而下的調節。'],
+    ['作者承認：有些人身邊真的沒有能提供情感支持的人。她的建議是去找——公益機構、支持團體，或者<strong>加入一個運動團體、一個讀書會、一個跑步會</strong>。'],
+    ['培理博士的結論：無論孩子經歷過什麼，日後能茁壯的都是得到過支持的人。書裡改寫了那句老話——不是「除非你愛自己否則沒人會愛你」，而是<strong>「除非你以前被別人愛過，否則你無法學會愛自己」</strong>。'],
+    ['每次失敗，靠經驗依賴可塑性，大腦會把「未來如何反應」寫進經驗資料庫。<strong>失敗對未來的成功是必要的。</strong>']
   ],
-  run:{ i:5, note:'給跑者的一段' },
-  slab:{ h:'三類壓力（p.377）', li:[
+  slab:{ h:'書裡把壓力分成三類', li:[
     '急性：求職面試　考試　公開演講　衝突對抗',
     '自願：桑拿　運動　吐納　冷水浴　學業追求',
     '慢性：工作　財務　感情　健康　照顧者壓力　社會孤立'
@@ -319,19 +324,18 @@ const T = [
   ask:'你這幾年跑下來，有沒有哪件生活上的事，是你發現自己比以前扛得住了？'
 },
 {
-  id:'mindset', name:'成長型心態', dir:'down', color:'#7ea8ff',
-  loc:'位置 395–409', pos:[2.1, 3.5, -1.7],
+  id:'mindset', name:'成長型心態', dir:'down', color:'#6ba8ff', pos:[2.1, 3.5, -1.7],
   thesis:'把身分認同從表現上鬆開，<em>失敗才會變成資料。</em>',
   points:[
-    ['395','杜維克：在成長型心態中，人們相信最基本的能力可以透過奉獻和努力發展——<strong>大腦和天賦只是起點</strong>。'],
-    ['397','瑪莎的案例：從小被誇聰明、學歷漂亮、進了好公司，卻舉步維艱。問題不是智商，是她把身分認同跟工作表現綁死了——任何失敗都像對她個人的攻擊。'],
-    ['398','杜維克的誇獎實驗：被誇「你真聰明」的學生之後<strong>偏好較簡單的題目</strong>，甚至謊報分數；被誇「你付出了很大努力」的學生之後<strong>選更難的題目</strong>，也不太在乎別人考幾分。'],
-    ['400','成長型心態與<strong>紋狀體和基底神經節</strong>有關（負責獎勵相關的學習）。接受四週訓練的學童解難題時這兩區活動增加，犯錯後還能答得更準。'],
-    ['401','兩大特徵：<strong>學習至關重要</strong>，以及<strong>身分認同不等於表現</strong>。喬科維奇說即使輸了球，他也不後悔。'],
-    ['406','改變心態時大腦怎麼變：與努力和堅持相關的區域變活躍（付出努力本身變得有獎勵性）、遇到障礙時獎勵中樞被活化、<strong>與恐懼和焦慮相關的區域活動下降</strong>。'],
-    ['407','作者引好友的話：「我們會在決定做某事和實際取得成果之間、那些會讓人產生幽閉恐懼的緊窄裂縫中得到轉化。」她的回應是——<strong>「每次我以為自己被埋葬了，其實我是被栽種了。」</strong>']
+    ['杜維克：在成長型心態中，人們相信最基本的能力可以透過奉獻和努力發展——<strong>大腦和天賦只是起點</strong>。'],
+    ['瑪莎的案例：從小被誇聰明、學歷漂亮、進了好公司，卻舉步維艱。問題不是智商，是她把身分認同跟工作表現綁死了——任何失敗都像對她個人的攻擊。'],
+    ['杜維克的誇獎實驗：被誇「你真聰明」的學生之後<strong>偏好較簡單的題目</strong>，甚至謊報分數；被誇「你付出了很大努力」的學生之後<strong>選更難的題目</strong>，也不太在乎別人考幾分。'],
+    ['成長型心態與<strong>紋狀體和基底神經節</strong>有關（負責獎勵相關的學習）。接受四週訓練的學童解難題時這兩區活動增加，犯錯後還能答得更準。'],
+    ['兩大特徵：<strong>學習至關重要</strong>，以及<strong>身分認同不等於表現</strong>。喬科維奇說即使輸了球，他也不後悔。'],
+    ['改變心態時大腦怎麼變：與努力和堅持相關的區域變活躍（付出努力本身變得有獎勵性）、遇到障礙時獎勵中樞被活化、<strong>與恐懼和焦慮相關的區域活動下降</strong>。'],
+    ['作者引好友的話：「我們會在決定做某事和實際取得成果之間、那些會讓人產生幽閉恐懼的緊窄裂縫中得到轉化。」她的回應是——<strong>「每次我以為自己被埋葬了，其實我是被栽種了。」</strong>']
   ],
-  slab:{ h:'固定型 vs 成長型（p.392）', li:[
+  slab:{ h:'固定型　對照　成長型', li:[
     '迴避挑戰　→　歡迎挑戰',
     '輕易放棄　→　堅持',
     '認為努力毫無價值　→　把努力視為關鍵',
@@ -341,28 +345,26 @@ const T = [
   ask:'帶課或比賽表現不好的時候，你腦中冒出來的第一句話是「這次沒做好」，還是「我不夠好」？'
 },
 {
-  id:'trust', name:'自我信賴', dir:'down', color:'#9d8bff',
-  loc:'位置 484–503', pos:[3.7, 1.1, 1.9],
+  id:'trust', name:'自我信賴', dir:'down', color:'#a87dff', pos:[3.7, 1.1, 1.9],
   thesis:'信心不是天生的，<em>是每次信守對自己的承諾攢出來的。</em>',
   points:[
-    ['484','開場自嘲：那種到處打電話問十個人意見、卻誰的建議都不採行的朋友——作者說她自己就是。因為知道解法，卻不完全信賴它。'],
-    ['485','自我信賴＝對自己的能力有信心、建立個人擔當、<strong>信守對自己的承諾</strong>。'],
-    ['487','<strong>違背對自己的承諾，會破壞我們與自己的關係</strong>，進而破壞我們在世界中的信心。「如果我不能信賴自己，那我還能信賴誰？」'],
-    ['490','直覺＝潛意識在沒有意識覺察參與下做出決定的結果。信賴自己 → 更可能信賴直覺 → 看到正面結果 → 反過來增強自我信賴。這是<strong>互惠關係</strong>。'],
-    ['491','引馬修·麥康納：<strong>「我生命中的大部分問題，都是因為我的頭腦跑在我的心太前面。」</strong>'],
-    ['494','違背承諾時的流程：不要自責 → 想想你為什麼這樣做 → 記住大腦喜歡恢復自動狀態 → 重回正軌。<strong>「大腦是可塑的，它不是鬆緊帶，改變不是線性的。」</strong>'],
-    ['498','自責會產生一種<strong>虛假的控制感</strong>——你無法改變過去。大腦想走阻力最小的路徑，開闢新路線本來就需要耐心。'],
-    ['500','動力是暫時的。理解到每個人的動力都會消失之後，作者才開始重視持之以恆。<strong>「動力一定會消散，不要習慣依靠動力——這就是人們通常無法達成任何改變的原因。」</strong>', 1]
+    ['開場自嘲：那種到處打電話問十個人意見、卻誰的建議都不採行的朋友——作者說她自己就是。因為知道解法，卻不完全信賴它。'],
+    ['自我信賴＝對自己的能力有信心、建立個人擔當、<strong>信守對自己的承諾</strong>。'],
+    ['<strong>違背對自己的承諾，會破壞我們與自己的關係</strong>，進而破壞我們在世界中的信心。「如果我不能信賴自己，那我還能信賴誰？」'],
+    ['直覺＝潛意識在沒有意識覺察參與下做出決定的結果。信賴自己 → 更可能信賴直覺 → 看到正面結果 → 反過來增強自我信賴。這是<strong>互惠關係</strong>。'],
+    ['引馬修·麥康納：<strong>「我生命中的大部分問題，都是因為我的頭腦跑在我的心太前面。」</strong>'],
+    ['違背承諾時的流程：不要自責 → 想想你為什麼這樣做 → 記住大腦喜歡恢復自動狀態 → 重回正軌。<strong>「大腦是可塑的，它不是鬆緊帶，改變不是線性的。」</strong>'],
+    ['自責會產生一種<strong>虛假的控制感</strong>——你無法改變過去。大腦想走阻力最小的路徑，開闢新路線本來就需要耐心。'],
+    ['動力是暫時的。理解到每個人的動力都會消失之後，作者才開始重視持之以恆。<strong>「動力一定會消散，不要習慣依靠動力——這就是人們通常無法達成任何改變的原因。」</strong>', '給教練的一段']
   ],
-  run:{ i:7, note:'給教練的一段' },
-  slab:{ h:'建立自我信賴的五步（p.487–488）', li:[
+  slab:{ h:'建立自我信賴的五個步驟', li:[
     '尊重你的保證——承諾了就信守',
     '設定切合實際的目標——要跟你的價值觀一致，不是為了跟別人看齊',
     '慶祝你的成就——大腦喜歡專注負面，慶祝勝利才能改變敘事',
     '成長型心態——你要麼成功，要麼有機會學習',
     '聆聽你自己——騰出時間冥想、伸展、散步，讓心靈休息'
   ]},
-  slab2:{ h:'作者自己的「不容商量」清單（p.501）', li:[
+  slab2:{ h:'作者自己的「不容商量」清單', li:[
     '週一到週五每天活動身體，哪怕只是伸展或遛狗',
     '晚上 9 點關掉手機',
     '睡 8 小時',
@@ -373,32 +375,30 @@ const T = [
   ask:'你有沒有一件事，是不管有沒有動力都會去做的？如果現在要你列一條「不容商量」，你會列什麼？'
 },
 {
-  id:'muscle', name:'肌肉與大腦', dir:'up', color:'#ffb35c', focus:1,
-  loc:'位置 412–437', pos:[-2.7, -2.3, -1.5],
+  id:'muscle', name:'肌肉與大腦', dir:'up', color:'#ffb15c', focus:1, pos:[-2.7, -2.3, -1.5],
   thesis:'肌肉收縮時會釋放<em>肌肉因子</em>，透過「<em>肌腦軸</em>」直接跟大腦講話。',
   points:[
-    ['412','很多人怕運動，或把它當成吃太多的懲罰、減肥才要做的可怕活動。作者說運動的名聲多年來被媒體的減肥文化和健美圈搞壞了，<strong>過程中我們忘了做運動真正的好處</strong>。'],
-    ['415','固定運動可讓<strong>灰質體積顯著增加</strong>，海馬體（記憶與學習）和前額葉皮質（決策）尤其明顯。有氧體適能較好的少年，海馬體灰質較大，認知測驗也考得比較好。'],
-    ['416','慢性發炎會穿過血腦屏障進入大腦。書裡的比喻：<strong>「如果你的大腦健康是硬體，心理健康是軟體，那你很難在無法最優化工作的硬體上做任何軟體更新。」</strong>'],
-    ['418','壓力會劫持色胺酸路徑：本該做成血清素的原料，被發炎推去產生犬尿胺酸，再代謝成有神經毒性的喹啉酸。結果是血清素變少、憂鬱、焦慮擴大。'],
-    ['421','運動時大腦叫肌肉收縮放鬆，這個機械動作會釋放<strong>肌肉因子</strong>——一種肌肉蛋白質，透過<strong>肌腦軸</strong>直接與大腦溝通。它減輕憂鬱症狀、改善焦慮、保護神經，並維持突觸完整。'],
-    ['422','運動釋放 <strong>BDNF</strong>（腦源性神經營養因子），支持神經元生長與存活。多項研究顯示 BDNF 偏低與憂鬱症狀的嚴重度相關。'],
-    ['423','<strong>IGF-1 主要在舉重期間釋放</strong>。同一個分子，從肝臟釋放和從肌肉當肌肉因子釋放，效果不一樣。沒舉重經驗的人要懂漸進超負荷。'],
-    ['425','IGF-1 會削弱海馬體中恐懼記憶的突觸連結——<strong>像重寫大腦原有的那份「可怕」劇本</strong>，讓它認識到曾有威脅的東西現在是安全的。'],
-    ['426','EMDR 的原理是橫向眼球運動活化額頂葉網絡，而它與杏仁核競爭資源。作者說：<strong>這適用於任何向前移動的運動</strong>——走路、跑步、騎車時經過的風景會活化額頂葉、同時降低杏仁核活動。所以你煩的時候出去走一走，問題會鬆開一點。', 1],
-    ['426','<strong>第二區＝還講得出話的中等強度</strong>。每個人的第二區都不一樣：對某些人是輕鬆慢跑，對作者是遛狗或平路騎車。'],
-    ['429','運動能暫時把注意力從反芻思想上引開，讓大腦有時間恢復——<strong>像重新啟動思想</strong>，打破負面思想模式的循環。'],
-    ['431','有氧會增加<strong>粒線體</strong>（細胞的發電廠，產生 ATP＝能量貨幣），也參與管理氧化壓力與發炎。'],
-    ['432','<strong>神經運動訓練</strong>（協調、平衡、敏捷、本體感覺）刺激神經可塑性，研究顯示甚至可降低認知能力下降的風險。']
+    ['很多人怕運動，或把它當成吃太多的懲罰、減肥才要做的可怕活動。作者說運動的名聲多年來被媒體的減肥文化和健美圈搞壞了，<strong>過程中我們忘了做運動真正的好處</strong>。'],
+    ['固定運動可讓<strong>灰質體積顯著增加</strong>，海馬體（記憶與學習）和前額葉皮質（決策）尤其明顯。有氧體適能較好的少年，海馬體灰質較大，認知測驗也考得比較好。'],
+    ['慢性發炎會穿過血腦屏障進入大腦。書裡的比喻：<strong>「如果你的大腦健康是硬體，心理健康是軟體，那你很難在無法最優化工作的硬體上做任何軟體更新。」</strong>'],
+    ['壓力會劫持色胺酸路徑：本該做成血清素的原料，被發炎推去產生犬尿胺酸，再代謝成有神經毒性的喹啉酸。結果是血清素變少、憂鬱、焦慮擴大。'],
+    ['運動時大腦叫肌肉收縮放鬆，這個機械動作會釋放<strong>肌肉因子</strong>——一種肌肉蛋白質，透過<strong>肌腦軸</strong>直接與大腦溝通。它減輕憂鬱症狀、改善焦慮、保護神經，並維持突觸完整。'],
+    ['運動釋放 <strong>BDNF</strong>（腦源性神經營養因子），支持神經元生長與存活。多項研究顯示 BDNF 偏低與憂鬱症狀的嚴重度相關。'],
+    ['<strong>IGF-1 主要在舉重期間釋放</strong>。同一個分子，從肝臟釋放和從肌肉當肌肉因子釋放，效果不一樣。沒舉重經驗的人要懂漸進超負荷。'],
+    ['IGF-1 會削弱海馬體中恐懼記憶的突觸連結——<strong>像重寫大腦原有的那份「可怕」劇本</strong>，讓它認識到曾有威脅的東西現在是安全的。'],
+    ['EMDR 的原理是橫向眼球運動活化額頂葉網絡，而它與杏仁核競爭資源。作者說：<strong>這適用於任何向前移動的運動</strong>——走路、跑步、騎車時經過的風景會活化額頂葉、同時降低杏仁核活動。所以你煩的時候出去走一走，問題會鬆開一點。', '給跑者的一段'],
+    ['<strong>第二區＝還講得出話的中等強度</strong>。每個人的第二區都不一樣：對某些人是輕鬆慢跑，對作者是遛狗或平路騎車。'],
+    ['運動能暫時把注意力從反芻思想上引開，讓大腦有時間恢復——<strong>像重新啟動思想</strong>，打破負面思想模式的循環。'],
+    ['有氧會增加<strong>粒線體</strong>（細胞的發電廠，產生 ATP＝能量貨幣），也參與管理氧化壓力與發炎。'],
+    ['<strong>神經運動訓練</strong>（協調、平衡、敏捷、本體感覺）刺激神經可塑性，研究顯示甚至可降低認知能力下降的風險。']
   ],
-  run:{ i:8, note:'給跑者的一段' },
-  slab:{ h:'作者的每週處方（p.433）', li:[
+  slab:{ h:'作者的每週處方', li:[
     '約 150 分鐘第二區有氧：穩定節奏',
     '3 至 8 分鐘第五區：時間短但具挑戰',
     '每週 2 至 3 回重量訓練（她主張阻力訓練是長壽的最佳訓練法）',
     '盡可能整合神經運動訓練：平衡、協調'
   ]},
-  slab2:{ h:'五個強度區（p.434）', li:[
+  slab2:{ h:'五個強度區', li:[
     '一區　非常輕鬆：伸展操',
     '二區　輕鬆：緩步慢跑、爬樓梯、輕量阻力',
     '三區　中度：中速慢跑或騎車',
@@ -408,23 +408,21 @@ const T = [
   ask:'你心煩的時候會出去走走或跑一跑嗎？跑完那個「好像想通了」的感覺，你有過嗎？'
 },
 {
-  id:'sleep', name:'睡眠', dir:'up', color:'#ffd280', focus:1,
-  loc:'位置 440–456', pos:[0.4, -3.7, 1.3],
+  id:'sleep', name:'睡眠', dir:'up', color:'#ffd97a', focus:1, pos:[0.4, -3.7, 1.3],
   thesis:'改變行為最重要的一步，<em>發生在你睡著之後。</em>',
   points:[
-    ['441','重點不是減肥。可以主張<strong>睡眠是養成新習慣、做出改變最重要的一步</strong>——所有記憶與新資訊都在睡眠時於記憶中樞鞏固和編碼。清醒時取得的記憶最初是脆弱的。'],
-    ['443','睡覺時大腦會形成新的突觸連結來穩定記憶。階段 1 講過的「低電量模式」會損害大腦做可塑性改變的能力，而<strong>睡眠不足正是把我們推進那個狀態</strong>。'],
-    ['444','<strong>深度睡眠</strong>恢復效果最大，睡得好一夜可進入三次。它讓身體修復成長、鞏固記憶，並透過<strong>類淋巴系統清除大腦毒素</strong>——大腦的廢物清除系統。這系統失能會導致神經元損失、發炎，甚至可能導致失智。'],
-    ['446','<strong>REM 對消除創傷經驗和侵入性意念的情緒負擔非常重要</strong>，過程涉及記憶重組。EMDR 這類療法就是在模仿 REM 的某些方面。'],
-    ['447','機制：REM 期間正腎上腺素濃度相對較低。它負責警覺與覺醒，濃度低有助於<strong>處理情緒和記憶而不觸發情緒中樞</strong>。'],
-    ['448','男性大部分<strong>睪固酮在 REM 期間釋放</strong>。只睡 6 小時＝失去整個 REM 週期，也失去整個睪固酮釋放週期。研究：連續 8 晚每晚睡 5 小時，睪固酮下降 <strong>10–15%</strong>——而正常老化每年也不過減少 1–2%。它還負責肌肉生長和骨質密度。', 1],
-    ['450','<strong>生長激素主要在深度睡眠期間釋放</strong>：幫助恢復所有功能，包括慢性壓力造成的損害；調節代謝；修復大腦中支持神經元的細胞；改善警覺性、耐力和暴躁。'],
-    ['451','生長激素還會<strong>增加多巴胺釋放</strong>，而多巴胺參與獎勵路徑和學習——幫你把愉快的事編碼成習得行為。它也增加神經元的興奮性，讓新連結更黏得住。'],
-    ['452','為期一週的研究：每晚睡 6 小時的人<strong>約 3% 的基因發生負面改變</strong>——一半影響免疫系統並增加發炎，另一半增加腫瘤進展的速度。'],
-    ['453','比例：健康成年人約 <strong>20–25%</strong> 睡眠時間是 REM，<strong>17–20%</strong> 是深度睡眠。睡 7–8 小時＝REM 約 100–120 分鐘、深度睡眠約 80–95 分鐘。']
+    ['重點不是減肥。可以主張<strong>睡眠是養成新習慣、做出改變最重要的一步</strong>——所有記憶與新資訊都在睡眠時於記憶中樞鞏固和編碼。清醒時取得的記憶最初是脆弱的。'],
+    ['睡覺時大腦會形成新的突觸連結來穩定記憶。階段 1 講過的「低電量模式」會損害大腦做可塑性改變的能力，而<strong>睡眠不足正是把我們推進那個狀態</strong>。'],
+    ['<strong>深度睡眠</strong>恢復效果最大，睡得好一夜可進入三次。它讓身體修復成長、鞏固記憶，並透過<strong>類淋巴系統清除大腦毒素</strong>——大腦的廢物清除系統。這系統失能會導致神經元損失、發炎，甚至可能導致失智。'],
+    ['<strong>REM 對消除創傷經驗和侵入性意念的情緒負擔非常重要</strong>，過程涉及記憶重組。EMDR 這類療法就是在模仿 REM 的某些方面。'],
+    ['機制：REM 期間正腎上腺素濃度相對較低。它負責警覺與覺醒，濃度低有助於<strong>處理情緒和記憶而不觸發情緒中樞</strong>。'],
+    ['男性大部分<strong>睪固酮在 REM 期間釋放</strong>。只睡 6 小時＝失去整個 REM 週期，也失去整個睪固酮釋放週期。研究：連續 8 晚每晚睡 5 小時，睪固酮下降 <strong>10–15%</strong>——而正常老化每年也不過減少 1–2%。它還負責肌肉生長和骨質密度。', '訓練的人特別要看'],
+    ['<strong>生長激素主要在深度睡眠期間釋放</strong>：幫助恢復所有功能，包括慢性壓力造成的損害；調節代謝；修復大腦中支持神經元的細胞；改善警覺性、耐力和暴躁。'],
+    ['生長激素還會<strong>增加多巴胺釋放</strong>，而多巴胺參與獎勵路徑和學習——幫你把愉快的事編碼成習得行為。它也增加神經元的興奮性，讓新連結更黏得住。'],
+    ['為期一週的研究：每晚睡 6 小時的人<strong>約 3% 的基因發生負面改變</strong>——一半影響免疫系統並增加發炎，另一半增加腫瘤進展的速度。'],
+    ['比例：健康成年人約 <strong>20–25%</strong> 睡眠時間是 REM，<strong>17–20%</strong> 是深度睡眠。睡 7–8 小時＝REM 約 100–120 分鐘、深度睡眠約 80–95 分鐘。']
   ],
-  run:{ i:5, note:'訓練的人特別要看' },
-  slab:{ h:'良好睡眠清單（p.454）', li:[
+  slab:{ h:'書裡的良好睡眠清單', li:[
     '睡前 8 小時不喝咖啡　睡前 1 小時不看螢幕　睡前 2 小時不進食',
     '睡前做伸展操　淋熱水浴（幫助降體溫）',
     '房間關燈或戴眼罩　涼爽的房間',
@@ -435,30 +433,28 @@ const T = [
   ask:'你最近一次連續一週睡滿 7 小時是什麼時候？那週的訓練和心情，跟現在比起來差在哪？'
 },
 {
-  id:'dopamine', name:'多巴胺', dir:'up', color:'#ff8a6b', focus:1,
-  loc:'位置 459–481', pos:[3.1, -1.9, -0.7],
+  id:'dopamine', name:'多巴胺', dir:'up', color:'#ff7a8f', focus:1, pos:[3.1, -1.9, -0.7],
   thesis:'它不是讓你快樂的分子，<em>是讓你「起意去追」的分子。</em>',
   points:[
-    ['459','到達謬誤：以為一旦成功、得到想要的東西就會快樂。作者問粉絲，最常見的例子是減肥、成績、工作成就和金錢。<strong>其中有些是職業運動員，對自己的任何勝利都不滿意</strong>——滿足感只持續很短一會兒。'],
-    ['460','關鍵翻轉：向著目標努力時大腦釋放多巴胺，但它不是帶來快樂的化學物質，是<strong>讓我們起意追求快樂</strong>的化學物質。研究顯示<strong>實現目標時多巴胺水準事實上會下降</strong>。'],
-    ['461','快樂其實來自血清素、催產素、內啡肽的混合——《欲望分子多巴胺》把它們叫做<strong>「此時此地」的化學物質</strong>。不專注當下、不培養對現有的感激，它們很容易被多巴胺淹沒。'],
-    ['463','真正的快樂來自旅程，而不是目的地。快樂來自旅途中學到的教益、你達到的個人成長、你培養的人際關係。'],
-    ['464','<strong>實際上不存在終點線</strong>——若你要抵達終點線才快樂，就會發現那之後還有另一條，之後又是另一條。書裡兩句：「你唯一的比賽就是與自己比賽。」「輕鬆自在地活在當下。你不會再次得到這個當下。」', 1],
-    ['465','有人問「知道沒有真正的比賽會不會動力全失」？作者說反而給出不同視角。用別人當良性競爭的誘餌沒有不好，<strong>但你的同事不會參加每場比賽</strong>——他們不會參與你生命中的終極比賽。'],
-    ['469','即時滿足＝無須等待或付出努力就獲得立即的滿足感。問題不是它們本身，是它們<strong>引發多巴胺快速強烈的釋放，卻不需要你付出任何努力</strong>，久了會改變基準線——之後需要更多多巴胺才感覺得到動力。'],
-    ['471','作者自述：運動前拚命滑社群網站，做起運動就舉步維艱。她的做法是<strong>在滑手機和運動之間留至少 30 分鐘</strong>。陷阱在於——滑手機的多巴胺會產生一種虛假的動力感，但它極不穩定、很快消散。', 1],
-    ['472','<strong>高峰與基準線的差距愈大，釋放的多巴胺愈多。</strong>兩個高峰一樣高，起始基準線較高的那個反而釋放較少。'],
-    ['472','冷水浴研究：浸到頸部會使多巴胺增加約 <strong>250%</strong>，最多要 3 小時才會下降。水要冷但可以忍受，人要保持精神平靜。'],
-    ['474','大腦天生要保持平衡，多巴胺不斷飆升時它會補償——結果是<strong>需要更多、更頻繁的多巴胺才感覺良好</strong>，反而降低追求長期目標的動力和樂趣。'],
-    ['478','試著不拿手機、無聊地坐著。<strong>無聊能開啟大腦某些部分，踏上神遊的創造性旅程。</strong>我們正在失去感到無聊的能力——無聊是一種技能。']
+    ['到達謬誤：以為一旦成功、得到想要的東西就會快樂。作者問粉絲，最常見的例子是減肥、成績、工作成就和金錢。<strong>其中有些是職業運動員，對自己的任何勝利都不滿意</strong>——滿足感只持續很短一會兒。'],
+    ['關鍵翻轉：向著目標努力時大腦釋放多巴胺，但它不是帶來快樂的化學物質，是<strong>讓我們起意追求快樂</strong>的化學物質。研究顯示<strong>實現目標時多巴胺水準事實上會下降</strong>。'],
+    ['快樂其實來自血清素、催產素、內啡肽的混合——《欲望分子多巴胺》把它們叫做<strong>「此時此地」的化學物質</strong>。不專注當下、不培養對現有的感激，它們很容易被多巴胺淹沒。'],
+    ['真正的快樂來自旅程，而不是目的地。快樂來自旅途中學到的教益、你達到的個人成長、你培養的人際關係。'],
+    ['<strong>實際上不存在終點線</strong>——若你要抵達終點線才快樂，就會發現那之後還有另一條，之後又是另一條。書裡兩句：「你唯一的比賽就是與自己比賽。」「輕鬆自在地活在當下。你不會再次得到這個當下。」', '給跑者的一段'],
+    ['有人問「知道沒有真正的比賽會不會動力全失」？作者說反而給出不同視角。用別人當良性競爭的誘餌沒有不好，<strong>但你的同事不會參加每場比賽</strong>——他們不會參與你生命中的終極比賽。'],
+    ['即時滿足＝無須等待或付出努力就獲得立即的滿足感。問題不是它們本身，是它們<strong>引發多巴胺快速強烈的釋放，卻不需要你付出任何努力</strong>，久了會改變基準線——之後需要更多多巴胺才感覺得到動力。'],
+    ['作者自述：運動前拚命滑社群網站，做起運動就舉步維艱。她的做法是<strong>在滑手機和運動之間留至少 30 分鐘</strong>。陷阱在於——滑手機的多巴胺會產生一種虛假的動力感，但它極不穩定、很快消散。', '給跑者的一段'],
+    ['<strong>高峰與基準線的差距愈大，釋放的多巴胺愈多。</strong>兩個高峰一樣高，起始基準線較高的那個反而釋放較少。'],
+    ['冷水浴研究：浸到頸部會使多巴胺增加約 <strong>250%</strong>，最多要 3 小時才會下降。水要冷但可以忍受，人要保持精神平靜。'],
+    ['大腦天生要保持平衡，多巴胺不斷飆升時它會補償——結果是<strong>需要更多、更頻繁的多巴胺才感覺良好</strong>，反而降低追求長期目標的動力和樂趣。'],
+    ['試著不拿手機、無聊地坐著。<strong>無聊能開啟大腦某些部分，踏上神遊的創造性旅程。</strong>我們正在失去感到無聊的能力——無聊是一種技能。']
   ],
-  run:{ i:4, note:'給跑者的一段' },
-  slab:{ h:'追求多巴胺的一條規則（p.472–473）', li:[
+  slab:{ h:'追求多巴胺的一條規則', li:[
     '致力獲得「需要付出努力」的獎勵',
     '運動　跑步　繪畫　烹飪　曬太陽　冥想　專注工作　舉重　體驗新事物',
     '共同點：全部都需要付出努力'
   ]},
-  slab2:{ h:'怎麼改掉老滑手機（p.475）', li:[
+  slab2:{ h:'怎麼改掉老滑手機', li:[
     '規定專門的工作時間，從小事做起',
     '手機調飛航模式，放到另一個房間',
     '冥想提高專注力；學會忽略干擾——這是一項技巧',
@@ -469,55 +465,62 @@ const T = [
 }
 ];
 
-/* 連線：書裡真的互相引用的地方 */
+/* 突觸連結：書裡真的互相引用的地方 */
 const EDGES = [
   ['resilience','mindset','兩章都在講自上而下——先改信念，身體的反應才會跟著改。'],
-  ['resilience','muscle', '運動就是最好取得的自願壓力（p.383、p.429）。'],
-  ['resilience','trust',  '強大的自我信賴讓你敢接更多挑戰，扛壓力的底盤就變寬（p.498）。'],
-  ['mindset','trust',     '成長型心態是建立自我信賴的第四步（p.488）。'],
-  ['mindset','sleep',     '改變要靠重複，而重複要靠睡眠鞏固成記憶（p.441）。'],
-  ['muscle','sleep',      '睡眠清單裡就有運動；而運動的修復又要靠深度睡眠（p.450、p.454）。'],
-  ['muscle','dopamine',   '運動是少數「需要付出努力」而不會讓基準線壞掉的多巴胺來源（p.473）。'],
-  ['sleep','dopamine',    '生長激素在深睡時釋放，而它會增加多巴胺釋放（p.451）。'],
-  ['dopamine','trust',    '即時滿足會吃掉動力，所以才需要「不容商量的目標」撐住（p.500）。']
+  ['resilience','muscle', '運動就是最好取得的自願壓力。'],
+  ['resilience','trust',  '強大的自我信賴讓你敢接更多挑戰，扛壓力的底盤就變寬。'],
+  ['mindset','trust',     '成長型心態是建立自我信賴的第四個步驟。'],
+  ['mindset','sleep',     '改變要靠重複，而重複要靠睡眠鞏固成記憶。'],
+  ['muscle','sleep',      '睡眠清單裡就有運動；而運動的修復又要靠深度睡眠。'],
+  ['muscle','dopamine',   '運動是少數「需要付出努力」而不會讓基準線壞掉的多巴胺來源。'],
+  ['sleep','dopamine',    '生長激素在深睡時釋放，而它會增加多巴胺釋放。'],
+  ['dopamine','trust',    '即時滿足會吃掉動力，所以才需要「不容商量的目標」撐住。']
 ];
 
 const TASKS = [
   { id:'sleep', h:'調睡眠時間',
-    d:'固定一個就寢時間，記錄那幾天的訓練感受和情緒。看看「睡好那幾天」跟「睡不好那幾天」，同樣的課表跑起來差多少。', ref:'呼應 p.441–453' },
+    d:'固定一個就寢時間，記錄那幾天的訓練感受和情緒。看看「睡好那幾天」跟「睡不好那幾天」，同樣的課表跑起來差多少。' },
   { id:'mood', h:'在跑步中留意情緒變化',
-    d:'專門挑心煩的時候出去跑，跑前記一句、跑後記一句。看看那個問題有沒有鬆開，還是只是暫時忘記。', ref:'呼應 p.426' },
+    d:'專門挑心煩的時候出去跑，跑前記一句、跑後記一句。看看那個問題有沒有鬆開，還是只是暫時忘記。' },
   { id:'dopa', h:'記錄多巴胺的來源',
-    d:'列出一週裡讓你「想再來一次」的事，標出哪些需要付出努力、哪些不用。不用改變什麼，先看清楚比例。', ref:'呼應 p.472' }
+    d:'列出一週裡讓你「想再來一次」的事，標出哪些需要付出努力、哪些不用。不用改變什麼，先看清楚比例。' }
 ];
 
 /* =========================================================================
    狀態
    ========================================================================= */
 const KEY = 'soulchill_rewire4_v1';
-let S = { visited:{}, task:null };
+let S = { visited:{}, task:null, big:false, done:false };
 try { const r = localStorage.getItem(KEY); if (r) S = Object.assign(S, JSON.parse(r)); } catch(e){}
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
 const readCount = () => T.filter(t => S.visited[t.id]).length;
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* =========================================================================
-   3D 場景
-   ========================================================================= */
 const byId = Object.fromEntries(T.map(t => [t.id, t]));
 
-/* 直式手機：水平視野窄、垂直有餘裕 → 把整張網壓窄拉長，才填得滿畫面 */
+/* 直式手機：水平視野窄、垂直有餘裕 → 整片組織壓窄拉長才填得滿畫面 */
 const NARROW = innerWidth / innerHeight < 0.85;
 const SX = NARROW ? 0.60 : 1, SY = NARROW ? 1.36 : 1, SZ = NARROW ? 0.60 : 1;
 const P = t => new THREE.Vector3(t.pos[0]*SX, t.pos[1]*SY, t.pos[2]*SZ);
-const NET_R = NARROW ? 3.2 : 4.5;   // fitDist 用的水平半徑
+const NET_R = NARROW ? 3.6 : 4.5;
+
+/* =========================================================================
+   3D：潛進大腦
+   ========================================================================= */
 let renderer, scene, cam, ray, clock;
 let nodeMeshes = [], edgeLines = [], pulses = [], labelEls = {};
-let core, filament, starfield, dust;
+let core, filament, tissue, tissueLines, motes, fgGroup;
 let camDist = 40, camDistTarget = 13.2, homeDist = 13.2;
 let yaw = 0.45, pitch = 0.24, yawV = 0, pitchV = 0, dragging = false;
-let focusPos = new THREE.Vector3(0,0,0), focusTarget = new THREE.Vector3(0,0,0);
-let ok3d = true;
+let focusPos = new THREE.Vector3(), focusTarget = new THREE.Vector3();
+let ok3d = true, dim = 0, dimTarget = 0;
+const ROT = 0.0038;   // 手感：拖約 400px 轉 90°。再高就會轉過頭、節點繞到背面
+
+const PXR = () => Math.min(devicePixelRatio || 1, 2);
+const MATS = [];
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+function gauss(){ return (Math.random()+Math.random()+Math.random()-1.5)/1.5*0.5; }
 
 function boot3d(){
   const canvas = document.getElementById('stage');
@@ -527,159 +530,63 @@ function boot3d(){
   } catch(e){ return false; }
   if (!renderer) return false;
 
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setPixelRatio(PXR());
   renderer.setSize(innerWidth, innerHeight);
-  renderer.setClearColor(0x04060f, 1);
+  renderer.setClearColor(0x07060e, 1);
 
   scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x04060f, 0.026);
-  cam = new THREE.PerspectiveCamera(46, innerWidth/innerHeight, 0.1, 400);
+  // 霧比星空版濃很多 —— 這是「在組織裡面」而不是「看著遠方」的關鍵
+  scene.fog = new THREE.FogExp2(0x07060e, 0.030);
+  cam = new THREE.PerspectiveCamera(52, innerWidth/innerHeight, 0.1, 300);
+  scene.add(cam);
   ray = new THREE.Raycaster();
-  ray.params.Points.threshold = 0.4;
   clock = new THREE.Clock();
 
   buildCurves();
-  buildStarfield();
-  buildFilament();
+  buildTissue();       // 周圍其他的神經（背景組織）
+  buildFilament();     // 六站之間的軸突束
   buildCore();
   buildEdges();
-  buildNodes();
-  buildDust();
+  buildNodes();        // 神經元胞體＋樹突
+  buildMotes();        // 懸浮的神經傳導物質
+  buildForeground();   // 貼著鏡頭失焦飄過的粗纖維
   return true;
 }
 
-/* ---- 遠景星場：宇宙 ---- */
-function buildStarfield(){
-  const N = 9000, p = new Float32Array(N*3), c = new Float32Array(N*3), s = new Float32Array(N);
-  const col = new THREE.Color();
-  for (let i=0;i<N;i++){
-    // 球殼分布，遠處
-    const r = 62 + Math.random()*120;
-    const th = Math.random()*Math.PI*2, ph = Math.acos(2*Math.random()-1);
-    p[i*3]   = r*Math.sin(ph)*Math.cos(th);
-    p[i*3+1] = r*Math.sin(ph)*Math.sin(th)*0.72;
-    p[i*3+2] = r*Math.cos(ph);
-    const t = Math.random();
-    col.setHSL(0.58 + t*0.12, 0.32 + t*0.3, 0.55 + Math.random()*0.35);
-    c[i*3]=col.r; c[i*3+1]=col.g; c[i*3+2]=col.b;
-    s[i] = 0.35 + Math.pow(Math.random(),3)*2.2;
-  }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.BufferAttribute(p,3));
-  g.setAttribute('color', new THREE.BufferAttribute(c,3));
-  g.setAttribute('sz', new THREE.BufferAttribute(s,1));
-  starfield = new THREE.Points(g, pointMat(115, 0.95, false));
-  scene.add(starfield);
-}
-
-/* 近似常態分布（-.5~.5 為主），讓纖維束有芯有暈，不是均勻方塊 */
-function gauss(){ return (Math.random()+Math.random()+Math.random()-1.5)/1.5*0.5; }
-
-/* 每條 edge 的弧線只算一次：粒子束、連線、脈衝三者共用同一條芯 */
-const CURVES = [];
-function buildCurves(){
-  const V = id => P(byId[id]);
-  EDGES.forEach(([a,b], i) => {
-    const A = V(a), B = V(b);
-    // 決定性的中點偏移（不用 random，否則三個圖層會各走各的）
-    const bow = new THREE.Vector3(
-      Math.sin(i*2.399)*0.95, Math.cos(i*1.771)*0.8, Math.sin(i*3.137+1.1)*0.95);
-    const mid = A.clone().add(B).multiplyScalar(0.5).add(bow);
-    CURVES.push(new THREE.QuadraticBezierCurve3(A, mid, B));
-  });
-}
-
-/* ---- 中景絲網：星系絲狀結構＝神經網 ---- */
-function buildFilament(){
-  const pts = [], cols = [], szs = [];
-  const col = new THREE.Color();
-
-  // 沿每條 edge 灑粒子，帶側向抖動 → 像神經纖維束 / 宇宙絲
-  EDGES.forEach(([a,b], ei) => {
-    const curve = CURVES[ei];
-    const cA = new THREE.Color(byId[a].color), cB = new THREE.Color(byId[b].color);
-    const M = 1500;
-    for (let i=0;i<M;i++){
-      const t = Math.random();
-      const q = curve.getPoint(t);
-      // 中段散開、兩端收束 → 像神經纖維束
-      const spread = 0.05 + Math.pow(Math.sin(t*Math.PI), 1.4)*0.30;
-      q.x += gauss()*spread;
-      q.y += gauss()*spread;
-      q.z += gauss()*spread;
-      pts.push(q.x,q.y,q.z);
-      col.copy(cA).lerp(cB, t).lerp(new THREE.Color(0x93a4dc), 0.62);
-      cols.push(col.r,col.g,col.b);
-      szs.push(0.35 + Math.pow(Math.random(),2)*1.5);
-    }
-  });
-
-  // 節點周圍的樹突暈
-  T.forEach(t => {
-    const O = P(t), c0 = new THREE.Color(t.color);
-    for (let i=0;i<1700;i++){
-      const r = Math.pow(Math.random(), 2.1) * 1.35;
-      const th = Math.random()*Math.PI*2, ph = Math.acos(2*Math.random()-1);
-      pts.push(O.x + r*Math.sin(ph)*Math.cos(th), O.y + r*Math.sin(ph)*Math.sin(th), O.z + r*Math.cos(ph));
-      col.copy(c0).lerp(new THREE.Color(0xffffff), Math.random()*0.45);
-      cols.push(col.r,col.g,col.b);
-      szs.push(0.3 + Math.pow(Math.random(),2)*1.7);
-    }
-  });
-
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.Float32BufferAttribute(pts,3));
-  g.setAttribute('color', new THREE.Float32BufferAttribute(cols,3));
-  g.setAttribute('sz', new THREE.Float32BufferAttribute(szs,1));
-  filament = new THREE.Points(g, pointMat(26, 0.42, true));
-  scene.add(filament);
-}
-
-/* ---- 飄浮塵埃：讓空間有深度 ---- */
-function buildDust(){
-  const N = 1400, p = new Float32Array(N*3), c = new Float32Array(N*3), s = new Float32Array(N);
-  const col = new THREE.Color();
-  for (let i=0;i<N;i++){
-    p[i*3]   = (Math.random()-.5)*30;
-    p[i*3+1] = (Math.random()-.5)*24;
-    p[i*3+2] = (Math.random()-.5)*30;
-    col.setHSL(0.6, 0.4, 0.5 + Math.random()*0.3);
-    c[i*3]=col.r; c[i*3+1]=col.g; c[i*3+2]=col.b;
-    s[i] = 0.25 + Math.random()*0.8;
-  }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.BufferAttribute(p,3));
-  g.setAttribute('color', new THREE.BufferAttribute(c,3));
-  g.setAttribute('sz', new THREE.BufferAttribute(s,1));
-  dust = new THREE.Points(g, pointMat(22, 0.26, true));
-  scene.add(dust);
-}
-
-/* scale ＝ 「距離 1 單位、sz 1 時的像素大小」基準；乘 DPR 因為 gl_PointSize 用裝置像素 */
-const PXR = () => Math.min(devicePixelRatio || 1, 2);
-const MATS = [];
 function pointMat(scale, opacity, additive){
+  // ShaderMaterial 要吃場景的霧，必須自己把 fog uniforms 併進來，
+  // 否則 fogColor / fogDensity 在 shader 裡拿不到值。
+  const u = THREE.UniformsUtils.merge([
+    THREE.UniformsLib.fog,
+    { uScale:{value:1}, uOpacity:{value:1}, uDim:{value:1} }
+  ]);
+  u.uScale.value = scale*PXR(); u.uOpacity.value = opacity; u.uDim.value = 1;
   const m = new THREE.ShaderMaterial({
-    uniforms:{ uScale:{value:scale*PXR()}, uOpacity:{value:opacity} },
+    uniforms: u,
     vertexShader:`
-      attribute float sz; varying vec3 vC;
+      attribute float sz; varying vec3 vC; varying float vFog;
       uniform float uScale;
       void main(){
         vC = color;
         vec4 mv = modelViewMatrix * vec4(position,1.0);
         gl_PointSize = sz * uScale / max(-mv.z, 0.001);
+        vFog = -mv.z;
         gl_Position = projectionMatrix * mv;
       }`,
     fragmentShader:`
-      varying vec3 vC; uniform float uOpacity;
+      varying vec3 vC; varying float vFog;
+      uniform float uOpacity; uniform float uDim;
+      uniform vec3 fogColor; uniform float fogDensity;
       void main(){
         vec2 d = gl_PointCoord - vec2(0.5);
         float r = length(d);
         if (r > 0.5) discard;
         float a = smoothstep(0.5, 0.02, r);
-        gl_FragColor = vec4(vC, a * uOpacity);
+        float f = 1.0 - exp(-fogDensity * fogDensity * vFog * vFog);
+        vec3 c = mix(vC, fogColor, clamp(f, 0.0, 1.0));
+        gl_FragColor = vec4(c, a * uOpacity * uDim);
       }`,
-    transparent:true, depthWrite:false, vertexColors:true,
+    transparent:true, depthWrite:false, vertexColors:true, fog:true,
     blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending
   });
   m.userData.baseScale = scale;
@@ -687,7 +594,175 @@ function pointMat(scale, opacity, additive){
   return m;
 }
 
-/* ---- 中心核：這場讀書會本身 ---- */
+/* 六條主軸的弧線：粒子束、軸突線、脈衝三者共用同一條芯 */
+const CURVES = [];
+function buildCurves(){
+  EDGES.forEach(([a,b], i) => {
+    const A = P(byId[a]), B = P(byId[b]);
+    const bow = new THREE.Vector3(
+      Math.sin(i*2.399)*0.95, Math.cos(i*1.771)*0.8, Math.sin(i*3.137+1.1)*0.95);
+    CURVES.push(new THREE.QuadraticBezierCurve3(A, A.clone().add(B).multiplyScalar(0.5).add(bow), B));
+  });
+}
+
+/* ---- 背景組織：周圍其他的神經纖維，讓人知道自己在裡面 ---- */
+function buildTissue(){
+  const pts = [], cols = [], szs = [], linePts = [], lineCols = [];
+  const col = new THREE.Color();
+  const PALETTE = [0x4a5ea8, 0x54408f, 0x35708f, 0x60407a, 0x2e5182];
+  const N = 78;
+  for (let i=0;i<N;i++){
+    // 每條纖維是一條穿過組織的隨機曲線
+    const anchors = [];
+    const r0 = 14 + Math.random()*30;
+    const th0 = Math.random()*Math.PI*2, ph0 = Math.acos(2*Math.random()-1);
+    const start = new THREE.Vector3(
+      r0*Math.sin(ph0)*Math.cos(th0), r0*Math.sin(ph0)*Math.sin(th0)*0.85, r0*Math.cos(ph0));
+    anchors.push(start);
+    const dir = new THREE.Vector3(gauss(),gauss(),gauss()).normalize();
+    for (let k=1;k<5;k++){
+      anchors.push(start.clone().addScaledVector(dir, k*(5+Math.random()*7))
+        .add(new THREE.Vector3(gauss()*7, gauss()*7, gauss()*7)));
+    }
+    const curve = new THREE.CatmullRomCurve3(anchors);
+    const base = new THREE.Color(PALETTE[i % PALETTE.length]);
+
+    // 沿纖維灑粒子
+    const M = 230;
+    for (let j=0;j<M;j++){
+      const t = Math.random();
+      const q = curve.getPoint(t);
+      const s = 0.22 + Math.random()*0.5;
+      pts.push(q.x + gauss()*s, q.y + gauss()*s, q.z + gauss()*s);
+      col.copy(base).lerp(new THREE.Color(0x9fb4ff), Math.random()*0.35);
+      cols.push(col.r, col.g, col.b);
+      szs.push(0.20 + Math.pow(Math.random(),2)*1.0);
+    }
+    // 纖維本體的細線
+    const lp = curve.getPoints(40);
+    for (let j=0;j<lp.length-1;j++){
+      linePts.push(lp[j].x,lp[j].y,lp[j].z, lp[j+1].x,lp[j+1].y,lp[j+1].z);
+      col.copy(base);
+      lineCols.push(col.r,col.g,col.b, col.r,col.g,col.b);
+    }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pts,3));
+  g.setAttribute('color', new THREE.Float32BufferAttribute(cols,3));
+  g.setAttribute('sz', new THREE.Float32BufferAttribute(szs,1));
+  tissue = new THREE.Points(g, pointMat(22, 0.46, true));
+  scene.add(tissue);
+
+  const lg = new THREE.BufferGeometry();
+  lg.setAttribute('position', new THREE.Float32BufferAttribute(linePts,3));
+  lg.setAttribute('color', new THREE.Float32BufferAttribute(lineCols,3));
+  const lm = new THREE.LineBasicMaterial({ vertexColors:true, transparent:true, opacity:0.17,
+    blending:THREE.AdditiveBlending, depthWrite:false, fog:true });
+  tissueLines = new THREE.LineSegments(lg, lm);
+  scene.add(tissueLines);
+}
+
+/* ---- 六站之間的軸突束 ---- */
+function buildFilament(){
+  const pts = [], cols = [], szs = [];
+  const col = new THREE.Color();
+
+  EDGES.forEach(([a,b], ei) => {
+    const curve = CURVES[ei];
+    const cA = new THREE.Color(byId[a].color), cB = new THREE.Color(byId[b].color);
+    const M = 1500;
+    for (let i=0;i<M;i++){
+      const t = Math.random();
+      const q = curve.getPoint(t);
+      const spread = 0.05 + Math.pow(Math.sin(t*Math.PI), 1.4)*0.30;
+      q.x += gauss()*spread; q.y += gauss()*spread; q.z += gauss()*spread;
+      pts.push(q.x,q.y,q.z);
+      col.copy(cA).lerp(cB, t).lerp(new THREE.Color(0xb9a8ff), 0.42);
+      cols.push(col.r,col.g,col.b);
+      szs.push(0.35 + Math.pow(Math.random(),2)*1.5);
+    }
+    // 側枝：軸突不是一條直線，會分岔
+    for (let s=0;s<5;s++){
+      const t0 = 0.18 + Math.random()*0.64;
+      const root = curve.getPoint(t0);
+      const dir = new THREE.Vector3(gauss(),gauss(),gauss()).normalize();
+      const len = 0.6 + Math.random()*1.5;
+      for (let i=0;i<130;i++){
+        const u = Math.random();
+        const q = root.clone().addScaledVector(dir, u*len);
+        const sp = 0.03 + u*0.22;
+        q.x += gauss()*sp; q.y += gauss()*sp; q.z += gauss()*sp;
+        pts.push(q.x,q.y,q.z);
+        col.copy(cA).lerp(cB, t0).lerp(new THREE.Color(0x8f7fd8), 0.5);
+        cols.push(col.r,col.g,col.b);
+        szs.push(0.25 + Math.pow(Math.random(),2)*1.0);
+      }
+    }
+  });
+
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pts,3));
+  g.setAttribute('color', new THREE.Float32BufferAttribute(cols,3));
+  g.setAttribute('sz', new THREE.Float32BufferAttribute(szs,1));
+  filament = new THREE.Points(g, pointMat(26, 0.72, true));
+  scene.add(filament);
+}
+
+/* ---- 懸浮的神經傳導物質 ---- */
+function buildMotes(){
+  const N = 2200, p = new Float32Array(N*3), c = new Float32Array(N*3), s = new Float32Array(N);
+  const col = new THREE.Color();
+  for (let i=0;i<N;i++){
+    p[i*3]   = (Math.random()-.5)*32;
+    p[i*3+1] = (Math.random()-.5)*26;
+    p[i*3+2] = (Math.random()-.5)*32;
+    col.setHSL(0.62 + Math.random()*0.18, 0.45, 0.5 + Math.random()*0.3);
+    c[i*3]=col.r; c[i*3+1]=col.g; c[i*3+2]=col.b;
+    s[i] = 0.22 + Math.random()*0.8;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(p,3));
+  g.setAttribute('color', new THREE.BufferAttribute(c,3));
+  g.setAttribute('sz', new THREE.BufferAttribute(s,1));
+  motes = new THREE.Points(g, pointMat(22, 0.30, true));
+  scene.add(motes);
+}
+
+/* ---- 貼著鏡頭失焦飄過的粗纖維：整個沉浸感就靠這個 ---- */
+function buildForeground(){
+  fgGroup = new THREE.Group();
+  const col = new THREE.Color();
+  for (let i=0;i<4;i++){
+    const pts = [], cols = [], szs = [];
+    const a = new THREE.Vector3((Math.random()-.5)*7, (Math.random()-.5)*5, -1.2 - Math.random()*2.4);
+    const dir = new THREE.Vector3(gauss()*2, gauss()*2, gauss()*0.4).normalize();
+    const curve = new THREE.QuadraticBezierCurve3(
+      a.clone().addScaledVector(dir, -5),
+      a.clone().add(new THREE.Vector3(gauss()*2, gauss()*2, 0)),
+      a.clone().addScaledVector(dir, 5));
+    const base = new THREE.Color([0x5b73d8, 0x7a5bd8, 0x4f8fd0][i % 3]);
+    for (let j=0;j<340;j++){
+      const t = Math.random();
+      const q = curve.getPoint(t);
+      const sp = 0.16 + Math.sin(t*Math.PI)*0.20;
+      pts.push(q.x + gauss()*sp, q.y + gauss()*sp, q.z + gauss()*sp);
+      col.copy(base).lerp(new THREE.Color(0xd8dcff), Math.random()*0.4);
+      cols.push(col.r,col.g,col.b);
+      szs.push(1.4 + Math.random()*3.0);   // 略大而柔 ＝ 失焦，但不能糊成團
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pts,3));
+    g.setAttribute('color', new THREE.Float32BufferAttribute(cols,3));
+    g.setAttribute('sz', new THREE.Float32BufferAttribute(szs,1));
+    const m = pointMat(13, 0.032, true);
+    m.fog = false;
+    const mesh = new THREE.Points(g, m);
+    mesh.userData = { drift:0.02 + Math.random()*0.05, seed:Math.random()*99 };
+    fgGroup.add(mesh);
+  }
+  cam.add(fgGroup);   // 掛在相機上 → 永遠在最前面
+}
+
 function buildCore(){
   const g = new THREE.IcosahedronGeometry(0.30, 1);
   const m = new THREE.MeshBasicMaterial({ color:0xcfd8f5, wireframe:true, transparent:true,
@@ -701,27 +776,24 @@ function buildCore(){
   core.userData.halo = halo;
 }
 
-/* ---- 連線 ---- */
 function buildEdges(){
   EDGES.forEach(([a,b,why], ei) => {
     const curve = CURVES[ei];
     const g = new THREE.BufferGeometry().setFromPoints(curve.getPoints(48));
-    const m = new THREE.LineBasicMaterial({ color:0x818cc4, transparent:true, opacity:0.22,
-      blending:THREE.AdditiveBlending, depthWrite:false });
+    const m = new THREE.LineBasicMaterial({ color:0x8e86c8, transparent:true, opacity:0.22,
+      blending:THREE.AdditiveBlending, depthWrite:false, fog:true });
     const line = new THREE.Line(g, m);
     line.userData = { a, b, why, lit:false };
     scene.add(line);
     edgeLines.push(line);
 
-    // 沿同一條弧流動的脈衝（僅在兩端都讀過時顯示）
     const pg = new THREE.BufferGeometry();
     const PN = 12;
     pg.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(PN*3), 3));
     pg.setAttribute('color', new THREE.Float32BufferAttribute(new Float32Array(PN*3), 3));
     pg.setAttribute('sz', new THREE.Float32BufferAttribute(new Float32Array(PN).fill(2.2), 1));
-    const pm = pointMat(30, 0.0, true);
-    const pp = new THREE.Points(pg, pm);
-    pp.userData = { curve, PN, edge:line, phase:(ei*0.137)%1,
+    const pp = new THREE.Points(pg, pointMat(30, 0.0, true));
+    pp.userData = { curve, PN, phase:(ei*0.137)%1,
       cA:new THREE.Color(byId[a].color), cB:new THREE.Color(byId[b].color) };
     pp.visible = false;
     scene.add(pp);
@@ -729,43 +801,78 @@ function buildEdges(){
   });
 }
 
-/* ---- 六個節點 ---- */
+/* ---- 節點＝神經元：胞體＋放射狀樹突 ---- */
 function buildNodes(){
   T.forEach(t => {
     const grp = new THREE.Group();
     grp.position.copy(P(t));
     const c = new THREE.Color(t.color);
 
-    const bead = new THREE.Mesh(new THREE.SphereGeometry(0.085, 20, 20),
+    const soma = new THREE.Mesh(new THREE.SphereGeometry(0.10, 20, 20),
       new THREE.MeshBasicMaterial({ color:c }));
-    grp.add(bead);
+    grp.add(soma);
 
-    const glow = new THREE.Mesh(new THREE.SphereGeometry(0.30, 20, 20),
-      new THREE.MeshBasicMaterial({ color:c, transparent:true, opacity:0.055,
+    const glow = new THREE.Mesh(new THREE.SphereGeometry(0.34, 20, 20),
+      new THREE.MeshBasicMaterial({ color:c, transparent:true, opacity:0.06,
         blending:THREE.AdditiveBlending, depthWrite:false }));
     grp.add(glow);
 
-    const shell = new THREE.Mesh(new THREE.IcosahedronGeometry(0.66, 1),
-      new THREE.MeshBasicMaterial({ color:c, wireframe:true, transparent:true, opacity:0.10,
-        blending:THREE.AdditiveBlending, depthWrite:false }));
-    grp.add(shell);
+    // 樹突：從胞體往各方向伸出的分支
+    const pts = [], cols = [], szs = [], lp = [], lc = [];
+    const col = new THREE.Color();
+    for (let d=0;d<11;d++){
+      const dir = new THREE.Vector3(gauss(),gauss(),gauss()).normalize();
+      const len = 0.88 + Math.random()*1.15;
+      const mid = dir.clone().multiplyScalar(len*0.55)
+        .add(new THREE.Vector3(gauss()*0.3, gauss()*0.3, gauss()*0.3));
+      const curve = new THREE.QuadraticBezierCurve3(
+        new THREE.Vector3(), mid, dir.clone().multiplyScalar(len));
+      for (let i=0;i<70;i++){
+        const u = Math.random();
+        const q = curve.getPoint(u);
+        const sp = 0.015 + u*0.10;
+        pts.push(q.x+gauss()*sp, q.y+gauss()*sp, q.z+gauss()*sp);
+        col.copy(c).lerp(new THREE.Color(0xffffff), (1-u)*0.5);
+        cols.push(col.r,col.g,col.b);
+        szs.push(0.28 + Math.pow(1-u,2)*1.5);
+      }
+      const dp = curve.getPoints(10);
+      for (let i=0;i<dp.length-1;i++){
+        lp.push(dp[i].x,dp[i].y,dp[i].z, dp[i+1].x,dp[i+1].y,dp[i+1].z);
+        lc.push(c.r,c.g,c.b, c.r,c.g,c.b);
+      }
+    }
+    const dg = new THREE.BufferGeometry();
+    dg.setAttribute('position', new THREE.Float32BufferAttribute(pts,3));
+    dg.setAttribute('color', new THREE.Float32BufferAttribute(cols,3));
+    dg.setAttribute('sz', new THREE.Float32BufferAttribute(szs,1));
+    const dend = new THREE.Points(dg, pointMat(27, 0.52, true));
+    grp.add(dend);
 
-    // 點擊判定用的隱形大球
-    const hit = new THREE.Mesh(new THREE.SphereGeometry(1.15, 12, 12),
+    const dlg = new THREE.BufferGeometry();
+    dlg.setAttribute('position', new THREE.Float32BufferAttribute(lp,3));
+    dlg.setAttribute('color', new THREE.Float32BufferAttribute(lc,3));
+    const dline = new THREE.LineSegments(dlg, new THREE.LineBasicMaterial({
+      vertexColors:true, transparent:true, opacity:0.30,
+      blending:THREE.AdditiveBlending, depthWrite:false, fog:true }));
+    grp.add(dline);
+
+    const hit = new THREE.Mesh(new THREE.SphereGeometry(1.05, 12, 12),
       new THREE.MeshBasicMaterial({ visible:false }));
     hit.userData.id = t.id;
     grp.add(hit);
 
-    grp.userData = { id:t.id, bead, glow, shell, hit, base:P(t),
-      seed:Math.random()*99 };
+    grp.userData = { id:t.id, soma, glow, dend, dline, hit, base:P(t), seed:Math.random()*99 };
     scene.add(grp);
     nodeMeshes.push(grp);
   });
 }
 
 /* =========================================================================
-   互動：自寫軌道控制
+   互動
    ========================================================================= */
+let userZoomed = false, hoverId = null;
+
 function bindControls(){
   const el = renderer.domElement;
   let px=0, py=0, moved=0, pid=null, pinch=0;
@@ -780,8 +887,13 @@ function bindControls(){
     const dx = e.clientX - px, dy = e.clientY - py;
     px = e.clientX; py = e.clientY;
     moved += Math.abs(dx) + Math.abs(dy);
-    yawV   -= dx * 0.0042;
-    pitchV -= dy * 0.0034;
+    // 拖曳期間直接轉，不累積速度 —— 拖多少轉多少，兩軸都跟著手指走。
+    // （若走「速度累積」，阻尼 0.93 會把位移放大十幾倍，輕輕一拖就轉過頭。）
+    yaw  += dx * ROT;
+    pitch = clamp(pitch - dy * ROT, -1.2, 1.2);
+    // 放開後的餘韻，取最後一段的速度
+    yawV   =  dx * ROT * 0.12;
+    pitchV = -dy * ROT * 0.12;   // 放手後只輕輕滑一下，不甩出去
   });
   const up = e => {
     if (!dragging) return;
@@ -795,24 +907,22 @@ function bindControls(){
   el.addEventListener('wheel', e => {
     e.preventDefault();
     userZoomed = true;
-    camDistTarget = clamp(camDistTarget + e.deltaY * 0.013, 4.5, 34);
+    camDistTarget = clamp(camDistTarget + e.deltaY * 0.013, 4.2, 34);
   }, { passive:false });
 
-  // 雙指縮放
   el.addEventListener('touchmove', e => {
     if (e.touches.length !== 2) return;
     e.preventDefault();
     const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX,
                          e.touches[0].clientY - e.touches[1].clientY);
     if (pinch){ userZoomed = true;
-      camDistTarget = clamp(camDistTarget + (pinch - d) * 0.032, 4.5, 34); }
+      camDistTarget = clamp(camDistTarget + (pinch - d) * 0.032, 4.2, 34); }
     pinch = d;
   }, { passive:false });
   el.addEventListener('touchend', () => pinch = 0);
 
-  // hover：游標 + 該站連線高亮 + 一句話預覽
   el.addEventListener('pointermove', e => {
-    if (dragging) return;
+    if (dragging || slideOpen) return;
     const id = hitTest(e.clientX, e.clientY);
     el.style.cursor = id ? 'pointer' : 'grab';
     setHover(id);
@@ -821,42 +931,36 @@ function bindControls(){
   el.style.cursor = 'grab';
 
   addEventListener('keydown', e => {
-    if (e.key === 'Escape'){ closePanel(); closeTask(); return; }
+    if (e.key === 'Escape'){ closeSlide(); closeTask(); return; }
     const n = parseInt(e.key, 10);
-    if (n >= 1 && n <= 6){ openTopic(T[n-1].id); return; }
-    if (e.key === 'ArrowLeft')  yawV += 0.05;
-    if (e.key === 'ArrowRight') yawV -= 0.05;
-    if (e.key === 'ArrowUp')    camDistTarget = clamp(camDistTarget - 1, 4.5, 34);
-    if (e.key === 'ArrowDown')  camDistTarget = clamp(camDistTarget + 1, 4.5, 34);
+    if (n >= 1 && n <= 6){ openSlide(T[n-1].id); return; }
+    if (e.key === 'ArrowLeft')  yawV -= 0.012;
+    if (e.key === 'ArrowRight') yawV += 0.012;
+    if (e.key === 'ArrowUp')    camDistTarget = clamp(camDistTarget - 1, 4.2, 34);
+    if (e.key === 'ArrowDown')  camDistTarget = clamp(camDistTarget + 1, 4.2, 34);
   });
   addEventListener('resize', onResize);
 }
 
-let hoverId = null;
 function setHover(id){
   if (id === hoverId) return;
   hoverId = id;
   Object.entries(labelEls).forEach(([k, el]) => el.classList.toggle('hot', k === id));
 }
-
 function hitTest(x, y){
   const v = new THREE.Vector2((x/innerWidth)*2-1, -(y/innerHeight)*2+1);
   ray.setFromCamera(v, cam);
   const hits = ray.intersectObjects(nodeMeshes.map(g => g.userData.hit), false);
   return hits.length ? hits[0].object.userData.id : null;
 }
-function pick(x, y){ const id = hitTest(x, y); if (id) openTopic(id); }
-const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+function pick(x, y){ const id = hitTest(x, y); if (id) openSlide(id); }
 
-/* 讓整張網不論螢幕比例都完整入鏡（直式手機需要拉遠很多） */
 function fitDist(){
   const halfV = cam.fov * Math.PI / 360;
   const halfH = Math.atan(Math.tan(halfV) * cam.aspect);
-  const R = NET_R;
-  return clamp(Math.max(R/Math.tan(halfH), R/Math.tan(halfV)) * 1.22, 9, 30);
+  const pad = NARROW ? 1.24 : 1.12;   // 桌機留白要夠，最下面那顆的標籤才不會貼到底邊
+  return clamp(Math.max(NET_R/Math.tan(halfH), NET_R/Math.tan(halfV)) * pad, 8, 30);
 }
-
-let userZoomed = false;
 function onResize(){
   if (!renderer) return;
   renderer.setSize(innerWidth, innerHeight);
@@ -865,19 +969,20 @@ function onResize(){
   cam.updateProjectionMatrix();
   MATS.forEach(m => m.uniforms.uScale.value = m.userData.baseScale * PXR());
   homeDist = fitDist();
-  if (!userZoomed && !panelOpen) camDistTarget = homeDist;
+  if (!userZoomed && !slideOpen) camDistTarget = homeDist;
 }
 
 /* =========================================================================
    主迴圈
    ========================================================================= */
+let flash = 0;
 function tick(){
   requestAnimationFrame(tick);
   const dt = Math.min(clock.getDelta(), 0.05), t = clock.elapsedTime;
 
-  // 慣性 + 自動漂移
-  if (!dragging && !REDUCED && !panelOpen) yawV += 0.00016;
-  yaw += yawV; pitch = clamp(pitch + pitchV, -1.15, 1.15);
+  // 慣性：阻尼放鬆一點，讓它像在液體裡有波動
+  if (!dragging && !REDUCED && !slideOpen) yawV -= 0.00005;
+  yaw += yawV; pitch = clamp(pitch + pitchV, -1.2, 1.2);
   yawV *= 0.93; pitchV *= 0.93;
 
   camDist += (camDistTarget - camDist) * (camDist > homeDist*1.5 ? 0.028 : 0.075);
@@ -891,34 +996,46 @@ function tick(){
   );
   cam.lookAt(focusPos);
 
-  if (!REDUCED){
-    starfield.rotation.y = t * 0.0055;
-    filament.rotation.y  = Math.sin(t*0.05) * 0.035;
-    dust.rotation.y      = -t * 0.012;
-    core.rotation.y = t*0.22; core.rotation.x = t*0.13;
-  }
-  // 中心核＝你選的那個身體實驗。沒選之前它幾乎不存在。
-  const n = readCount(), chosen = !!S.task;
-  const pulse = 0.5 + Math.sin(t*1.5)*0.5;
-  core.material.opacity = (chosen ? 0.30 : 0.05) + n*0.012 + pulse*(chosen ? 0.10 : 0.02);
-  core.scale.setScalar(chosen ? 1.25 + pulse*0.06 : 0.8);
-  core.userData.halo.material.opacity = (chosen ? 0.85 : 0.12) + pulse*(chosen ? 0.15 : 0.04);
-  core.userData.halo.scale.setScalar(chosen ? 1.6 + pulse*0.35 : 1);
-  if (chosen) core.material.color.lerp(new THREE.Color(0xffb35c), 0.02);
+  // 讀簡報時整片組織退到背景
+  dim += (dimTarget - dim) * 0.06;
+  const vis = 1 - dim * 0.72;
+  MATS.forEach(m => m.uniforms.uDim.value = vis);
+  tissueLines.material.opacity = 0.17 * vis;
 
-  // 節點呼吸
+  if (!REDUCED){
+    tissue.rotation.y = t * 0.006;
+    tissueLines.rotation.y = tissue.rotation.y;
+    filament.rotation.y = Math.sin(t*0.05) * 0.03;
+    motes.rotation.y = -t * 0.014;
+    core.rotation.y = t*0.22; core.rotation.x = t*0.13;
+    fgGroup.children.forEach((f, i) => {
+      const d = f.userData;
+      f.position.x = Math.sin(t*d.drift + d.seed) * 1.9;
+      f.position.y = Math.cos(t*d.drift*0.8 + d.seed) * 1.3;
+      f.rotation.z = t*d.drift*0.5 + d.seed;
+    });
+  }
+
+  const n = readCount(), chosen = !!S.task;
+  const beat = 0.5 + Math.sin(t*1.5)*0.5;
+  core.material.opacity = ((chosen ? 0.30 : 0.05) + n*0.012 + beat*(chosen ? 0.10 : 0.02)) * vis;
+  core.scale.setScalar(chosen ? 1.25 + beat*0.06 : 0.8);
+  core.userData.halo.material.opacity = ((chosen ? 0.85 : 0.12) + beat*(chosen ? 0.15 : 0.04)) * vis;
+  core.userData.halo.scale.setScalar(chosen ? 1.6 + beat*0.35 : 1);
+  if (chosen) core.material.color.lerp(new THREE.Color(0xffb15c), 0.02);
+
   nodeMeshes.forEach(g => {
     const d = g.userData, read = !!S.visited[d.id], hot = d.id === activeId;
     const br = 1 + Math.sin(t*1.15 + d.seed)*0.055;
-    d.bead.scale.setScalar((read ? 1.55 : 1) * br);
-    d.glow.scale.setScalar((read ? 1.5 : 1.05) * br);
-    d.glow.material.opacity = (read ? 0.115 : 0.045) + (hot ? 0.07 : 0);
-    d.shell.material.opacity = (read ? 0.17 : 0.085) + (hot ? 0.06 : 0);
-    if (!REDUCED) d.shell.rotation.y = t*0.14 + d.seed;
+    d.soma.scale.setScalar((read ? 1.6 : 1) * br);
+    d.glow.scale.setScalar((read ? 1.6 : 1.05) * br);
+    d.glow.material.opacity = ((read ? 0.16 : 0.075) + (hot ? 0.08 : 0)) * vis;
+    d.dend.material.uniforms.uOpacity.value = read ? 0.72 : 0.46;
+    d.dline.material.opacity = (read ? 0.40 : 0.24) * vis;
+    if (!REDUCED) d.dend.rotation.y = Math.sin(t*0.12 + d.seed) * 0.14;
     g.position.y = d.base.y + Math.sin(t*0.45 + d.seed)*0.075;
   });
 
-  // 連線亮起 + 脈衝
   const focusId = activeId || hoverId;
   edgeLines.forEach((L, i) => {
     const u = L.userData;
@@ -927,37 +1044,30 @@ function tick(){
     const touched = focusId && (u.a === focusId || u.b === focusId);
     let target = lit ? 0.8 : 0.22;
     if (touched) target = 1.0;
-    else if (focusId) target *= 0.42;          // 沒被選到的線退到背景
-    target = Math.max(target, flash * 0.9);     // 全站點亮的那一下，整張網一起亮
-    L.material.opacity += (target - L.material.opacity) * 0.09;
-    if (lit) L.material.color.lerp(new THREE.Color(0xdfe6ff), 0.02);
+    else if (focusId) target *= 0.42;
+    target = Math.max(target, flash * 0.9);
+    L.material.opacity += (target * vis - L.material.opacity) * 0.09;
+    if (lit) L.material.color.lerp(new THREE.Color(0xe4e0ff), 0.02);
 
-    const P = pulses[i];
-    P.visible = (lit || touched) && !REDUCED;
-    if (P.visible) runPulse(P, t, touched && !lit ? 0.45 : 0.9);
+    const Pl = pulses[i];
+    Pl.visible = (lit || touched) && !REDUCED;
+    if (Pl.visible) runPulse(Pl, t, (touched && !lit ? 0.45 : 0.9) * vis);
   });
-
   if (flash > 0) flash = Math.max(0, flash - dt * 0.55);
 
   syncLabels();
   renderer.render(scene, cam);
 }
 
-/* 六站全數點亮的那一刻，整張網放一次電 */
-let flash = 0;
-function checkComplete(){
-  if (readCount() === 6 && !S.done){ S.done = true; save(); if (!REDUCED) flash = 1; }
-}
-
 const _pv = new THREE.Vector3();
-function runPulse(P, t, op){
-  const { curve, PN, cA, cB, phase } = P.userData;
-  const pos = P.geometry.attributes.position.array;
-  const col = P.geometry.attributes.color.array;
-  const sz  = P.geometry.attributes.sz.array;
+function runPulse(Pl, t, op){
+  const { curve, PN, cA, cB, phase } = Pl.userData;
+  const pos = Pl.geometry.attributes.position.array;
+  const col = Pl.geometry.attributes.color.array;
+  const sz  = Pl.geometry.attributes.sz.array;
   const c = new THREE.Color();
   for (let i=0;i<PN;i++){
-    let u = ((t*0.2 + phase + i/PN*0.13) % 1);
+    const u = ((t*0.2 + phase + i/PN*0.13) % 1);
     curve.getPoint(u, _pv);
     pos[i*3] = _pv.x; pos[i*3+1] = _pv.y; pos[i*3+2] = _pv.z;
     c.copy(cA).lerp(cB, u);
@@ -965,14 +1075,14 @@ function runPulse(P, t, op){
     const head = i === 0 ? 1 : 1 - i/PN;
     sz[i] = 3.4 * head * (0.4 + Math.sin(u*Math.PI)*0.6);
   }
-  P.geometry.attributes.position.needsUpdate = true;
-  P.geometry.attributes.color.needsUpdate = true;
-  P.geometry.attributes.sz.needsUpdate = true;
-  P.material.uniforms.uOpacity.value = op;
+  Pl.geometry.attributes.position.needsUpdate = true;
+  Pl.geometry.attributes.color.needsUpdate = true;
+  Pl.geometry.attributes.sz.needsUpdate = true;
+  Pl.material.uniforms.uOpacity.value = op;
 }
 
 /* =========================================================================
-   HTML 標籤跟著 3D 走
+   標籤
    ========================================================================= */
 function buildLabels(){
   const host = document.getElementById('labels');
@@ -980,11 +1090,10 @@ function buildLabels(){
     const b = document.createElement('button');
     b.className = 'lab';
     b.style.color = t.color;
-    const peek = t.thesis.replace(/<\/?em>/g, '');
     b.innerHTML = `<span class="ring"></span><span class="nm">${t.name}</span>` +
-                  `<span class="meta">${t.loc.replace('位置 ','p.')}${t.focus ? '　聚焦' : ''}</span>` +
-                  `<span class="peek">${peek}</span>`;
-    b.addEventListener('click', () => openTopic(t.id));
+      (t.focus ? `<span class="tag">本場聚焦</span>` : '') +
+      `<span class="peek">${t.thesis.replace(/<\/?em>/g,'')}</span>`;
+    b.addEventListener('click', () => openSlide(t.id));
     b.addEventListener('pointerenter', () => setHover(t.id));
     b.addEventListener('pointerleave', () => setHover(null));
     b.addEventListener('focus', () => setHover(t.id));
@@ -996,17 +1105,14 @@ function buildLabels(){
 
 const _v = new THREE.Vector3();
 function syncLabels(){
-  const camDir = new THREE.Vector3();
-  cam.getWorldDirection(camDir);
   nodeMeshes.forEach(g => {
     const el = labelEls[g.userData.id];
     _v.copy(g.position).project(cam);
     const behind = _v.z > 1;
     el.style.left = ((_v.x*0.5+0.5)*100) + '%';
-    el.style.top  = ((-_v.y*0.5+0.5)*100 + 3.4) + '%';
+    el.style.top  = ((-_v.y*0.5+0.5)*100 + 3.6) + '%';
     const dist = cam.position.distanceTo(g.position);
     let o = behind ? 0 : clamp(1.5 - dist/24, 0.3, 1);
-    // 有站被指著／被打開時，其他站退到背景
     const fid = activeId || hoverId;
     if (fid && g.userData.id !== fid) o *= 0.34;
     el.style.opacity = o;
@@ -1017,95 +1123,103 @@ function syncLabels(){
 }
 
 /* =========================================================================
-   面板
+   中央簡報
    ========================================================================= */
-const panel = document.getElementById('panel');
-let panelOpen = false, activeId = null;
-
-function openTopic(id){
-  const t = byId[id];
-  if (!t) return;
-  activeId = id;
-  if (!S.visited[id]){ S.visited[id] = true; save(); updateGauge(); checkComplete(); }
-
-  focusTarget.copy(P(t)).multiplyScalar(0.55);
-  camDistTarget = clamp(homeDist * 0.72, 5.5, 24);
-
-  const d = DIR[t.dir];
-  const pts = t.points.map(([src, html, isRun]) =>
-    `<div class="pt${isRun ? ' run' : ''}"><span class="src">p.${src}</span><p>${html}</p></div>`).join('');
-  const slab  = t.slab  ? slabHTML(t.slab)  : '';
-  const slab2 = t.slab2 ? slabHTML(t.slab2) : '';
-  const links = EDGES.filter(([a,b]) => a===id || b===id).map(([a,b,why]) => {
-    const o = byId[a===id ? b : a];
-    return `<button class="lk" data-go="${o.id}" style="color:${o.color}">
-      <span class="to">${o.name}</span><span class="why">${why}</span></button>`;
-  }).join('');
-
-  panel.style.color = t.color;
-  panel.innerHTML =
-    `<button class="pclose" onclick="closePanel()">關閉 ✕</button>` +
-    `<button class="psize" onclick="toggleBig()" data-on="${S.big?1:0}">字級 ${S.big?'大':'標準'}</button>` +
-    `<span class="pdir">${d.label}</span>` +
-    `<h2>${t.name}</h2>` +
-    `<div class="ploc">${t.loc}${t.focus ? '　·　本場聚焦' : ''}</div>` +
-    `<div class="thesis">${t.thesis}</div>` +
-    pts + slab +
-    `<div class="ask"><div class="lbl">聊聊</div><p>${t.ask}</p></div>` +
-    slab2 +
-    `<div class="links"><h5>從這裡連出去</h5>
-       <div class="sub">這些不是我配的關聯，是書裡自己接起來的地方。點一個直接跳過去。</div>${links}</div>` +
-    `<button class="backstar" onclick="closePanel()">← 回到星圖</button>`;
-
-  panel.querySelectorAll('[data-go]').forEach(b =>
-    b.addEventListener('click', () => openTopic(b.dataset.go)));
-  panel.scrollTop = 0;
-  panel.classList.add('open');
-  panel.setAttribute('aria-hidden','false');
-  document.body.classList.add('reading');
-  panelOpen = true;
-}
-
-/* 投影用：把整份內容放大一級 */
-function toggleBig(){
-  S.big = !S.big; save();
-  document.documentElement.dataset.big = S.big ? '1' : '0';
-  panel.querySelectorAll('.psize').forEach(b => {
-    b.dataset.on = S.big ? '1' : '0';
-    b.textContent = '字級 ' + (S.big ? '大' : '標準');
-  });
-}
-window.toggleBig = toggleBig;
+const stagew = document.getElementById('stagew');
+const slideEl = document.getElementById('slide');
+const topbar = document.getElementById('topbar');
+let slideOpen = false, activeId = null;
 
 function slabHTML(s){
   return `<div class="slab"><h4>${s.h}</h4><ul>` +
     s.li.map(x => `<li>${x}</li>`).join('') + `</ul></div>`;
 }
 
-function closePanel(){
-  panel.classList.remove('open');
-  panel.setAttribute('aria-hidden','true');
-  document.body.classList.remove('reading');
-  panelOpen = false; activeId = null;
-  focusTarget.set(0,0,0);
-  camDistTarget = homeDist;
-  userZoomed = false;
+function openSlide(id){
+  const t = byId[id];
+  if (!t) return;
+  activeId = id;
+  if (!S.visited[id]){ S.visited[id] = true; save(); updateGauge(); checkComplete(); }
+
+  if (ok3d){
+    focusTarget.copy(P(t)).multiplyScalar(0.5);
+    camDistTarget = clamp(homeDist * 0.78, 5, 24);
+    dimTarget = 1;
+  }
+
+  const pts = t.points.map(([html, note]) =>
+    `<div class="pt${note ? ' run' : ''}"${note ? ` data-note="${note}"` : ''}><p>${html}</p></div>`).join('');
+  const links = EDGES.filter(([a,b]) => a===id || b===id).map(([a,b,why]) => {
+    const o = byId[a===id ? b : a];
+    return `<button class="lk" data-go="${o.id}" style="color:${o.color}">
+      <span class="to">${o.name}</span><span class="why">${why}</span></button>`;
+  }).join('');
+
+  slideEl.style.color = t.color;
+  slideEl.innerHTML =
+    `<span class="sdir">${DIR[t.dir].label}</span>` +
+    `<h2>${t.name}</h2>` +
+    `<div class="thesis">${t.thesis}</div>` +
+    pts + (t.slab ? slabHTML(t.slab) : '') +
+    `<div class="ask"><div class="lbl">聊聊</div><p>${t.ask}</p></div>` +
+    (t.slab2 ? slabHTML(t.slab2) : '') +
+    `<div class="links"><h5>從這個神經元連出去</h5>
+       <div class="sub">這些不是我配的關聯，是書裡自己接起來的地方。點一個直接跳過去。</div>${links}</div>` +
+    `<button class="backstar" onclick="closeSlide()">← 回到神經網</button>`;
+  slideEl.querySelectorAll('[data-go]').forEach(b =>
+    b.addEventListener('click', () => openSlide(b.dataset.go)));
+
+  stagew.scrollTop = 0;
+  stagew.classList.add('open');
+  stagew.setAttribute('aria-hidden','false');
+  topbar.classList.add('on');
+  topbar.style.color = t.color;
+  document.body.classList.add('reading');
+  slideOpen = true;
+  renderDots();
 }
-window.closePanel = closePanel;
+
+function closeSlide(){
+  stagew.classList.remove('open');
+  stagew.setAttribute('aria-hidden','true');
+  topbar.classList.remove('on');
+  document.body.classList.remove('reading');
+  slideOpen = false; activeId = null;
+  if (ok3d){ focusTarget.set(0,0,0); camDistTarget = homeDist; dimTarget = 0; userZoomed = false; }
+}
+window.closeSlide = closeSlide;
+
+function renderDots(){
+  document.getElementById('tdots').innerHTML = T.map(t =>
+    `<button class="tdot${S.visited[t.id]?' read':''}${t.id===activeId?' cur':''}"
+      data-go="${t.id}" style="color:${t.color}" title="${t.name}"></button>`).join('');
+  document.querySelectorAll('.tdot').forEach(d =>
+    d.addEventListener('click', () => openSlide(d.dataset.go)));
+}
+
+function toggleBig(){
+  S.big = !S.big; save();
+  document.documentElement.dataset.big = S.big ? '1' : '0';
+  const b = document.getElementById('szbtn');
+  b.dataset.on = S.big ? '1' : '0';
+  b.textContent = '字級 ' + (S.big ? '大' : '標準');
+}
+window.toggleBig = toggleBig;
+
+function checkComplete(){
+  if (readCount() === 6 && !S.done){ S.done = true; save(); if (!REDUCED) flash = 1; }
+}
 
 /* =========================================================================
    進度 / 作業
    ========================================================================= */
 function updateGauge(){
-  const pips = document.getElementById('pips');
-  pips.innerHTML = T.map(t =>
+  document.getElementById('pips').innerHTML = T.map(t =>
     `<span class="pip${S.visited[t.id] ? ' on' : ''}" style="color:${t.color}"></span>`).join('');
-  const n = readCount();
-  document.getElementById('gaugen').textContent = n + ' / 6';
+  document.getElementById('gaugen').textContent = readCount() + ' / 6';
   const tb = document.getElementById('taskopen');
   tb.dataset.done = S.task ? '1' : '0';
   tb.textContent = S.task ? '實驗：' + TASKS.find(x => x.id === S.task).h : '這個月的身體實驗';
-  if (fbBuilt) renderFallbackState();
 }
 
 const taskEl = document.getElementById('task');
@@ -1113,13 +1227,13 @@ function renderTasks(){
   document.getElementById('opts').innerHTML = TASKS.map(x =>
     `<button class="opt${S.task===x.id ? ' sel' : ''}" data-t="${x.id}">
       <span class="h"><span class="mk">${S.task===x.id ? '● 已選' : '○'}</span>${x.h}</span>
-      <span class="d">${x.d}</span><span class="ref">${x.ref}</span></button>`).join('');
+      <span class="d">${x.d}</span></button>`).join('');
   document.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
     S.task = (S.task === b.dataset.t) ? null : b.dataset.t;
     save(); renderTasks(); updateGauge();
     document.getElementById('tasknote').textContent = S.task
       ? '記住了。下個月回來講：做了幾次、遇到什麼阻力。'
-      : '選一個，它會被記在這張網的中心。';
+      : '選一個，它會被記在這片組織的中心。';
   }));
 }
 function openTask(){ renderTasks(); taskEl.classList.add('open'); taskEl.setAttribute('aria-hidden','false'); }
@@ -1131,71 +1245,38 @@ taskEl.addEventListener('click', e => { if (e.target === taskEl) closeTask(); })
 /* =========================================================================
    無 WebGL 退路
    ========================================================================= */
-let fbBuilt = false;
 function buildFallback(){
   document.getElementById('fblist').innerHTML = T.map(t =>
     `<button class="fbitem" data-t="${t.id}" style="color:${t.color}">
       <span class="n">${t.name}</span>
-      <span class="l">${t.thesis.replace(/<\/?em>/g,'')}<br>${t.loc}</span></button>`).join('');
+      <span class="l">${t.thesis.replace(/<\/?em>/g,'')}</span></button>`).join('');
   document.querySelectorAll('.fbitem').forEach(b =>
-    b.addEventListener('click', () => openTopicFlat(b.dataset.t)));
-  fbBuilt = true;
-}
-function renderFallbackState(){}
-function openTopicFlat(id){
-  const t = byId[id];
-  if (!S.visited[id]){ S.visited[id] = true; save(); }
-  activeId = id;
-  const saved = { focusTarget:null };
-  openTopicPanelOnly(t);
-}
-function openTopicPanelOnly(t){
-  const tmp = { ...t };
-  // 重用 openTopic 的 HTML 組裝，但不動相機
-  const d = DIR[t.dir];
-  const pts = t.points.map(([src, html, isRun]) =>
-    `<div class="pt${isRun ? ' run' : ''}"><span class="src">p.${src}</span><p>${html}</p></div>`).join('');
-  const links = EDGES.filter(([a,b]) => a===t.id || b===t.id).map(([a,b,why]) => {
-    const o = byId[a===t.id ? b : a];
-    return `<button class="lk" data-go="${o.id}" style="color:${o.color}">
-      <span class="to">${o.name}</span><span class="why">${why}</span></button>`;
-  }).join('');
-  panel.style.color = t.color;
-  panel.innerHTML =
-    `<button class="pclose" onclick="closePanel()">關閉 ✕</button>` +
-    `<button class="psize" onclick="toggleBig()" data-on="${S.big?1:0}">字級 ${S.big?'大':'標準'}</button>` +
-    `<span class="pdir">${d.label}</span><h2>${t.name}</h2>` +
-    `<div class="ploc">${t.loc}</div><div class="thesis">${t.thesis}</div>` +
-    pts + (t.slab ? slabHTML(t.slab) : '') +
-    `<div class="ask"><div class="lbl">聊聊</div><p>${t.ask}</p></div>` +
-    (t.slab2 ? slabHTML(t.slab2) : '') +
-    `<div class="links"><h5>從這裡連出去</h5><div class="sub">書裡自己接起來的地方。</div>${links}</div>` +
-    `<button class="backstar" onclick="closePanel()">← 回到清單</button>`;
-  panel.querySelectorAll('[data-go]').forEach(b =>
-    b.addEventListener('click', () => openTopicFlat(b.dataset.go)));
-  panel.scrollTop = 0;
-  panel.classList.add('open');
-  panelOpen = true;
+    b.addEventListener('click', () => openSlide(b.dataset.t)));
 }
 
 /* =========================================================================
    啟動
    ========================================================================= */
 function start(){
+  document.documentElement.dataset.big = S.big ? '1' : '0';
+  if (S.big){
+    const b = document.getElementById('szbtn');
+    b.dataset.on = '1'; b.textContent = '字級 大';
+  }
+
   ok3d = boot3d();
   if (!ok3d){
     document.getElementById('fallback').classList.add('on');
     document.getElementById('intro').classList.add('gone');
     buildFallback();
-    updateGaugeSafe();
+    updateGauge();
     return;
   }
   buildLabels();
   bindControls();
-  document.documentElement.dataset.big = S.big ? '1' : '0';
   updateGauge();
-  onResize();                         // 依螢幕比例決定初始距離
-  camDist = REDUCED ? homeDist : homeDist * 3.4;   // 開場：從遠處推近
+  onResize();
+  camDist = REDUCED ? homeDist : homeDist * 3.2;
   camDistTarget = homeDist;
   tick();
 
@@ -1204,9 +1285,8 @@ function start(){
   setTimeout(() => {
     document.getElementById('intro').classList.add('gone');
     document.getElementById('ui').hidden = false;
-  }, REDUCED ? 120 : 900);
+  }, REDUCED ? 120 : 1000);
 }
-function updateGaugeSafe(){ try { updateGauge(); } catch(e){} }
 
 start();
 </script>
