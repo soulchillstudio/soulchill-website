@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soul Chill Studio｜用心生活工作室（Redesign v3 示意）</title>
+<meta name="description" content="Soul Chill 是傑西與 Fish 一起打造的生活工作室。跑步、瑜珈、頌缽與每月小聚會，像走進小巷裡的小森林，先慢下來，再慢慢進步。台北・台中。">
+<link rel="icon" type="image/png" href="assets/mascot.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700;900&family=LXGW+WenKai+TC:wght@400;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════
+   Soul Chill — Redesign v3「門洞・深林・呼吸」
+   簽名：拱門/門洞（走進老屋工作室的門檻）
+   ─ CIS：米白 #f2efe5｜森林綠 #0f3e36｜草植綠 #b9ca74｜碧空藍 #76d9d5
+   ─ 字：Noto Serif TC(骨架大標) / LXGW 文楷(手寫暖語) / Noto Sans(內文)
+   ══════════════════════════════════════════════════════════════ */
+:root{
+  --paper:   #f2efe5;   /* 基底米白紙 */
+  --paper-2: #f8f5ec;   /* 抬升的卡片紙 */
+  --forest:  #0f3e36;   /* 墨綠：文字＋沉浸帶 */
+  --forest-2:#0a2b25;   /* 更深的林 */
+  --grass:   #b9ca74;   /* 動・跑步 */
+  --sky:     #76d9d5;   /* 靜・用心生活 */
+  --clay:    #b0895d;   /* 木頭暖・手寫眉標 */
+  --butter:  #f3e2ae;   /* 教室雲彩牆的暖黃 */
+  --grass-ink:#6f8135;  /* 草綠當文字時壓深 */
+  --sky-ink:  #2c8f89;  /* 碧空當文字時壓深 */
+  --line:    rgba(15,62,54,.14);
+  --ink-soft:rgba(15,62,54,.66);
+  --serif:  "Noto Serif TC", serif;
+  --kai:    "LXGW WenKai TC", "Noto Serif TC", serif;
+  --sans:   "Noto Sans TC", sans-serif;
+  --script: "Caveat", cursive;
+  --arch:   clamp(64px, 13vw, 150px);   /* 拱門圓角 */
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--sans);
+  background:var(--paper);
+  color:var(--forest);
+  line-height:1.9;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+body.locked{overflow:hidden;}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:1120px;margin:0 auto;padding:0 26px;position:relative;}
+
+/* ── 一張很淡的紙紋，取代浮動雲朵 ── */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(60vw 42vw at 12% -6%, rgba(243,226,174,.34), transparent 60%),
+    radial-gradient(52vw 40vw at 108% 30%, rgba(118,217,213,.16), transparent 58%),
+    radial-gradient(56vw 44vw at 30% 108%, rgba(185,202,116,.20), transparent 60%);
+}
+main,header,footer{position:relative;z-index:1;}
+
+/* ── 排版基礎 ── */
+h1,h2,h3,h4{font-family:var(--serif);font-weight:700;line-height:1.42;letter-spacing:.01em;}
+.script{font-family:var(--script);color:var(--clay);}
+
+/* 眉標：手寫英文 + 一枚拱門小徽記 */
+.eyebrow{display:inline-flex;align-items:center;gap:9px;margin-bottom:14px;}
+.eyebrow i{
+  width:15px;height:19px;flex:none;
+  background:var(--grass);
+  border-radius:8px 8px 2px 2px;
+  box-shadow:inset 0 -4px 0 rgba(15,62,54,.12);
+}
+.eyebrow.sky i{background:var(--sky);}
+.eyebrow.clay i{background:var(--clay);}
+.eyebrow span{font-family:var(--script);font-size:23px;color:var(--clay);letter-spacing:.02em;}
+
+.sec-title{font-family:var(--serif);font-weight:900;font-size:clamp(29px,4.4vw,46px);line-height:1.34;letter-spacing:.02em;}
+.sec-lead{color:var(--ink-soft);max-width:620px;font-size:clamp(15px,1.9vw,16.5px);margin-top:14px;}
+
+/* 拱門框：這站的視覺簽名 */
+.arch{border-radius:var(--arch) var(--arch) 18px 18px;overflow:hidden;}
+
+/* 錨點跳轉：避開固定導覽列（68px）蓋住標題 */
+section[id],.line-head[id]{scroll-margin-top:88px;}
+
+/* 捲動浮現 */
+html.js .reveal{opacity:0;transform:translateY(26px);transition:opacity 1s ease,transform 1s ease;}
+html.js .reveal.in{opacity:1;transform:none;}
+html.js .reveal.d1{transition-delay:.08s;}
+html.js .reveal.d2{transition-delay:.16s;}
+html.js .reveal.d3{transition-delay:.24s;}
+
+/* 按鈕 */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 28px;border-radius:999px;
+  font-weight:700;font-size:15px;letter-spacing:.04em;
+  transition:transform .25s ease,box-shadow .25s ease,background .25s;
+}
+.btn:hover{transform:translateY(-3px);}
+.btn-forest{background:var(--forest);color:#fff;box-shadow:0 8px 22px rgba(15,62,54,.22);}
+.btn-forest:hover{box-shadow:0 14px 30px rgba(15,62,54,.28);}
+.btn-grass{background:var(--grass);color:var(--forest);box-shadow:0 8px 20px rgba(185,202,116,.4);}
+.btn-soft{border:1.5px solid rgba(15,62,54,.28);color:var(--forest);background:rgba(248,245,236,.5);}
+.btn-soft:hover{background:#fff;}
+
+/* ═══ 呼吸開場 ═══ */
+#intro{
+  position:fixed;inset:0;z-index:999;background:var(--paper);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:22px;cursor:pointer;transition:opacity .9s ease;
+}
+#intro.fade{opacity:0;pointer-events:none;}
+.intro-stage{position:relative;width:190px;height:190px;display:flex;align-items:center;justify-content:center;}
+.intro-ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(118,217,213,.5);animation:ring-breathe 7.5s ease-in-out infinite;}
+.intro-ring.r2{inset:20px;border-color:rgba(185,202,116,.5);animation-delay:.3s;}
+.intro-ghost{width:96px;animation:ghost-breathe 7.5s ease-in-out infinite;transform-origin:50% 82%;}
+@keyframes ghost-breathe{0%,100%{transform:scale(1);}46%,54%{transform:scale(1.12);}}
+@keyframes ring-breathe{0%,100%{transform:scale(.85);opacity:.9;}46%,54%{transform:scale(1.06);opacity:.4;}}
+.intro-text{font-family:var(--kai);font-size:20px;color:var(--forest);letter-spacing:.14em;min-height:1.6em;transition:opacity .6s;}
+.intro-text.swap{opacity:0;}
+.intro-skip{font-size:12px;color:var(--ink-soft);opacity:.6;letter-spacing:.2em;}
+
+/* ═══ 導覽列 ═══ */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(242,239,229,.82);backdrop-filter:blur(12px);
+  border-bottom:1px solid transparent;transition:border-color .3s,background .3s;
+}
+header.scrolled{border-bottom-color:var(--line);background:rgba(242,239,229,.94);}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px;}
+.nav-logo{display:flex;align-items:center;gap:11px;}
+.nav-logo img{height:34px;width:auto;}
+.nav-logo b{font-family:var(--script);font-size:22px;color:var(--forest);font-weight:700;}
+.nav-links{display:flex;gap:24px;align-items:center;list-style:none;}
+.nav-links a{font-size:15px;font-weight:500;color:var(--ink-soft);transition:color .2s;}
+.nav-links a:hover{color:var(--forest);}
+.nav-toggle{display:none;background:none;border:none;font-size:25px;color:var(--forest);cursor:pointer;}
+
+/* ═══ Hero：門洞（走進小森林的門檻） ═══ */
+.hero{min-height:100vh;display:flex;align-items:center;text-align:center;padding:120px 0 92px;position:relative;}
+.hero-inner{width:100%;max-width:820px;margin:0 auto;}
+
+/* 門洞本體 */
+.door{
+  position:relative;width:clamp(200px,42vw,264px);margin:0 auto 6px;
+  aspect-ratio:3/4;
+  border-radius:999px 999px 26px 26px;
+  background:
+    radial-gradient(120% 80% at 50% 116%, rgba(15,62,54,.16), transparent 60%),
+    linear-gradient(180deg, var(--sky) 0%, #a9e2dd 42%, var(--butter) 100%);
+  box-shadow:0 30px 60px -24px rgba(15,62,54,.5),
+             inset 0 3px 0 rgba(255,255,255,.5);
+  display:flex;align-items:flex-end;justify-content:center;
+  overflow:hidden;
+}
+.door::before{ /* 門框內緣 */
+  content:"";position:absolute;inset:10px;
+  border-radius:999px 999px 18px 18px;
+  border:2px solid rgba(255,255,255,.45);
+  pointer-events:none;
+}
+.door::after{ /* 門檻地面 */
+  content:"";position:absolute;left:0;right:0;bottom:0;height:26%;
+  background:linear-gradient(180deg,transparent, rgba(15,62,54,.16));
+}
+.door-ghost{
+  width:60%;margin-bottom:14%;position:relative;z-index:2;
+  animation:float-bob 6.5s ease-in-out infinite;
+  filter:drop-shadow(0 10px 14px rgba(15,62,54,.28));
+}
+@keyframes float-bob{0%,100%{transform:translateY(0) rotate(-1.5deg);}50%{transform:translateY(-13px) rotate(1.5deg);}}
+/* 門洞兩側探出的蕨葉 */
+.door-fern{position:absolute;bottom:-6px;width:82px;z-index:3;opacity:.92;}
+.door-fern.l{left:-40px;transform:rotate(-8deg);}
+.door-fern.r{right:-40px;transform:scaleX(-1) rotate(-8deg);}
+
+.hero .eyebrow{margin-top:30px;}
+.hero .eyebrow span{font-size:26px;}
+.hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(33px,6.2vw,62px);line-height:1.34;letter-spacing:.05em;margin:6px 0 22px;}
+.hero h1 em{font-style:normal;color:var(--grass-ink);}
+.hero-sub{max-width:480px;margin:0 auto 34px;color:var(--ink-soft);font-size:clamp(15px,2vw,16.5px);font-family:var(--kai);}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-family:var(--kai);font-size:13.5px;color:var(--ink-soft);letter-spacing:.22em;animation:hint 2.6s ease-in-out infinite;}
+@keyframes hint{0%,100%{transform:translate(-50%,0);opacity:.5;}50%{transform:translate(-50%,8px);opacity:1;}}
+
+/* ═══ 呼吸間奏（森林綠全幅） ═══ */
+.breathe{background:var(--forest);color:var(--paper);text-align:center;padding:clamp(78px,11vw,118px) 26px;position:relative;overflow:hidden;}
+.breathe::before{content:"";position:absolute;inset:0;background:radial-gradient(60vw 30vw at 50% 0%, rgba(118,217,213,.14), transparent 62%);}
+.breathe-dot{width:11px;height:11px;border-radius:50%;background:var(--sky);margin:0 auto 30px;position:relative;z-index:1;animation:dot 5s ease-in-out infinite;}
+.breathe.grass .breathe-dot{background:var(--grass);}
+.breathe.clay .breathe-dot{background:var(--butter);}
+@keyframes dot{0%,100%{transform:scale(1);opacity:.55;box-shadow:0 0 0 0 rgba(118,217,213,.3);}50%{transform:scale(1.7);opacity:1;box-shadow:0 0 0 16px rgba(118,217,213,0);}}
+.breathe p{font-family:var(--kai);font-size:clamp(20px,3vw,29px);line-height:2.1;letter-spacing:.08em;position:relative;z-index:1;max-width:760px;margin:0 auto;}
+.breathe .cite{display:block;margin-top:20px;font-family:var(--sans);font-size:13px;letter-spacing:.2em;opacity:.55;}
+.breathe-illo{width:clamp(96px,15vw,132px);margin:0 auto 26px;position:relative;z-index:1;animation:float-bob 6.5s ease-in-out infinite;filter:drop-shadow(0 10px 18px rgba(0,0,0,.28));}
+
+/* ═══ 走進來看看：拱窗照片牆 ═══ */
+.wall-sec{padding:clamp(74px,10vw,104px) 0;}
+.wall-head{text-align:center;margin-bottom:52px;}
+.wall-head .eyebrow{justify-content:center;}
+.wall-head .sec-lead{margin:14px auto 0;}
+.wall{display:grid;grid-template-columns:repeat(12,1fr);gap:22px;}
+.win{position:relative;overflow:hidden;border-radius:var(--arch) var(--arch) 16px 16px;border:7px solid #fff;box-shadow:0 18px 40px -20px rgba(15,62,54,.5);transition:transform .5s ease;background:var(--sky);}
+.win img{width:100%;height:100%;object-fit:cover;}
+.win figcaption{position:absolute;left:0;right:0;bottom:0;padding:34px 18px 15px;color:#fff;font-family:var(--kai);font-size:14px;letter-spacing:.04em;background:linear-gradient(transparent, rgba(15,62,54,.78));}
+.win:hover{transform:translateY(-8px);}
+.win.tall{grid-column:span 4;aspect-ratio:3/4.4;}
+.win.wide{grid-column:span 8;aspect-ratio:8/4.4;}
+.win.half{grid-column:span 6;aspect-ratio:6/4.2;}
+.win.third{grid-column:span 4;aspect-ratio:4/4;}
+
+/* ═══ 這裡的老師 ═══ */
+.teachers{padding:clamp(78px,10vw,108px) 0;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:48px;}
+.person{background:var(--paper-2);border:1px solid var(--line);border-radius:26px;overflow:hidden;transition:transform .4s ease,box-shadow .4s ease;}
+.person:hover{transform:translateY(-6px);box-shadow:0 26px 50px -28px rgba(15,62,54,.4);}
+.person-top{display:grid;grid-template-columns:auto 1fr;gap:20px;padding:22px 24px 0;align-items:end;}
+.person-portrait{width:132px;aspect-ratio:3/4;border-radius:70px 70px 12px 12px;overflow:hidden;border:4px solid #fff;box-shadow:0 12px 26px -14px rgba(15,62,54,.5);flex:none;background:var(--sky);}
+.person-portrait img{width:100%;height:100%;object-fit:cover;}
+.person-portrait.illo{display:flex;align-items:flex-end;justify-content:center;background:linear-gradient(180deg,var(--sky),#bfe8e4);}
+.person-portrait.illo img{width:88%;height:auto;object-fit:contain;}
+.person-head .role{font-size:12px;letter-spacing:.22em;font-weight:700;color:var(--clay);}
+.person-head h4{font-family:var(--serif);font-weight:900;font-size:27px;margin:6px 0 2px;}
+.person-head .en{font-family:var(--script);font-size:19px;color:var(--ink-soft);}
+.person-body{padding:16px 24px 26px;}
+.person-body p{font-size:14px;color:var(--ink-soft);}
+.person-body ul{margin-top:14px;list-style:none;display:flex;flex-wrap:wrap;gap:7px;}
+.person-body li{font-size:12.5px;color:var(--forest);background:#fff;border:1px solid var(--line);padding:4px 12px;border-radius:999px;}
+.teacher-more{margin-top:40px;text-align:center;background:var(--paper-2);border:1px solid var(--line);border-radius:26px;padding:38px 30px;}
+.teacher-more p{font-family:var(--kai);font-size:17px;margin-bottom:20px;}
+.name-tags{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;max-width:770px;margin:0 auto;}
+.name-tag{font-family:var(--kai);font-size:14.5px;padding:6px 15px;background:#fff;border:1px solid var(--line);border-radius:999px;color:var(--ink-soft);transition:transform .3s;}
+.name-tag:nth-child(odd):hover{transform:translateY(-3px) rotate(-2deg);}
+.name-tag:nth-child(even):hover{transform:translateY(-3px) rotate(2deg);}
+.teacher-note{margin-top:18px;font-size:13.5px;color:var(--ink-soft);}
+
+/* ═══ 課程雙線（動 / 靜） ═══ */
+.services{padding:clamp(78px,10vw,108px) 0;}
+.line-head{display:flex;align-items:center;gap:16px;margin:64px 0 6px;flex-wrap:wrap;}
+.line-tag{font-family:var(--serif);font-weight:900;font-size:20px;width:52px;height:52px;border-radius:26px 26px 8px 8px;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 8px 18px -8px rgba(15,62,54,.4);}
+.tag-grass{background:var(--grass);color:var(--forest);}
+.tag-sky{background:var(--sky);color:var(--forest);}
+.line-head h3{font-family:var(--serif);font-weight:900;font-size:clamp(24px,3.2vw,33px);letter-spacing:.03em;}
+.line-desc{color:var(--ink-soft);max-width:660px;margin-bottom:34px;font-size:15px;}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:24px;}
+.card{background:var(--paper-2);border:1px solid var(--line);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;transition:transform .4s ease,box-shadow .4s ease;}
+.card:hover{transform:translateY(-8px);box-shadow:0 28px 52px -30px rgba(15,62,54,.42);}
+.card-photo{aspect-ratio:3/2;overflow:hidden;position:relative;background:var(--sky);}
+.card-photo img{width:100%;height:100%;object-fit:cover;transition:transform .8s ease;}
+.card:hover .card-photo img{transform:scale(1.05);}
+.card-photo.illo{display:flex;align-items:center;justify-content:center;padding:14px;background:linear-gradient(160deg,#e3f4f2,#eef3dc);}
+.card-photo.illo img{max-width:88%;max-height:100%;width:auto;height:auto;object-fit:contain;}
+.card:hover .card-photo.illo img{transform:scale(1.06) rotate(-2deg);}
+.card-body{padding:22px 24px 25px;flex:1;display:flex;flex-direction:column;}
+.card h4{font-family:var(--serif);font-weight:700;font-size:20px;margin-bottom:9px;letter-spacing:.02em;}
+.card p{font-size:14.5px;color:var(--ink-soft);flex:1;}
+.card-meta{margin-top:16px;font-size:12.5px;font-weight:700;letter-spacing:.06em;display:inline-flex;align-items:center;gap:7px;}
+.card-meta::before{content:"";width:8px;height:8px;border-radius:50%;flex:none;}
+.meta-grass{color:var(--grass-ink);}
+.meta-grass::before{background:var(--grass);}
+.meta-sky{color:var(--sky-ink);}
+.meta-sky::before{background:var(--sky);}
+
+/* ═══ 每月活動 ═══ */
+.monthly{padding:clamp(78px,10vw,108px) 0;}
+.monthly-grid{display:grid;grid-template-columns:5fr 6fr;gap:56px;align-items:center;}
+.monthly-photo{aspect-ratio:4/4.6;border-radius:var(--arch) var(--arch) 18px 18px;overflow:hidden;border:8px solid #fff;box-shadow:0 30px 56px -30px rgba(15,62,54,.5);background:linear-gradient(160deg,#eef3dc,#e3f4f2);display:flex;align-items:flex-end;justify-content:center;padding:22px;}
+.monthly-photo img{width:92%;height:auto;object-fit:contain;}
+.pill-list{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 8px;}
+.pill{font-family:var(--kai);font-size:14.5px;padding:7px 17px;background:var(--paper-2);border:1px solid var(--line);border-radius:999px;}
+.feature-box{margin-top:28px;background:var(--forest);color:#fff;border-radius:24px;padding:30px 32px;position:relative;overflow:hidden;}
+.feature-box::before{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(118,217,213,.25),transparent 70%);}
+.fb-grid{display:flex;gap:24px;align-items:center;position:relative;z-index:1;}
+.fb-grid .ftag{font-size:12px;letter-spacing:.28em;color:var(--grass);font-weight:700;}
+.fb-grid h4{font-family:var(--serif);font-weight:900;font-size:23px;margin:9px 0;color:#fff;}
+.fb-grid p{font-size:14.5px;opacity:.86;}
+.fb-illo{width:120px;flex:none;filter:drop-shadow(0 10px 16px rgba(0,0,0,.3));animation:float-bob 7s ease-in-out infinite;}
+
+/* ═══ 空間與合作 ═══ */
+.space{padding:clamp(78px,10vw,108px) 0;}
+.space-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:46px;}
+.space-card{border-radius:var(--arch) var(--arch) 20px 20px;overflow:hidden;position:relative;min-height:360px;display:flex;align-items:flex-end;box-shadow:0 24px 48px -28px rgba(15,62,54,.5);}
+.space-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.space-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 34%,rgba(15,62,54,.82));}
+.space-card-body{position:relative;z-index:2;color:#fff;padding:30px 32px;}
+.space-card-body h4{font-family:var(--serif);font-weight:900;font-size:23px;margin-bottom:7px;color:#fff;}
+.space-card-body p{font-size:14px;opacity:.9;}
+.brands{margin-top:40px;text-align:center;}
+.brands .label{font-size:12px;letter-spacing:.3em;color:var(--ink-soft);font-weight:700;}
+.brands .names{margin-top:14px;font-family:var(--kai);font-size:15.5px;color:var(--forest);letter-spacing:.1em;line-height:2.2;}
+
+/* ═══ 線上聚落 ═══ */
+.online{background:var(--forest);color:#fff;padding:clamp(80px,10vw,110px) 0;position:relative;overflow:hidden;}
+.online::before{content:"";position:absolute;inset:0;background:radial-gradient(50vw 30vw at 82% -4%, rgba(185,202,116,.16), transparent 60%);}
+.online .wrap{position:relative;z-index:1;}
+.online-head{text-align:center;max-width:640px;margin:0 auto;}
+.online-head .sec-title{color:#fff;}
+.online-head .sec-lead{color:rgba(255,255,255,.74);margin:14px auto 0;}
+.online-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:22px;margin-top:48px;}
+.online-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:32px 28px;display:flex;flex-direction:column;gap:11px;transition:background .3s,transform .3s;}
+.online-card:hover{background:rgba(255,255,255,.11);transform:translateY(-5px);}
+.online-card .oc-icon{width:46px;height:46px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:23px;background:rgba(118,217,213,.16);}
+.online-card.grass .oc-icon{background:rgba(185,202,116,.2);}
+.online-card h4{font-family:var(--serif);font-weight:700;font-size:20px;color:#fff;}
+.online-card p{font-size:14px;opacity:.8;flex:1;}
+.online-card .oc-link{font-size:13.5px;font-weight:700;letter-spacing:.06em;color:var(--sky);}
+.online-card.grass .oc-link{color:var(--grass);}
+.online-note{margin-top:32px;font-size:13.5px;opacity:.6;text-align:center;}
+
+/* ═══ Footer ═══ */
+footer{background:var(--forest-2);color:rgba(255,255,255,.82);padding:60px 0 42px;}
+.foot-grid{display:flex;justify-content:space-between;gap:44px;flex-wrap:wrap;}
+.foot-brand img{height:56px;width:auto;margin-bottom:16px;}
+.foot-brand p{font-size:13.5px;max-width:300px;opacity:.82;}
+.foot-col h5{font-size:12.5px;letter-spacing:.24em;color:rgba(255,255,255,.5);margin-bottom:15px;font-weight:700;}
+.foot-col ul{list-style:none;}
+.foot-col li{margin-bottom:9px;}
+.foot-col a{font-size:14px;opacity:.85;}
+.foot-col a:hover{opacity:1;}
+.copyright{margin-top:46px;padding-top:24px;border-top:1px solid rgba(255,255,255,.12);font-size:12.5px;opacity:.5;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+/* ═══ 減少動態偏好 ═══ */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;}
+  html{scroll-behavior:auto;}
+  html.js .reveal{opacity:1;transform:none;}
+}
+
+/* ═══ RWD ═══ */
+@media (max-width:900px){
+  .monthly-grid,.about-grid,.space-grid{grid-template-columns:1fr;}
+  .wall{grid-template-columns:repeat(6,1fr);}
+  .win.tall,.win.wide,.win.half,.win.third{grid-column:span 3;aspect-ratio:1/1;}
+  .win.wide{grid-column:span 6;aspect-ratio:6/4;}
+}
+@media (max-width:760px){
+  .nav-links{display:none;position:absolute;top:68px;left:0;right:0;background:var(--paper);flex-direction:column;padding:20px 26px 26px;border-bottom:1px solid var(--line);gap:16px;}
+  .nav-links.open{display:flex;}
+  .nav-toggle{display:block;}
+  .fb-grid{flex-direction:column;text-align:center;}
+  .person-top{grid-template-columns:1fr;justify-items:center;text-align:center;padding-top:26px;}
+  .person-body ul{justify-content:center;}
+  .door-fern{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ 呼吸開場 ═══ -->
+<div id="intro" hidden>
+  <div class="intro-stage">
+    <div class="intro-ring"></div>
+    <div class="intro-ring r2"></div>
+    <img class="intro-ghost" src="assets/mascot.png" alt="Soul Chill 小靈魂">
+  </div>
+  <p class="intro-text" id="introText">跟著牠，慢慢吸一口氣</p>
+  <span class="intro-skip">輕觸任何地方，直接進來</span>
+</div>
+
+<!-- ═══ 導覽列 ═══ -->
+<header id="header">
+  <div class="wrap nav">
+    <a class="nav-logo" href="#top"><img src="assets/mascot.png" alt=""><b>Soul Chill</b></a>
+    <button class="nav-toggle" id="navToggle" aria-label="開啟選單">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#wall">走進來看看</a></li>
+      <li><a href="#teachers">這裡的老師</a></li>
+      <li><a href="#running">跑步</a></li>
+      <li><a href="#living">瑜珈與療癒</a></li>
+      <li><a href="#monthly">每月活動</a></li>
+      <li><a href="#space">空間合作</a></li>
+      <li><a class="btn btn-forest" href="https://lin.ee/ipjH3LI" target="_blank" rel="noopener">跟我們說聲嗨</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+<!-- ═══ Hero：門洞 ═══ -->
+<section class="hero" id="top">
+  <div class="wrap hero-inner">
+    <div class="door">
+      <svg class="door-fern l" viewBox="0 0 90 130" fill="none" aria-hidden="true">
+        <path d="M52 130 C46 92,38 60,20 22" stroke="#0f3e36" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+        <g fill="#b9ca74">
+          <ellipse cx="17" cy="26" rx="13" ry="5" transform="rotate(-38 17 26)"/>
+          <ellipse cx="34" cy="32" rx="12" ry="5" transform="rotate(30 34 32)"/>
+          <ellipse cx="24" cy="52" rx="14" ry="5" transform="rotate(-32 24 52)"/>
+          <ellipse cx="42" cy="60" rx="13" ry="5" transform="rotate(30 42 60)"/>
+          <ellipse cx="34" cy="84" rx="15" ry="5" transform="rotate(-26 34 84)"/>
+          <ellipse cx="52" cy="94" rx="13" ry="5" transform="rotate(28 52 94)"/>
+        </g>
+      </svg>
+      <svg class="door-fern r" viewBox="0 0 90 130" fill="none" aria-hidden="true">
+        <path d="M52 130 C46 92,38 60,20 22" stroke="#0f3e36" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+        <g fill="#b9ca74">
+          <ellipse cx="17" cy="26" rx="13" ry="5" transform="rotate(-38 17 26)"/>
+          <ellipse cx="34" cy="32" rx="12" ry="5" transform="rotate(30 34 32)"/>
+          <ellipse cx="24" cy="52" rx="14" ry="5" transform="rotate(-32 24 52)"/>
+          <ellipse cx="42" cy="60" rx="13" ry="5" transform="rotate(30 42 60)"/>
+          <ellipse cx="34" cy="84" rx="15" ry="5" transform="rotate(-26 34 84)"/>
+          <ellipse cx="52" cy="94" rx="13" ry="5" transform="rotate(28 52 94)"/>
+        </g>
+      </svg>
+      <img class="door-ghost" src="assets/mascot.png" alt="Soul Chill 小靈魂在門口跟你打招呼">
+    </div>
+    <span class="eyebrow"><i></i><span>come on in</span></span>
+    <h1>先慢下來，<br><em>其他的</em>等等再說</h1>
+    <p class="hero-sub">這裡是 Soul Chill，一間藏在小巷老屋裡的生活工作室。<br>有跑步、有瑜珈、有頌缽，還有很多讓日子變好的小事。</p>
+    <div class="hero-ctas">
+      <a class="btn btn-grass" href="#wall">推開門，進來逛逛</a>
+      <a class="btn btn-soft" href="https://lin.ee/ipjH3LI" target="_blank" rel="noopener">跟我們說聲嗨</a>
+    </div>
+  </div>
+  <div class="scroll-hint">慢慢往下 ↓</div>
+</section>
+
+<!-- ═══ 呼吸 1 ═══ -->
+<div class="breathe reveal">
+  <div class="breathe-dot"></div>
+  <p>不趕時間的話，<br>就慢慢往下走。</p>
+</div>
+
+<!-- ═══ 走進來看看 ═══ -->
+<section class="wall-sec" id="wall">
+  <div class="wrap">
+    <div class="wall-head reveal">
+      <span class="eyebrow"><i></i><span>Look around</span></span>
+      <h2 class="sec-title">走進來看看</h2>
+      <p class="sec-lead">這是大家平常在這裡的樣子。合照永遠拍不整齊，但那大概就是我們喜歡的樣子。</p>
+    </div>
+    <div class="wall">
+      <figure class="win wide reveal">
+        <img src="assets/parkrun_group.jpg" alt="Park Run 團練合照">
+        <figcaption>每月一次的 Park Run，合照永遠拍不整齊</figcaption>
+      </figure>
+      <figure class="win tall reveal d1">
+        <img src="assets/community_chat.jpg" alt="跑完之後的聊天">
+        <figcaption>跑完之後的聊天，常常比跑步還久</figcaption>
+      </figure>
+      <figure class="win third reveal">
+        <img src="assets/fern_hand.jpg" alt="手心裡的蕨葉">
+        <figcaption>路上撿到的一小片森林</figcaption>
+      </figure>
+      <figure class="win third reveal d1">
+        <img src="assets/taichung_track.jpg" alt="週三晚上的操場">
+        <figcaption>晚上的操場，一起慢慢變強</figcaption>
+      </figure>
+      <figure class="win third reveal d2">
+        <img src="assets/flag_group.jpg" alt="橋下的大合照">
+        <figcaption>下雨也沒關係，橋下見</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 呼吸 2 ═══ -->
+<div class="breathe grass reveal">
+  <img class="breathe-illo" src="assets/illo_run.png" alt="" loading="lazy">
+  <p>「跑步就像一面放大鏡，<br>它讓你看見生活裡那些一直都在、<br>但你沒空理的事。」</p>
+  <span class="cite">— 傑西</span>
+</div>
+
+<!-- ═══ 這裡的老師 ═══ -->
+<section class="teachers" id="teachers">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center;">
+      <span class="eyebrow clay" style="justify-content:center;"><i></i><span>The teachers</span></span>
+      <h2 class="sec-title">這裡的老師</h2>
+      <p class="sec-lead" style="margin-left:auto;margin-right:auto;">傑西與 Fish，一動一靜的兩個人。從跑步與瑜珈出發，把各自相信的事，慢慢做成了現在的 Soul Chill。</p>
+    </div>
+    <div class="about-grid">
+      <div class="person reveal">
+        <div class="person-top">
+          <div class="person-portrait"><img src="assets/jesse_portrait.jpg" alt="傑西 Jesse"></div>
+          <div class="person-head">
+            <span class="role">主理人・跑步教練</span>
+            <h4>傑西</h4>
+            <span class="en">Jesse</span>
+          </div>
+        </div>
+        <div class="person-body">
+          <p>致力於把訓練和生活結合在一起。從迪卡儂大台北跑團開始，至今陪伴超過百位零基礎跑者，養成不受傷的運動習慣，一路跑向自己的半馬與全馬。</p>
+          <ul>
+            <li>姿勢跑法 Level 1 教練</li>
+            <li>TNF・Xterra 越野營隊教練</li>
+            <li>New Balance 簽約配速員</li>
+          </ul>
+        </div>
+      </div>
+      <div class="person reveal d1">
+        <div class="person-top">
+          <div class="person-portrait illo"><img src="assets/illo_meditate.png" alt="Fish（形象照即將登場）" loading="lazy"></div>
+          <div class="person-head">
+            <span class="role">創辦者・瑜珈老師</span>
+            <h4>Fish</h4>
+            <span class="en">Fish</span>
+          </div>
+        </div>
+        <div class="person-body">
+          <p>從跑步開啟對運動的熱愛，因瑜珈修復了身體的傷，也長出面對生活的哲學。課堂上療癒的聲音與細膩引導，陪你在瑜珈裡慢慢舒展，認識內在的自己。</p>
+          <ul>
+            <li>美國瑜珈聯盟 RYT 200HR</li>
+            <li>瑜珈提斯師資</li>
+            <li>能量療癒師資認證</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="teacher-more reveal">
+      <p>還有一群 Fish 親自邀請來的溫柔老師們</p>
+      <div class="name-tags">
+        <span class="name-tag">Cheryl</span><span class="name-tag">YC</span><span class="name-tag">Lany</span>
+        <span class="name-tag">小涵</span><span class="name-tag">Lilian</span><span class="name-tag">Chloe</span>
+        <span class="name-tag">Nina</span><span class="name-tag">Haiwei</span><span class="name-tag">Kelly</span>
+        <span class="name-tag">Vincent</span><span class="name-tag">小米</span><span class="name-tag">Agnes</span>
+        <span class="name-tag">Lily</span><span class="name-tag">邵邵</span><span class="name-tag">白白</span>
+        <span class="name-tag">Una</span><span class="name-tag">Tina</span><span class="name-tag">阿鳥</span>
+        <span class="name-tag">Edith</span><span class="name-tag">Ching</span>
+      </div>
+      <p class="teacher-note">每一位老師帶的課都不太一樣，找到跟你合拍的那一位。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 課程雙線 ═══ -->
+<section class="services">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow"><i></i><span>What's here</span></span>
+      <h2 class="sec-title">一動一靜，都是回到自己的路</h2>
+      <p class="sec-lead">動的時候，傑西陪你跑；靜的時候，Fish 陪你回到呼吸。<br>不論你從哪一邊開始，走著走著，會發現它們指向同一個地方。</p>
+    </div>
+
+    <!-- 動 -->
+    <div class="line-head reveal" id="running">
+      <span class="line-tag tag-grass">動</span>
+      <h3>先喜歡跑步，再慢慢進步</h3>
+    </div>
+    <p class="line-desc reveal">從零基礎開始也沒關係。真正卡住大家的，通常不是體能。我們先讓你喜歡上跑步，再陪你一步步穩健進步。</p>
+    <div class="cards">
+      <div class="card reveal">
+        <div class="card-photo"><img src="assets/run_class_track.jpg" alt="傑西跑步班夜間操場訓練"></div>
+        <div class="card-body">
+          <h4>傑西跑步班</h4>
+          <p>12 週實體跑班，台北、台中開課。從建立正確觀念開始，養成不受傷的跑步習慣。許多夥伴從零基礎出發，後來完成了自己的半馬、全馬。</p>
+          <span class="card-meta meta-grass">實體課程｜台北・台中</span>
+        </div>
+      </div>
+      <div class="card reveal d1">
+        <div class="card-photo"><img src="assets/parkrun_group.jpg" alt="Soul Chill Park Run 團練合照"></div>
+        <div class="card-body">
+          <h4>Soul Chill Park Run</h4>
+          <p>每月一次的免費公園團練。不用報名費、不看配速，帶著一顆想動起來的心就可以來。認識一群一起跑步的同路人。</p>
+          <span class="card-meta meta-grass">免費團練｜每月一次</span>
+        </div>
+      </div>
+      <div class="card reveal d2">
+        <div class="card-photo"><img src="assets/coach_1on1.jpg" alt="傑西教練與學員"></div>
+        <div class="card-body">
+          <h4>1:1 個人課表</h4>
+          <p>為你的目標與生活節奏量身設計課表，每週跟進調整。課表不是死的，它會跟著你的生活走。</p>
+          <span class="card-meta meta-grass">線上教練｜個人化</span>
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="card-photo illo"><img src="assets/illo_mountain.png" alt="慢慢進步線上訂閱" loading="lazy"></div>
+        <div class="card-body">
+          <h4>慢慢進步（線上訂閱）</h4>
+          <p>在 Skool 社群裡的線上陪跑方案。每週課表、跑步問題隨時發問，還有一群互相打氣的夥伴。</p>
+          <span class="card-meta meta-grass">線上訂閱｜Skool</span>
+        </div>
+      </div>
+      <div class="card reveal d1">
+        <div class="card-photo"><img src="assets/trail_run.jpg" alt="越野跑課程"></div>
+        <div class="card-body">
+          <h4>越野跑課程</h4>
+          <p>進山裡跑。定期開設的越野跑課程，打開你對山林運動的想像，用雙腳認識台灣的山。</p>
+          <span class="card-meta meta-grass">實體課程｜不定期開課</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 呼吸 3 -->
+    <div class="breathe clay reveal" style="border-radius:32px;margin:70px 0 8px;">
+      <img class="breathe-illo" src="assets/illo_mountain.png" alt="" loading="lazy">
+      <p>「不該犧牲生活去練跑步，<br>而是用跑步，讓生活變得更好。」</p>
+      <span class="cite">— Soul Chill</span>
+    </div>
+
+    <!-- 靜 -->
+    <div class="line-head reveal" id="living">
+      <span class="line-tag tag-sky">靜</span>
+      <h3>用心生活</h3>
+    </div>
+    <p class="line-desc reveal">身體放鬆了，心才靜得下來。由 Fish 與一群溫柔的老師們，用瑜珈、聲音與雙手，陪你把緊繃的日子鬆開。</p>
+    <div class="cards">
+      <div class="card reveal">
+        <div class="card-photo illo"><img src="assets/illo_yoga.png" alt="瑜珈團體課" loading="lazy"></div>
+        <div class="card-body">
+          <h4>瑜珈團體課</h4>
+          <p>台北、台中教室與線上課。基礎、流動、哈達、陰瑜珈、療癒瑜珈等多種課型，初學者友善，一人即開班。當期課表請看官方 LINE。</p>
+          <span class="card-meta meta-sky">團體課｜台北・台中・線上</span>
+        </div>
+      </div>
+      <div class="card reveal d1">
+        <div class="card-photo illo"><img src="assets/illo_mother.png" alt="孕婦瑜珈・產後修復" loading="lazy"></div>
+        <div class="card-body">
+          <h4>孕婦瑜珈・產後修復</h4>
+          <p>75 分鐘的專屬課程，在獨一無二的孕期裡，陪媽咪與寶寶一起安穩長大，舒緩孕期的腰痠與不適。</p>
+          <span class="card-meta meta-sky">專門課程｜台北・台中</span>
+        </div>
+      </div>
+      <div class="card reveal d2">
+        <div class="card-photo illo"><img src="assets/illo_bowl.png" alt="頌缽・聲音療癒" loading="lazy"></div>
+        <div class="card-body">
+          <h4>頌缽・聲音療癒</h4>
+          <p>躺下來，把身體交給大地。透過頌缽綿長的聲音進入深層放鬆，讓總是轉個不停的腦袋，好好休息一個小時。</p>
+          <span class="card-meta meta-sky">課程與工作坊</span>
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="card-photo illo"><img src="assets/illo_hands.png" alt="徒手調整" loading="lazy"></div>
+        <div class="card-body">
+          <h4>徒手調整</h4>
+          <p>一對一的身體調理。用雙手幫你鬆開長期緊繃的部位，找回身體原本的空間與彈性。</p>
+          <span class="card-meta meta-sky">一對一｜預約制</span>
+        </div>
+      </div>
+      <div class="card reveal d1">
+        <div class="card-photo illo"><img src="assets/illo_sprout.png" alt="植物上板課" loading="lazy"></div>
+        <div class="card-body">
+          <h4>植物上板課</h4>
+          <p>把鹿角蕨掛上木板，也把注意力放回手上的植物。一堂會讓你帶一片小森林回家的手作課。</p>
+          <span class="card-meta meta-sky">手作課程｜不定期開課</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 每月活動 ═══ -->
+<section class="monthly" id="monthly">
+  <div class="wrap monthly-grid">
+    <div class="reveal">
+      <div class="monthly-photo"><img src="assets/illo_family.png" alt="每月小聚會" loading="lazy"></div>
+    </div>
+    <div class="reveal d1">
+      <span class="eyebrow clay"><i></i><span>Monthly</span></span>
+      <h2 class="sec-title">每個月，<br>都有一場小聚會</h2>
+      <p class="sec-lead">除了固定課程，我們每月輪流舉辦不同主題的工作坊。有些幫你放鬆，有些讓你玩得很開心，全部都讓你更靠近自己一點。</p>
+      <div class="pill-list">
+        <span class="pill">頌缽實作</span>
+        <span class="pill">巫士鼓</span>
+        <span class="pill">親子繪本瑜珈</span>
+        <span class="pill">手機離線聚會</span>
+        <span class="pill">氣內臟按摩 × 頌缽</span>
+        <span class="pill">植物上板</span>
+      </div>
+      <p class="sec-lead">最新場次都在官方 LINE 與 Instagram 公告。</p>
+      <div class="feature-box">
+        <div class="fb-grid">
+          <div>
+            <span class="ftag">主打專案</span>
+            <h4>夜間緩降計畫</h4>
+            <p>90 天的睡眠與生活節奏調整營隊。從晚上的最後一小時開始，把睡眠、飲食與運動一步步接回生活。想了解下一梯次，歡迎私訊官方 LINE。</p>
+          </div>
+          <img class="fb-illo" src="assets/illo_moon.png" alt="" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 空間與合作 ═══ -->
+<section class="space" id="space">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow"><i></i><span>Space &amp; partnership</span></span>
+      <h2 class="sec-title">空間租借與企業合作</h2>
+      <p class="sec-lead">我們的教室與課程，也開放給需要的你。</p>
+    </div>
+    <div class="space-grid">
+      <div class="space-card reveal">
+        <img src="assets/tree_bench.jpg" alt="教室空間">
+        <div class="space-card-body">
+          <h4>教室空間租借</h4>
+          <p>老屋改造的木質空間，柔光、植物與淡淡的香氣。適合瑜珈、冥想、小型工作坊與讀書會，歡迎老師與團體洽詢時段。</p>
+        </div>
+      </div>
+      <div class="space-card reveal d1">
+        <img src="assets/flag_group.jpg" alt="企業團練活動">
+        <div class="space-card-body">
+          <h4>企業・品牌活動</h4>
+          <p>把跑步課、瑜珈課或工作坊帶進你的公司與品牌活動，客製化的內容與帶領，讓團隊一起動起來。</p>
+        </div>
+      </div>
+    </div>
+    <div class="brands reveal">
+      <span class="label">曾合作品牌與單位</span>
+      <p class="names">迪卡儂 Decathlon・lululemon・The North Face・New Balance・Superace・Xterra Taiwan</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 呼吸 4 ═══ -->
+<div class="breathe reveal">
+  <div class="breathe-dot"></div>
+  <p>離開之前，<br>記得帶走一口深呼吸。</p>
+</div>
+
+<!-- ═══ 線上聚落 ═══ -->
+<section class="online" id="online">
+  <div class="wrap">
+    <div class="online-head reveal">
+      <h2 class="sec-title">課程之外，我們都在這裡</h2>
+      <p class="sec-lead">實體課程在教室與操場，日常的陪伴在線上。不管你從哪裡認識我們，這三個地方都能找到我們。</p>
+    </div>
+    <div class="online-cards">
+      <a class="online-card reveal" href="https://lin.ee/ipjH3LI" target="_blank" rel="noopener">
+        <span class="oc-icon">💬</span>
+        <h4>官方 LINE</h4>
+        <p>課程報名、時段詢問、任何問題，官方 LINE 都會親自回覆你。這裡是唯一的客服窗口。</p>
+        <span class="oc-link">加入好友 →</span>
+      </a>
+      <a class="online-card grass reveal d1" href="https://www.skool.com/run-grow-together-9533/about" target="_blank" rel="noopener">
+        <span class="oc-icon">🏃</span>
+        <h4>Skool 跑步社群</h4>
+        <p>兩百多位夥伴的免費跑步社群。免費課程資源、訓練問答，還有每週一起慢慢進步的動力。</p>
+        <span class="oc-link">免費加入 →</span>
+      </a>
+      <a class="online-card reveal d2" href="https://www.instagram.com/soulchill_studio" target="_blank" rel="noopener">
+        <span class="oc-icon">📷</span>
+        <h4>Instagram</h4>
+        <p>工作室日常與活動公告在 @soulchill_studio，跑步觀念與訓練分享在 @jesse.coach.26。</p>
+        <span class="oc-link">追蹤我們 →</span>
+      </a>
+    </div>
+    <p class="online-note">從 IG、Threads 或實體課程認識我們的朋友，歡迎把這個網站存起來，這裡永遠是最完整的資訊入口。</p>
+  </div>
+</section>
+</main>
+
+<!-- ═══ Footer ═══ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="assets/logo_white.png" alt="Soul Chill Studio">
+        <p>用心生活工作室<br>台北・台中</p>
+      </div>
+      <div class="foot-col">
+        <h5>課程</h5>
+        <ul>
+          <li><a href="#running">傑西跑步班</a></li>
+          <li><a href="#running">1:1 個人課表</a></li>
+          <li><a href="#living">瑜珈團體課</a></li>
+          <li><a href="#living">頌缽・聲音療癒</a></li>
+          <li><a href="#monthly">每月工作坊</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>找到我們</h5>
+        <ul>
+          <li><a href="https://lin.ee/ipjH3LI" target="_blank" rel="noopener">官方 LINE</a></li>
+          <li><a href="https://www.skool.com/run-grow-together-9533/about" target="_blank" rel="noopener">Skool 社群</a></li>
+          <li><a href="https://www.instagram.com/soulchill_studio" target="_blank" rel="noopener">Instagram（工作室）</a></li>
+          <li><a href="https://www.instagram.com/jesse.coach.26" target="_blank" rel="noopener">Instagram（傑西）</a></li>
+          <li><a href="https://www.facebook.com/soulchillstudio" target="_blank" rel="noopener">Facebook</a></li>
+          <li><a href="https://www.youtube.com/@soulchill6980" target="_blank" rel="noopener">YouTube</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>合作洽詢</h5>
+        <ul>
+          <li><a href="#space">空間租借</a></li>
+          <li><a href="#space">企業・品牌活動</a></li>
+          <li><a href="https://lin.ee/ipjH3LI" target="_blank" rel="noopener">私訊官方 LINE</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      <span>© 2026 Soul Chill Studio 用心生活工作室</span>
+      <span>Smile. Breathe. Listen to your Soul.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.documentElement.classList.add("js");
+
+/* 呼吸開場：吸 4 秒、吐 4 秒，點任何地方跳過，分頁工作階段只播一次 */
+(function(){
+  const intro=document.getElementById("intro");
+  const text=document.getElementById("introText");
+  const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let seen=false;
+  try{seen=sessionStorage.getItem("sc_intro_v3")==="1";}catch(e){}
+  if(reduced||seen){intro.remove();return;}
+  intro.hidden=false;
+  document.body.classList.add("locked");
+  try{sessionStorage.setItem("sc_intro_v3","1");}catch(e){}
+  const timers=[];
+  const swap=(msg,delay)=>timers.push(setTimeout(()=>{
+    text.classList.add("swap");
+    timers.push(setTimeout(()=>{text.textContent=msg;text.classList.remove("swap");},600));
+  },delay));
+  swap("再慢慢吐掉",3400);
+  swap("歡迎來到 Soul Chill",7000);
+  timers.push(setTimeout(close,8800));
+  function close(){
+    timers.forEach(clearTimeout);
+    intro.classList.add("fade");
+    document.body.classList.remove("locked");
+    setTimeout(()=>intro.remove(),960);
+    removeEventListener("wheel",close);removeEventListener("touchstart",close);removeEventListener("keydown",close);
+  }
+  intro.addEventListener("click",close);
+  addEventListener("wheel",close,{passive:true});
+  addEventListener("touchstart",close,{passive:true});
+  addEventListener("keydown",close);
+})();
+
+/* 導覽列捲動狀態 */
+const header=document.getElementById("header");
+addEventListener("scroll",()=>header.classList.toggle("scrolled",scrollY>10));
+
+/* 手機選單 */
+const toggle=document.getElementById("navToggle");
+const links=document.getElementById("navLinks");
+toggle.addEventListener("click",()=>links.classList.toggle("open"));
+links.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>links.classList.remove("open")));
+
+/* 捲動浮現 */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});
+},{threshold:0.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

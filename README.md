@@ -85,3 +85,25 @@ cd ~/.soulchill-website-deploy && git add -A && git commit -m "update site" && g
 - 所有文案直接改 `index.html`，各區塊有 `<!-- ═══ 區塊名 ═══ -->` 註解標記
 - 顏色統一在 CSS 開頭 `:root` 變數，改一處全站生效
 - 換照片：丟新照片進 `assets/`（建議寬 ≤1600px、壓 80% 品質），改對應 `<img src>`
+
+## 改站前的設計體檢紀律（2026-07-13 立）
+
+> 來源：Nate（Skool）的前端設計 CLAUDE.md。整份是為「用 Tailwind 像素級複刻參考圖」寫的，多半不適用本站（純手寫 CSS 的沉浸式品牌站）。只抽下面兩條真正有用的，其餘（Tailwind、參考圖複刻、Windows Puppeteer 路徑）不採用。
+
+**紀律 1｜改完站別只用肉眼看，跑一次截圖體檢（尤其手機）**
+
+1. 本機起 server（避免 file:// 的資產路徑怪癖）：
+   `cd "projects/soulchill官網" && python3 -m http.server 8000`
+2. 截兩個寬度：手機 390px、桌機 1280px（在這個環境請我用 playwright MCP 截）
+3. 把圖讀進來逐項比對，講**具體**差異、不是「感覺怪怪的」：字級、間距、對齊、色號、圓角、陰影
+4. 至少跑兩輪，改到沒有可見差異為止
+   • 手機那關是重點：v2.1 之前的「iOS 無限下捲」就是一次手機截圖比對會當場抓到的東西
+
+**紀律 2｜動 CSS／換圖前先回 `docs/brand_cis/` 拿真資產**
+
+• 顏色只用 `:root` 裡的 CIS 變數（`--forest` / `--grass` / `--sky` / `--cream`…），不臨時新增即興 hex
+• 換圖優先用 `docs/brand_cis/`（插畫在 `06_吉祥物_插畫/`、實拍在 `03_照片庫`），placeholder 只是暫代、要換掉
+
+**⚠️ 反向護欄｜不要引進「高質感 SaaS」那套**
+
+Nate 檔的 anti-generic guardrails（多層 radial 漸層、噴砂噪點、疊層陰影、把每個面做高低差）是為行銷落地頁寫的。本站定位是「低設計才像 Jesse 本人」（memory `feedback_story_authentic`）。小靈魂、呼吸開場、文楷的溫度優先於 polish。想加「質感」時先問一句：這是讓站更溫暖，還是更像新創官網？
