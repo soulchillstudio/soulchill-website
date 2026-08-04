@@ -49,7 +49,15 @@ h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1
   transform:translate(-50%,-50%);z-index:-1;border-radius:50%;
   background:radial-gradient(ellipse at center,rgba(7,6,14,.94) 0%,rgba(7,6,14,.74) 42%,rgba(7,6,14,0) 72%)}
 .lab .nm{font-family:var(--serif);font-size:clamp(16px,1.55vw,21px);letter-spacing:.06em;
-  display:block;text-shadow:0 1px 12px rgba(7,6,14,1),0 0 26px rgba(7,6,14,.9)}
+  display:block;text-shadow:0 1px 12px rgba(7,6,14,1),0 0 26px rgba(7,6,14,.9);
+  transition:filter .5s,text-shadow .5s}
+.lab .dot{display:inline-block;width:7px;height:7px;border-radius:50%;
+  border:1px solid currentColor;margin-right:9px;vertical-align:middle;
+  transform:translateY(-2px);opacity:.45;transition:.5s}
+/* 沒讀過＝去飽和的休眠樣子；讀過＝本色＋實心點＋微光 */
+.lab:not(.read) .nm{filter:saturate(.28) brightness(.78)}
+.lab.read .dot{background:currentColor;opacity:1;box-shadow:0 0 11px currentColor}
+.lab.read .nm{text-shadow:0 1px 12px rgba(7,6,14,1),0 0 22px currentColor}
 .lab .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;color:var(--faint);
   display:block;margin-top:7px;text-shadow:0 0 12px rgba(7,6,14,1)}
 .lab .peek{position:absolute;left:50%;top:100%;width:23ch;font-size:12.5px;line-height:1.7;
@@ -57,6 +65,8 @@ h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1
   transform:translate(-50%,-4px);transition:opacity .3s,transform .3s;
   text-shadow:0 0 12px rgba(7,6,14,1)}
 .lab.hot .peek{opacity:1;transform:translate(-50%,2px)}
+.lab.up .peek{top:auto;bottom:100%;transform:translate(-50%,4px)}
+.lab.up.hot .peek{transform:translate(-50%,-2px)}
 .lab.hot .nm{color:#fff}
 .lab .ring{position:absolute;left:50%;top:50%;width:48px;height:48px;margin:-24px 0 0 -24px;
   border-radius:50%;border:1px solid currentColor;opacity:0;transform:scale(.6);
@@ -525,7 +535,8 @@ const NET_R = NARROW ? 3.6 : 4.5;
    ========================================================================= */
 let renderer, scene, cam, ray, clock;
 let nodeMeshes = [], edgeLines = [], pulses = [], labelEls = {};
-let core, filament, tissue, tissueLines, motes, fgGroup;
+let core, tissue, tissueLines, motes, fgGroup;
+const filaments = [];
 let camDist = 40, camDistTarget = 13.2, homeDist = 13.2;
 let yaw = 0.45, pitch = 0.24, yawV = 0, pitchV = 0, dragging = false;
 let focusPos = new THREE.Vector3(), focusTarget = new THREE.Vector3();
@@ -573,9 +584,9 @@ function pointMat(scale, opacity, additive){
   // 否則 fogColor / fogDensity 在 shader 裡拿不到值。
   const u = THREE.UniformsUtils.merge([
     THREE.UniformsLib.fog,
-    { uScale:{value:1}, uOpacity:{value:1}, uDim:{value:1} }
+    { uScale:{value:1}, uOpacity:{value:1}, uDim:{value:1}, uSat:{value:1} }
   ]);
-  u.uScale.value = scale*PXR(); u.uOpacity.value = opacity; u.uDim.value = 1;
+  u.uScale.value = scale*PXR(); u.uOpacity.value = opacity; u.uDim.value = 1; u.uSat.value = 1;
   const m = new THREE.ShaderMaterial({
     uniforms: u,
     vertexShader:`
@@ -590,15 +601,18 @@ function pointMat(scale, opacity, additive){
       }`,
     fragmentShader:`
       varying vec3 vC; varying float vFog;
-      uniform float uOpacity; uniform float uDim;
+      uniform float uOpacity; uniform float uDim; uniform float uSat;
       uniform vec3 fogColor; uniform float fogDensity;
       void main(){
         vec2 d = gl_PointCoord - vec2(0.5);
         float r = length(d);
         if (r > 0.5) discard;
         float a = smoothstep(0.5, 0.02, r);
+        // uSat 0 → 壓成暗灰＝休眠；1 → 本色＝活化
+        float lum = dot(vC, vec3(0.299, 0.587, 0.114));
+        vec3 base = mix(vec3(lum * 0.5), vC, uSat);
         float f = 1.0 - exp(-fogDensity * fogDensity * vFog * vFog);
-        vec3 c = mix(vC, fogColor, clamp(f, 0.0, 1.0));
+        vec3 c = mix(base, fogColor, clamp(f, 0.0, 1.0));
         gl_FragColor = vec4(c, a * uOpacity * uDim);
       }`,
     transparent:true, depthWrite:false, vertexColors:true, fog:true,
@@ -677,12 +691,12 @@ function buildTissue(){
   scene.add(tissueLines);
 }
 
-/* ---- 六站之間的軸突束 ---- */
+/* ---- 六站之間的軸突束：每條各自一個 Points，才能個別休眠／通電 ---- */
 function buildFilament(){
-  const pts = [], cols = [], szs = [];
   const col = new THREE.Color();
 
   EDGES.forEach(([a,b], ei) => {
+    const pts = [], cols = [], szs = [];
     const curve = CURVES[ei];
     const cA = new THREE.Color(byId[a].color), cB = new THREE.Color(byId[b].color);
     const M = 1500;
@@ -713,14 +727,16 @@ function buildFilament(){
         szs.push(0.25 + Math.pow(Math.random(),2)*1.0);
       }
     }
-  });
 
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.Float32BufferAttribute(pts,3));
-  g.setAttribute('color', new THREE.Float32BufferAttribute(cols,3));
-  g.setAttribute('sz', new THREE.Float32BufferAttribute(szs,1));
-  filament = new THREE.Points(g, pointMat(26, 0.72, true));
-  scene.add(filament);
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pts,3));
+    g.setAttribute('color', new THREE.Float32BufferAttribute(cols,3));
+    g.setAttribute('sz', new THREE.Float32BufferAttribute(szs,1));
+    const fp = new THREE.Points(g, pointMat(26, 0.2, true));
+    fp.userData = { a, b };
+    scene.add(fp);
+    filaments.push(fp);
+  });
 }
 
 /* ---- 懸浮的神經傳導物質 ---- */
@@ -795,10 +811,11 @@ function buildEdges(){
   EDGES.forEach(([a,b,why], ei) => {
     const curve = CURVES[ei];
     const g = new THREE.BufferGeometry().setFromPoints(curve.getPoints(48));
-    const m = new THREE.LineBasicMaterial({ color:0x8e86c8, transparent:true, opacity:0.22,
+    const m = new THREE.LineBasicMaterial({ color:0x3f4468, transparent:true, opacity:0.10,
       blending:THREE.AdditiveBlending, depthWrite:false, fog:true });
     const line = new THREE.Line(g, m);
-    line.userData = { a, b, why, lit:false };
+    line.userData = { a, b, why, lit:false, k:0, t:0,
+      dull:new THREE.Color(0x3f4468), hot:new THREE.Color(0xe8e4ff) };
     scene.add(line);
     edgeLines.push(line);
 
@@ -872,12 +889,24 @@ function buildNodes(){
       blending:THREE.AdditiveBlending, depthWrite:false, fog:true }));
     grp.add(dline);
 
+    // 正在讀的那一顆，套一圈面向鏡頭的環
+    const ring = new THREE.Mesh(new THREE.RingGeometry(0.60, 0.632, 72),
+      new THREE.MeshBasicMaterial({ color:c, transparent:true, opacity:0,
+        side:THREE.DoubleSide, blending:THREE.AdditiveBlending, depthWrite:false }));
+    ring.visible = false;
+    grp.add(ring);
+
     const hit = new THREE.Mesh(new THREE.SphereGeometry(1.05, 12, 12),
       new THREE.MeshBasicMaterial({ visible:false }));
     hit.userData.id = t.id;
     grp.add(hit);
 
-    grp.userData = { id:t.id, soma, glow, dend, dline, hit, base:P(t), seed:Math.random()*99 };
+    // 休眠色＝把本色壓成暗灰藍；活化才回到本色
+    const lum = 0.299*c.r + 0.587*c.g + 0.114*c.b;
+    const dull = new THREE.Color(lum*0.60, lum*0.63, lum*0.74);
+
+    grp.userData = { id:t.id, soma, glow, dend, dline, ring, hit, base:P(t),
+      seed:Math.random()*99, hue:c.clone(), dull, k:0, h:0 };
     scene.add(grp);
     nodeMeshes.push(grp);
   });
@@ -1020,7 +1049,7 @@ function tick(){
   if (!REDUCED){
     tissue.rotation.y = t * 0.006;
     tissueLines.rotation.y = tissue.rotation.y;
-    filament.rotation.y = Math.sin(t*0.05) * 0.03;
+    filaments.forEach(f => f.rotation.y = Math.sin(t*0.05) * 0.03);
     motes.rotation.y = -t * 0.014;
     core.rotation.y = t*0.22; core.rotation.x = t*0.13;
     fgGroup.children.forEach((f, i) => {
@@ -1039,34 +1068,67 @@ function tick(){
   core.userData.halo.scale.setScalar(chosen ? 1.6 + beat*0.35 : 1);
   if (chosen) core.material.color.lerp(new THREE.Color(0xffb15c), 0.02);
 
+  // 神經元三段狀態：休眠（灰、小、不跳） → 活化（本色、大、呼吸） → 正在讀（外環展開）
   nodeMeshes.forEach(g => {
-    const d = g.userData, read = !!S.visited[d.id], hot = d.id === activeId;
-    const br = 1 + Math.sin(t*1.15 + d.seed)*0.055;
-    d.soma.scale.setScalar((read ? 1.6 : 1) * br);
-    d.glow.scale.setScalar((read ? 1.6 : 1.05) * br);
-    d.glow.material.opacity = ((read ? 0.16 : 0.075) + (hot ? 0.08 : 0)) * vis;
-    d.dend.material.uniforms.uOpacity.value = read ? 0.72 : 0.46;
-    d.dline.material.opacity = (read ? 0.40 : 0.24) * vis;
+    const d = g.userData, read = !!S.visited[d.id];
+    const hot = d.id === activeId, near = d.id === hoverId;
+    d.k += ((read ? 1 : 0) - d.k) * 0.07;                 // 休眠→活化
+    d.h += (((hot || near) ? 1 : 0) - d.h) * 0.12;        // 正在讀／游標指著
+    const k = d.k, h = d.h;
+    // 活化後心跳明顯；休眠只有很輕的呼吸（提示可以點）
+    const br = 1 + Math.sin(t*1.6 + d.seed) * (0.05 + k*0.11);
+
+    d.soma.material.color.copy(d.dull).lerp(d.hue, k);
+    d.soma.scale.setScalar((0.78 + k*1.05 + h*0.26) * br);
+    d.glow.material.color.copy(d.dull).lerp(d.hue, k);
+    d.glow.scale.setScalar((0.85 + k*1.00 + h*0.55) * br);
+    d.glow.material.opacity = (0.05 + k*0.17 + h*0.11) * vis;
+
+    d.dend.material.uniforms.uSat.value     = 0.22 + k*0.78;
+    d.dend.material.uniforms.uOpacity.value = 0.34 + k*0.44 + h*0.14;
+    d.dline.material.opacity = (0.12 + k*0.30 + h*0.12) * vis;
+
+    // 正在讀的那一顆，外面套一圈慢慢展開的環
+    d.ring.visible = h > 0.02;
+    if (d.ring.visible){
+      const w = 0.5 + Math.sin(t*1.1)*0.5;
+      d.ring.scale.setScalar(1 + h*0.42 + w*0.10);
+      // 讀簡報時整片組織會變暗，但這圈是「你正在讀這一顆」的唯一指示，不能跟著暗掉
+      d.ring.material.opacity = h * (0.34 + w*0.26) * (0.45 + vis*0.55);
+      d.ring.quaternion.copy(cam.quaternion);
+    }
     if (!REDUCED) d.dend.rotation.y = Math.sin(t*0.12 + d.seed) * 0.14;
     g.position.y = d.base.y + Math.sin(t*0.45 + d.seed)*0.075;
   });
 
+  // 突觸：沒通電＝整條神經束休眠（灰、暗）；通電＝本色發亮＋訊號流動。
+  // 差別做在「粒子束」上而不只是那條細線 —— 粒子束才是眼睛看到的主體。
   const focusId = activeId || hoverId;
   edgeLines.forEach((L, i) => {
     const u = L.userData;
     const lit = !!(S.visited[u.a] && S.visited[u.b]);
     u.lit = lit;
-    const touched = focusId && (u.a === focusId || u.b === focusId);
-    let target = lit ? 0.8 : 0.22;
-    if (touched) target = 1.0;
-    else if (focusId) target *= 0.42;
-    target = Math.max(target, flash * 0.9);
-    L.material.opacity += (target * vis - L.material.opacity) * 0.09;
-    if (lit) L.material.color.lerp(new THREE.Color(0xe4e0ff), 0.02);
+    const touched = !!(focusId && (u.a === focusId || u.b === focusId));
+    u.k += ((lit ? 1 : 0) - u.k) * 0.055;
+    u.t += ((touched ? 1 : 0) - u.t) * 0.10;
+    const k = u.k, tc = u.t, F = Math.max(flash, 0);
+
+    let lineOp = 0.14 + k*0.68 + tc*0.30;
+    if (focusId && !touched) lineOp *= 0.45;
+    L.material.opacity += (Math.max(lineOp, F*0.9) * vis - L.material.opacity) * 0.12;
+    L.material.color.copy(u.dull).lerp(u.hot, Math.min(1, k + tc*0.5 + F));
+
+    const fp = filaments[i];
+    if (fp){
+      let fo = 0.26 + k*0.56 + tc*0.16 + F*0.3;
+      if (focusId && !touched) fo *= 0.55;
+      fp.material.uniforms.uSat.value     = 0.20 + Math.min(1, k + F)*0.80;
+      fp.material.uniforms.uOpacity.value = fo;
+    }
 
     const Pl = pulses[i];
-    Pl.visible = (lit || touched) && !REDUCED;
-    if (Pl.visible) runPulse(Pl, t, (touched && !lit ? 0.45 : 0.9) * vis);
+    Pl.visible = (k > 0.05 || tc > 0.05) && !REDUCED;
+    if (Pl.visible) runPulse(Pl, t, (k*0.9 + tc*0.35) * vis);
   });
   if (flash > 0) flash = Math.max(0, flash - dt * 0.55);
 
@@ -1105,7 +1167,7 @@ function buildLabels(){
     const b = document.createElement('button');
     b.className = 'lab';
     b.style.color = t.color;
-    b.innerHTML = `<span class="ring"></span><span class="nm">${t.name}</span>` +
+    b.innerHTML = `<span class="ring"></span><span class="nm"><i class="dot"></i>${t.name}</span>` +
       (t.focus ? `<span class="tag">本場聚焦</span>` : '') +
       `<span class="peek">${t.thesis.replace(/<\/?em>/g,'')}</span>`;
     b.addEventListener('click', () => openSlide(t.id));
@@ -1132,6 +1194,7 @@ function syncLabels(){
     if (fid && g.userData.id !== fid) o *= 0.34;
     el.style.opacity = o;
     el.style.zIndex = (g.userData.id === fid) ? 2 : 1;
+    el.classList.toggle('up', (-_v.y*0.5+0.5) > 0.72);   // 太低就讓預覽往上長
     el.style.pointerEvents = behind ? 'none' : 'auto';
     el.classList.toggle('read', !!S.visited[g.userData.id]);
   });
