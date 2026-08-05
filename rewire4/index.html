@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>身體就是大腦｜REWIRE 神經可塑性 第 4 場</title>
+<title>身體就是大腦｜REWIRE 神經可塑性 第 4 場（圖解版）</title>
 <meta name="description" content="階段三 增強積極性 — 潛進大腦，六個主題是六個神經元。讀過的兩站之間，突觸會通電。">
 <meta property="og:title" content="身體就是大腦｜REWIRE 第 4 場">
 <meta property="og:description" content="潛進大腦。六個主題是六個神經元，讀過的兩站之間，突觸會通電。">
@@ -38,7 +38,7 @@ body.reading #ui{opacity:0;pointer-events:none}
   text-transform:uppercase;margin-bottom:16px}
 h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1.12;
   letter-spacing:.03em;font-weight:400}
-.stage-sub{font-family:var(--mono);font-size:11.5px;letter-spacing:.24em;color:var(--dim);margin-top:14px}
+.stage-sub{font-family:var(--sans);font-size:13px;letter-spacing:.14em;color:var(--dim);margin-top:14px}
 .epigraph{font-family:var(--serif);font-size:clamp(14px,1.35vw,17px);line-height:2;color:var(--dim);
   margin-top:22px;padding-left:16px;border-left:1px solid var(--hair);max-width:30ch}
 
@@ -108,15 +108,15 @@ h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1
 #stagew.open{opacity:1;visibility:visible}
 .slide{max-width:min(880px,92vw);margin:0 auto;
   padding:clamp(70px,11vh,130px) clamp(20px,3vw,32px) clamp(90px,14vh,150px);
-  font-size:17px}
-:root[data-big="1"] .slide{font-size:21px}
+  font-size:20px}
+:root[data-big="1"] .slide{font-size:25px}
 
 .topbar{position:fixed;top:0;left:0;right:0;z-index:7;display:flex;align-items:center;
   gap:18px;padding:16px clamp(20px,3.4vw,40px);
   background:linear-gradient(180deg,rgba(7,6,14,.96),rgba(7,6,14,.72) 65%,transparent);
   opacity:0;visibility:hidden;transition:opacity .45s,visibility .45s}
 #stagew.open ~ .topbar,.topbar.on{opacity:1;visibility:visible}
-.topbar .back{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:var(--dim);
+.topbar .back{font-family:var(--sans);font-size:13.5px;letter-spacing:.1em;color:var(--dim);
   padding:8px 0;white-space:nowrap}
 .topbar .back:hover{color:var(--ink)}
 .topbar .dots{display:flex;gap:9px;margin-left:auto;align-items:center}
@@ -124,50 +124,82 @@ h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1
   transition:opacity .3s,background .3s,transform .3s}
 .tdot.read{background:currentColor;opacity:.8}
 .tdot.cur{opacity:1;transform:scale(1.5)}
-.topbar .sz{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--faint);
+.topbar .sz{font-family:var(--sans);font-size:13px;letter-spacing:.08em;color:var(--faint);
   border:1px solid var(--hair);padding:7px 13px;white-space:nowrap}
 .topbar .sz:hover{color:var(--ink);border-color:var(--ink)}
 .topbar .sz[data-on="1"]{color:var(--ink)}
 
-.sdir{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;
+.sdir{display:inline-block;font-family:var(--sans);font-size:12.5px;letter-spacing:.2em;
   padding:6px 13px;border:1px solid currentColor;margin-bottom:26px}
 .slide h2{font-family:var(--serif);font-size:3.1em;line-height:1.24;letter-spacing:.02em;
   font-weight:400;margin-bottom:38px}
-.thesis{font-family:var(--serif);font-size:1.55em;line-height:1.85;
+.thesis{font-family:var(--serif);font-size:1.66em;line-height:1.85;
   padding:30px 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);
   margin-bottom:52px;color:var(--ink)}
 .thesis em{font-style:normal;color:currentColor}
 
 .pt{margin-bottom:30px;padding-left:26px;border-left:1px solid var(--hair)}
-.pt p{font-size:1em;line-height:1.95;color:#cfcbe4}
+.pt p{font-size:1.06em;line-height:1.95;color:#cfcbe4}
 .pt p strong{font-weight:400;color:var(--ink)}
 .pt.run{border-left-color:currentColor}
 .pt.run p{color:var(--ink)}
-.pt.run::before{content:attr(data-note);display:block;font-family:var(--mono);font-size:.6em;
-  letter-spacing:.24em;color:currentColor;margin-bottom:11px}
+.pt.run::before{content:attr(data-note);display:block;font-family:var(--sans);font-size:.74em;
+  letter-spacing:.16em;color:currentColor;margin-bottom:11px}
 
 .slab{border:1px solid var(--hair);padding:30px 32px;margin:48px 0;
   background:rgba(255,255,255,.022)}
-.slab h4{font-family:var(--mono);font-size:.66em;letter-spacing:.24em;color:currentColor;margin-bottom:20px}
+.slab h4{font-family:var(--sans);font-size:.82em;letter-spacing:.14em;color:currentColor;margin-bottom:20px}
 .slab ul{list-style:none}
-.slab li{font-size:.97em;line-height:1.9;padding:8px 0 8px 22px;position:relative;color:#cfcbe4}
+.slab li{font-size:1.04em;line-height:1.9;padding:8px 0 8px 22px;position:relative;color:#cfcbe4}
 .slab li::before{content:"";position:absolute;left:0;top:19px;width:9px;height:1px;background:currentColor}
 
+/* ===================== 圖解 ===================== */
+.fig{border:1px solid var(--hair);margin:48px 0;background:rgba(255,255,255,.022)}
+.fig .fh{font-family:var(--sans);font-size:.84em;letter-spacing:.1em;color:currentColor;
+  padding:22px 28px 0}
+.fig .fb{padding:20px 24px 6px}
+.fig svg{display:block;width:100%;height:auto;overflow:visible}
+.fig .fc{font-size:.95em;line-height:1.85;color:var(--dim);padding:0 28px 24px;
+  border-top:1px solid var(--hair);margin:14px 24px 0;padding-top:16px}
+.fig .fc b{font-weight:400;color:var(--ink)}
+/* SVG 通用字級 —— 用 px 是因為 viewBox 會等比縮，em 會跟著父層亂跳 */
+svg .t{font-family:"Noto Sans TC","PingFang TC",sans-serif;font-size:15px;fill:#cfcbe4}
+svg .tb{font-family:"Noto Sans TC","PingFang TC",sans-serif;font-size:17px;fill:#eceaf6}
+svg .ts{font-family:"Noto Sans TC","PingFang TC",sans-serif;font-size:13px;fill:#a49dbe}
+svg .tm{font-family:"Noto Sans TC","PingFang TC",sans-serif;font-size:12px;letter-spacing:.1em;fill:#7d76a0}
+svg .tc{fill:currentColor}
+svg .ln{stroke:rgba(236,234,246,.16);fill:none}
+svg .lc{stroke:currentColor;fill:none}
+
+/* ===================== 人名／名詞卡 ===================== */
+.who{margin:52px 0}
+.who > h4{font-family:var(--sans);font-size:.82em;letter-spacing:.14em;color:currentColor;
+  margin-bottom:6px}
+.who > .sub{font-size:.88em;color:var(--faint);margin-bottom:20px;line-height:1.8}
+.who .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:12px}
+.card{border:1px solid var(--hair);padding:18px 20px;background:rgba(255,255,255,.022)}
+.card .n{font-family:var(--serif);font-size:1.14em;letter-spacing:.03em;color:var(--ink)}
+.card .en{font-family:var(--sans);font-size:.76em;letter-spacing:.04em;color:var(--faint);
+  margin-top:5px;display:block}
+.card .d{font-size:.93em;line-height:1.85;color:#cfcbe4;margin-top:11px}
+.card.term{border-left:1px solid currentColor}
+.card.term .n{color:currentColor}
+
 .ask{border:1px solid currentColor;padding:34px 36px;margin-top:56px}
-.ask .lbl{font-family:var(--mono);font-size:.62em;letter-spacing:.3em;margin-bottom:16px}
-.ask p{font-family:var(--serif);font-size:1.32em;line-height:1.85;color:var(--ink)}
+.ask .lbl{font-family:var(--sans);font-size:.78em;letter-spacing:.2em;margin-bottom:16px}
+.ask p{font-family:var(--serif);font-size:1.4em;line-height:1.85;color:var(--ink)}
 
 .links{margin-top:60px;padding-top:28px;border-top:1px solid var(--hair)}
-.links h5{font-family:var(--mono);font-size:.64em;letter-spacing:.24em;color:var(--faint);margin-bottom:8px}
-.links .sub{font-size:.78em;color:var(--faint);margin-bottom:22px;line-height:1.8}
+.links h5{font-family:var(--sans);font-size:.8em;letter-spacing:.14em;color:var(--faint);margin-bottom:8px}
+.links .sub{font-size:.88em;color:var(--faint);margin-bottom:22px;line-height:1.8}
 .lk{display:block;width:100%;text-align:left;padding:17px 0 17px 24px;
   border-bottom:1px solid var(--hair);position:relative;transition:padding-left .3s}
 .lk:hover{padding-left:32px}
 .lk::before{content:"";position:absolute;left:0;top:27px;width:13px;height:1px;background:currentColor}
-.lk .to{font-family:var(--serif);font-size:1.16em;letter-spacing:.04em}
-.lk .why{display:block;font-size:.8em;color:var(--dim);margin-top:6px;line-height:1.75}
+.lk .to{font-family:var(--serif);font-size:1.22em;letter-spacing:.04em}
+.lk .why{display:block;font-size:.9em;color:var(--dim);margin-top:6px;line-height:1.75}
 .backstar{display:block;width:100%;margin-top:52px;padding:19px;border:1px solid var(--hair);
-  font-family:var(--mono);font-size:.68em;letter-spacing:.22em;color:var(--dim);transition:.3s}
+  font-family:var(--sans);font-size:.82em;letter-spacing:.14em;color:var(--dim);transition:.3s}
 .backstar:hover{border-color:var(--ink);color:var(--ink)}
 
 /* ===================== 作業 ===================== */
@@ -249,7 +281,7 @@ h1.title{font-family:var(--serif);font-size:clamp(34px,5.6vw,68px);line-height:1
   <div class="masthead">
     <div class="eyebrow">Rewire · 神經可塑性 · 第 4 場</div>
     <h1 class="title">身體就是大腦</h1>
-    <div class="stage-sub">階段三　BOOST THE POSITIVE</div>
+    <div class="stage-sub">階段三　BOOST THE POSITIVE　·　圖解版</div>
     <p class="epigraph">承認你想要過上更美好的生活。繼續推進。你配得到更美好的生活。為之奮鬥。</p>
   </div>
 
@@ -513,9 +545,459 @@ const TASKS = [
 ];
 
 /* =========================================================================
+   圖解與人名卡（加強版）
+   —— 所有數字只用書裡出現過的，沒有的一律畫成質性對照，不編造刻度
+   ========================================================================= */
+const RICH = {
+
+resilience:{
+  figs:[
+    { h:'三類壓力，只有中間那類是你自己排的',
+      svg:`<svg viewBox="0 0 600 196" role="img" aria-label="三類壓力對照">
+        <rect x="14" y="26" width="180" height="132" class="ln" rx="2"/>
+        <rect x="210" y="26" width="180" height="132" fill="currentColor" opacity=".07" rx="2"/>
+        <rect x="210" y="26" width="180" height="132" class="lc" rx="2"/>
+        <rect x="406" y="26" width="180" height="132" class="ln" rx="2"/>
+        <text x="30" y="52" class="tm">ACUTE</text>
+        <text x="226" y="52" class="tm" fill="currentColor">VOLUNTARY</text>
+        <text x="422" y="52" class="tm">CHRONIC</text>
+        <text x="30" y="76" class="tb">急性</text>
+        <text x="226" y="76" class="tb" style="fill:currentColor">自願</text>
+        <text x="422" y="76" class="tb">慢性</text>
+        <text x="30" y="102" class="t">求職面試　考試</text><text x="30" y="122" class="t">公開演講</text><text x="30" y="142" class="t">衝突對抗</text>
+        <text x="226" y="102" class="t">桑拿　運動</text><text x="226" y="122" class="t">吐納　冷水浴</text><text x="226" y="142" class="t">學業追求</text>
+        <text x="422" y="102" class="t">工作　財務　感情</text><text x="422" y="122" class="t">健康　照顧者壓力</text><text x="422" y="142" class="t">社會孤立</text>
+        <text x="210" y="182" class="ts" style="fill:currentColor">↑ 唯一一類：進入交感狀態的時機與恢復的節奏，都由你決定</text>
+      </svg>`,
+      cap:'<b>急性壓力不會削弱免疫，反而增強你應對未來壓力的能力。</b>關鍵在「進入交感」與「恢復」之間取得平衡——鞭策自己是必要的，操之過急就會疲倦、難恢復、受傷。' },
+    { h:'自上而下調節　top-down regulation',
+      svg:`<svg viewBox="0 0 600 232" role="img" aria-label="前額葉皮質調節杏仁核與下丘腦">
+        <rect x="176" y="14" width="248" height="52" class="lc" rx="2"/>
+        <text x="300" y="38" class="tb" text-anchor="middle" style="fill:currentColor">前額葉皮質</text>
+        <text x="300" y="56" class="ts" text-anchor="middle">推理　邏輯　計畫</text>
+        <path d="M300 66 L300 104" class="lc" stroke-width="1.5"/>
+        <path d="M282 104 L318 104" class="lc" stroke-width="2.5"/>
+        <text x="332" y="94" class="ts" style="fill:currentColor">抑制過度反應</text>
+        <path d="M300 104 L182 132" class="ln"/><path d="M300 104 L418 132" class="ln"/>
+        <rect x="66" y="132" width="200" height="56" class="ln" rx="2"/>
+        <rect x="334" y="132" width="200" height="56" class="ln" rx="2"/>
+        <text x="166" y="156" class="tb" text-anchor="middle">杏仁核</text>
+        <text x="166" y="176" class="ts" text-anchor="middle">恐懼</text>
+        <text x="434" y="156" class="tb" text-anchor="middle">下丘腦</text>
+        <text x="434" y="176" class="ts" text-anchor="middle">壓力反應</text>
+        <text x="300" y="218" class="ts" text-anchor="middle">前提：你還沒被壓力淹沒　而且對狀況有心理準備</text>
+      </svg>`,
+      cap:'習慣市場波動的交易員，恐慌時還能理性思考，因為他經歷過。<b>冥想能加強前額葉皮質，增強這條由上往下的調節</b>——受訓者執行壓力任務時，壓力荷爾蒙與發炎分子顯著下降。' },
+    { h:'溫霍夫式訓練兩週後　身體很吵，腦子很靜',
+      svg:`<svg viewBox="0 0 600 190" role="img" aria-label="腎上腺素與正腎上腺素對照">
+        <text x="14" y="24" class="tm">BODY</text>
+        <text x="14" y="46" class="t">腎上腺素（身體）</text>
+        <rect x="200" y="30" width="66" height="20" class="ln" rx="1"/>
+        <text x="212" y="45" class="ts">對照組</text>
+        <rect x="200" y="58" width="330" height="20" fill="currentColor" opacity=".55" rx="1"/>
+        <text x="540" y="73" class="ts" style="fill:currentColor">高</text>
+        <text x="200" y="94" class="ts" style="fill:currentColor">受試組 —— 冷水浴　冥想　慢吸急吐氣</text>
+        <line x1="14" y1="112" x2="586" y2="112" class="ln"/>
+        <text x="14" y="138" class="tm">BRAIN</text>
+        <text x="14" y="160" class="t">正腎上腺素（大腦）</text>
+        <rect x="200" y="144" width="180" height="20" class="ln" rx="1"/>
+        <text x="212" y="159" class="ts">對照組</text>
+        <rect x="200" y="144" width="84" height="20" fill="currentColor" opacity=".55" rx="1"/>
+        <text x="392" y="159" class="ts" style="fill:currentColor">↓ 反而比對照組低</text>
+      </svg>`,
+      cap:'體內充滿壓力荷爾蒙，心靈仍然平靜——就像上了擂台的拳擊手。<b>經常跑步的人也一樣：身體充滿腎上腺素，頭腦卻平靜而流動。</b>腎上腺素不會減少，減少的是兩個系統之間那條連結。' }
+  ],
+  who:[
+    { n:'克拉姆', en:'Alia Crum', d:'一組看「壓力有好處」的短片，一組看「壓力使人衰弱」。被告知壓力是正面的那組，工作表現改善、負面症狀變少，心臟效率提高，壓力事件期間血壓還下降。' },
+    { n:'溫霍夫', en:'Wim Hof', d:'冷水浴＋呼吸法。受他啟發的實驗做了兩週，測出「腎上腺素高、正腎上腺素反而低」的反直覺結果。' },
+    { n:'培理博士', en:'Dr Bruce Perry', d:'兒童創傷研究。結論是：無論孩子經歷過什麼，日後能茁壯的都是得到過支持的人。' },
+    { n:'美國心理學協會', en:'APA', d:'心靈韌性＝面對逆境、創傷、威脅時的「適應良好過程」。是動態特徵，不是天生分配好的額度。' },
+    { n:'經驗依賴可塑性', en:'experience-dependent plasticity', d:'每次失敗，大腦會把「未來如何反應」寫進經驗資料庫。失敗對未來的成功是必要的。', term:1 }
+  ]
+},
+
+mindset:{
+  figs:[
+    { h:'杜維克的誇獎實驗　一句話，兩條路',
+      svg:`<svg viewBox="0 0 600 250" role="img" aria-label="誇聰明與誇努力導致的不同選擇">
+        <rect x="222" y="10" width="156" height="40" class="ln" rx="2"/>
+        <text x="300" y="35" class="tb" text-anchor="middle">同一批學生</text>
+        <path d="M300 50 L300 68 L150 68 L150 92" class="ln"/>
+        <path d="M300 50 L300 68 L450 68 L450 92" class="lc"/>
+        <rect x="24" y="92" width="252" height="44" class="ln" rx="2"/>
+        <text x="150" y="120" class="tb" text-anchor="middle">「你真聰明」</text>
+        <rect x="324" y="92" width="252" height="44" fill="currentColor" opacity=".07" rx="2"/>
+        <rect x="324" y="92" width="252" height="44" class="lc" rx="2"/>
+        <text x="450" y="120" class="tb" text-anchor="middle" style="fill:currentColor">「你一定付出了很大努力」</text>
+        <path d="M150 136 L150 158" class="ln"/><path d="M450 136 L450 158" class="lc"/>
+        <text x="150" y="178" class="t" text-anchor="middle">之後偏好較簡單的題目</text>
+        <text x="150" y="200" class="t" text-anchor="middle">甚至謊報分數誇大水準</text>
+        <text x="150" y="228" class="ts" text-anchor="middle">要繼續證明「我是聰明的」</text>
+        <text x="450" y="178" class="t" text-anchor="middle" style="fill:#eceaf6">之後選更需要腦力的挑戰題</text>
+        <text x="450" y="200" class="t" text-anchor="middle" style="fill:#eceaf6">不太在乎別人考幾分</text>
+        <text x="450" y="228" class="ts" text-anchor="middle" style="fill:currentColor">想拿到能解決未來問題的資訊</text>
+      </svg>`,
+      cap:'差別不在能力，在<b>那句誇獎把身分認同綁到哪裡</b>——綁在「我是什麼樣的人」，難題就是風險；綁在「我做了什麼」，難題只是下一份資料。' },
+    { h:'心態改變時，大腦裡同時發生三件事',
+      svg:`<svg viewBox="0 0 600 168" role="img" aria-label="心態改變時大腦的三個變化">
+        <rect x="14" y="20" width="180" height="106" class="ln" rx="2"/>
+        <rect x="210" y="20" width="180" height="106" class="ln" rx="2"/>
+        <rect x="406" y="20" width="180" height="106" class="ln" rx="2"/>
+        <text x="104" y="52" class="tb" text-anchor="middle" style="fill:currentColor">獎勵　↑</text>
+        <text x="300" y="52" class="tb" text-anchor="middle" style="fill:currentColor">正增強　↑</text>
+        <text x="496" y="52" class="tb" text-anchor="middle" style="fill:currentColor">對失敗的恐懼　↓</text>
+        <text x="104" y="80" class="t" text-anchor="middle">與努力和堅持</text>
+        <text x="104" y="100" class="t" text-anchor="middle">相關的區域變活躍</text>
+        <text x="300" y="80" class="t" text-anchor="middle">遇到障礙時</text>
+        <text x="300" y="100" class="t" text-anchor="middle">獎勵中樞被活化</text>
+        <text x="496" y="80" class="t" text-anchor="middle">與恐懼和焦慮</text>
+        <text x="496" y="100" class="t" text-anchor="middle">相關的區域活動下降</text>
+        <text x="104" y="118" class="ts" text-anchor="middle">付出努力本身變成有獎勵性的事</text>
+        <text x="300" y="118" class="ts" text-anchor="middle">強化你對成長型心態的信念</text>
+        <text x="300" y="154" class="ts" text-anchor="middle">相關腦區：紋狀體　基底神經節　—　負責獎勵相關的學習</text>
+      </svg>`,
+      cap:'接受<b>四週</b>訓練的學童，解難題時這兩區活動增加，犯錯後能更準確作答、記住錯誤並自我糾正。<b>心態不是精神喊話，是量得到的線路變化。</b>' }
+  ],
+  who:[
+    { n:'杜維克', en:'Carol Dweck', d:'成長型心態的提出者。核心句：人們相信最基本的能力可以透過奉獻和努力發展——大腦和天賦只是起點。' },
+    { n:'瑪莎', en:'書中案例', d:'從小被誇聰明、學歷漂亮、進了大公司，卻舉步維艱、強烈不安全感。治療師做的不是提升能力，是幫她把身分認同與工作表現鬆綁。' },
+    { n:'喬科維奇', en:'Novak Djokovic', d:'「身分認同不等於表現」的範例——他說即使輸了球，他也不後悔。' },
+    { n:'紋狀體與基底神經節', en:'striatum / basal ganglia', d:'獎勵相關學習的腦區。成長型心態訓練後，解難題時這兩區活動增加。', term:1 }
+  ]
+},
+
+muscle:{
+  figs:[
+    { h:'肌腦軸　肌肉怎麼跟大腦講話',
+      svg:`<svg viewBox="0 0 600 268" role="img" aria-label="肌腦軸流程圖">
+        <rect x="14" y="14" width="150" height="48" class="ln" rx="2"/>
+        <text x="89" y="36" class="t" text-anchor="middle">大腦發出訊號</text>
+        <text x="89" y="54" class="ts" text-anchor="middle">收縮　放鬆</text>
+        <path d="M164 38 L206 38" class="ln"/><path d="M198 33 L206 38 L198 43" class="ln"/>
+        <rect x="206" y="14" width="150" height="48" fill="currentColor" opacity=".07" rx="2"/>
+        <rect x="206" y="14" width="150" height="48" class="lc" rx="2"/>
+        <text x="281" y="36" class="tb" text-anchor="middle" style="fill:currentColor">肌肉收縮</text>
+        <text x="281" y="54" class="ts" text-anchor="middle">這個機械動作本身</text>
+        <path d="M356 38 L398 38" class="lc"/><path d="M390 33 L398 38 L390 43" class="lc"/>
+        <rect x="398" y="14" width="188" height="48" class="lc" rx="2"/>
+        <text x="492" y="36" class="tb" text-anchor="middle" style="fill:currentColor">釋放肌肉因子</text>
+        <text x="492" y="54" class="tm" text-anchor="middle">MYOKINES</text>
+        <path d="M492 62 L492 88 L300 88 L300 104" class="lc"/>
+        <path d="M295 96 L300 104 L305 96" class="lc"/>
+        <text x="316" y="82" class="ts" style="fill:currentColor">經血流　直接與大腦溝通</text>
+        <rect x="150" y="104" width="300" height="46" class="lc" rx="2"/>
+        <text x="300" y="132" class="tb" text-anchor="middle" style="fill:currentColor">大腦</text>
+        <path d="M300 150 L300 160 M150 160 L450 160 M150 160 L150 168 M450 160 L450 168" class="ln"/>
+        <rect x="14" y="168" width="272" height="42" class="ln" rx="2"/>
+        <rect x="314" y="168" width="272" height="42" class="ln" rx="2"/>
+        <text x="150" y="188" class="tb" text-anchor="middle">BDNF</text>
+        <text x="150" y="204" class="ts" text-anchor="middle">腦源性神經營養因子　支持神經元生長與存活</text>
+        <text x="450" y="188" class="tb" text-anchor="middle">IGF-1</text>
+        <text x="450" y="204" class="ts" text-anchor="middle">主要在舉重期間釋放　參與突觸可塑性</text>
+        <text x="300" y="238" class="t" text-anchor="middle">減輕憂鬱症狀　改善焦慮　保護神經　維持突觸完整性</text>
+        <text x="300" y="258" class="ts" text-anchor="middle">確保神經元正確放電</text>
+      </svg>`,
+      cap:'<b>肌肉因子是一種肌肉蛋白質，收縮時被釋放，透過肌腦軸直接跟大腦說話。</b>BDNF 水準較低，與憂鬱症狀的嚴重度相關；IGF-1 會削弱海馬體中恐懼記憶的突觸連結——像重寫大腦原有的那份「可怕」劇本。' },
+    { h:'壓力怎麼把色胺酸這條路搶走',
+      svg:`<svg viewBox="0 0 600 224" role="img" aria-label="色胺酸路徑分岔">
+        <rect x="222" y="12" width="156" height="40" class="lc" rx="2"/>
+        <text x="300" y="37" class="tb" text-anchor="middle" style="fill:currentColor">色胺酸</text>
+        <path d="M300 52 L300 70 L140 70 L140 92" class="ln"/>
+        <path d="M300 52 L300 70 L440 70 L440 92" class="lc" stroke-dasharray="4 3"/>
+        <text x="196" y="64" class="ts" text-anchor="end">正常</text>
+        <text x="452" y="64" class="ts" style="fill:currentColor">壓力＋發炎推向這邊</text>
+        <rect x="40" y="92" width="200" height="38" class="ln" rx="2"/>
+        <text x="140" y="116" class="tb" text-anchor="middle">血清素</text>
+        <path d="M140 130 L140 150" class="ln"/>
+        <rect x="40" y="150" width="200" height="38" class="ln" rx="2"/>
+        <text x="140" y="174" class="tb" text-anchor="middle">褪黑激素</text>
+        <rect x="340" y="92" width="200" height="38" class="lc" rx="2"/>
+        <text x="440" y="116" class="tb" text-anchor="middle" style="fill:currentColor">犬尿胺酸</text>
+        <path d="M440 130 L440 142 L378 142 L378 154" class="lc"/>
+        <path d="M440 130 L440 142 L502 142 L502 154" class="lc"/>
+        <rect x="296" y="154" width="164" height="46" class="ln" rx="2"/>
+        <rect x="470" y="154" width="116" height="46" class="ln" rx="2"/>
+        <text x="378" y="174" class="t" text-anchor="middle">喹啉酸</text>
+        <text x="378" y="192" class="ts" text-anchor="middle">神經毒性</text>
+        <text x="528" y="174" class="t" text-anchor="middle">犬尿酸</text>
+        <text x="528" y="192" class="ts" text-anchor="middle">加劇腦部發炎</text>
+        <text x="300" y="218" class="ts" text-anchor="middle">結果：可以拿來造血清素的原料變少　神經退化　憂鬱與焦慮擴大</text>
+      </svg>`,
+      cap:'慢性發炎會穿過血腦屏障進入大腦。<b>「如果大腦健康是硬體，心理健康是軟體，那你很難在無法最優化工作的硬體上，進行任何軟體更新。」</b>' },
+    { h:'五個強度區　與作者的每週處方',
+      svg:`<svg viewBox="0 0 600 262" role="img" aria-label="五個強度區與每週訓練處方">
+        <text x="14" y="20" class="tm">ZONE</text>
+        <rect x="14" y="30" width="96" height="30" class="ln" rx="1"/>
+        <text x="62" y="50" class="t" text-anchor="middle">一區</text>
+        <rect x="118" y="30" width="112" height="30" fill="currentColor" opacity=".1"/>
+        <text x="126" y="50" class="ts">非常輕鬆　伸展操</text>
+        <rect x="14" y="66" width="96" height="30" class="lc" rx="1"/>
+        <text x="62" y="86" class="t" text-anchor="middle" style="fill:currentColor">二區</text>
+        <rect x="118" y="66" width="330" height="30" fill="currentColor" opacity=".38"/>
+        <text x="126" y="86" class="ts" style="fill:#eceaf6">輕鬆　緩步慢跑　爬樓梯　輕量阻力　—　還講得出話</text>
+        <text x="456" y="86" class="tb" style="fill:currentColor">150 分鐘／週</text>
+        <rect x="14" y="102" width="96" height="30" class="ln" rx="1"/>
+        <text x="62" y="122" class="t" text-anchor="middle">三區</text>
+        <rect x="118" y="102" width="180" height="30" fill="currentColor" opacity=".16"/>
+        <text x="126" y="122" class="ts">中度　中速慢跑或騎車</text>
+        <rect x="14" y="138" width="96" height="30" class="ln" rx="1"/>
+        <text x="62" y="158" class="t" text-anchor="middle">四區</text>
+        <rect x="118" y="138" width="230" height="30" fill="currentColor" opacity=".22"/>
+        <text x="126" y="158" class="ts">高強度　砸球　拳擊　間歇跑　重量級舉重</text>
+        <rect x="14" y="174" width="96" height="30" class="lc" rx="1"/>
+        <text x="62" y="194" class="t" text-anchor="middle" style="fill:currentColor">五區</text>
+        <rect x="118" y="174" width="120" height="30" fill="currentColor" opacity=".5"/>
+        <text x="126" y="194" class="ts" style="fill:#eceaf6">極高　短跑　Tabata</text>
+        <text x="246" y="194" class="tb" style="fill:currentColor">3–8 分鐘／週</text>
+        <line x1="14" y1="218" x2="586" y2="218" class="ln"/>
+        <text x="14" y="240" class="t">＋　每週 2 至 3 回重量訓練</text>
+        <text x="14" y="258" class="ts">她主張阻力訓練是獲得健康長壽的最佳訓練方法</text>
+        <text x="330" y="240" class="t">＋　盡可能整合神經運動訓練</text>
+        <text x="330" y="258" class="ts">協調　平衡　敏捷　本體感覺</text>
+      </svg>`,
+      cap:'<b>第二區的定義是「還能一面鍛鍊一面講話」，不是配速表上的某個數字。</b>每個人的第二區都不同——有人是輕鬆慢跑，作者是遛狗或平路騎車。能講話的快步行走，對整體健康就極為有益。' }
+  ],
+  who:[
+    { n:'肌肉因子', en:'myokines', d:'肌肉收縮時釋放的蛋白質，透過肌腦軸直接與大腦溝通。減輕憂鬱、改善焦慮、保護神經、維持突觸完整性。', term:1 },
+    { n:'肌腦軸', en:'muscle-brain axis', d:'做運動可保護大腦，使其免於陷入憂鬱、焦慮和神經退化。', term:1 },
+    { n:'BDNF', en:'腦源性神經營養因子', d:'支持神經元生長、存活與功能，對神經可塑性至關重要。水準較低與憂鬱症狀的嚴重度相關。', term:1 },
+    { n:'IGF-1', en:'類胰島素生長因子', d:'主要在舉重訓練期間釋放。同一個分子，從肝臟釋放和從肌肉釋放，效果不同。', term:1 },
+    { n:'EMDR', en:'眼動減敏與歷程更新療法', d:'橫向眼球運動活化額頂葉網絡，而它與杏仁核競爭資源。書中說：這適用於任何類型向前移動的運動。', term:1 },
+    { n:'額頂葉網絡', en:'frontoparietal network', d:'用額葉皮質時，杏仁核就變不活躍。走路、跑步、騎車時經過的風景會活化它、同時降低杏仁核活動——所以心煩的時候出去走走，問題會鬆開一點。', term:1 },
+    { n:'粒線體', en:'mitochondria', d:'細胞的發電廠，產生 ATP＝能量貨幣。有氧會增加它的數量，它也參與管理氧化壓力與發炎。', term:1 },
+    { n:'灰質與白質', en:'grey / white matter', d:'灰質＝細胞體、樹突和突觸，20 歲充分發育；白質＝有髓鞘的連接束，20–30 歲發育。兩者都能重組線路。神經退化性疾病的特徵就是灰質流失。', term:1 }
+  ]
+},
+
+sleep:{
+  figs:[
+    { h:'一夜的睡眠結構',
+      svg:`<svg viewBox="0 0 600 268" role="img" aria-label="一夜睡眠週期結構圖">
+        <text x="14" y="18" class="tm">HYPNOGRAM　一晚 8 小時　每個週期約 90 分鐘</text>
+        <text x="10" y="52" class="ts">清醒</text>
+        <text x="10" y="86" class="ts" style="fill:currentColor">REM</text>
+        <text x="10" y="120" class="ts">淺睡</text>
+        <text x="10" y="154" class="ts">深睡</text>
+        <line x1="56" y1="60" x2="586" y2="60" class="ln"/>
+        <line x1="56" y1="94" x2="586" y2="94" class="ln"/>
+        <line x1="56" y1="128" x2="586" y2="128" class="ln"/>
+        <line x1="56" y1="162" x2="586" y2="162" class="ln"/>
+        <rect x="56" y="106" width="33" height="18" fill="#5b5580"/>
+        <rect x="89" y="140" width="46" height="18" fill="currentColor" opacity=".85"/>
+        <rect x="135" y="106" width="20" height="18" fill="#5b5580"/>
+        <rect x="155" y="72" width="20" height="18" fill="currentColor" opacity=".45"/>
+        <rect x="175" y="106" width="26" height="18" fill="#5b5580"/>
+        <rect x="201" y="140" width="46" height="18" fill="currentColor" opacity=".85"/>
+        <rect x="247" y="106" width="20" height="18" fill="#5b5580"/>
+        <rect x="267" y="72" width="26" height="18" fill="currentColor" opacity=".45"/>
+        <rect x="293" y="106" width="59" height="18" fill="#5b5580"/>
+        <rect x="352" y="140" width="20" height="18" fill="currentColor" opacity=".85"/>
+        <rect x="372" y="106" width="13" height="18" fill="#5b5580"/>
+        <rect x="385" y="72" width="20" height="18" fill="currentColor" opacity=".45"/>
+        <rect x="405" y="106" width="53" height="18" fill="#5b5580"/>
+        <rect x="458" y="72" width="40" height="18" fill="currentColor" opacity=".45"/>
+        <rect x="498" y="106" width="33" height="18" fill="#5b5580"/>
+        <rect x="531" y="72" width="55" height="18" fill="currentColor" opacity=".45"/>
+        <line x1="56" y1="176" x2="586" y2="176" class="ln"/>
+        <text x="56" y="194" class="tm">0h</text><text x="188" y="194" class="tm">2h</text>
+        <text x="320" y="194" class="tm">4h</text><text x="452" y="194" class="tm">6h</text>
+        <text x="562" y="194" class="tm">8h</text>
+        <line x1="452" y1="36" x2="452" y2="186" stroke="#ff6b6b" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <text x="460" y="32" class="ts" fill="#ff6b6b">睡 6 小時＝從這裡切掉</text>
+        <text x="56" y="222" class="t" style="fill:currentColor">■</text>
+        <text x="74" y="222" class="ts">深睡：一夜三次，入睡一小時內就進入，隨夜晚推移逐漸縮短　→　生長激素在這裡釋放</text>
+        <text x="56" y="244" class="t" style="fill:currentColor" opacity=".55">■</text>
+        <text x="74" y="244" class="ts">REM：愈接近早晨愈長　→　男性大部分睪固酮在這裡釋放，最長的兩段全在 6 小時之後</text>
+        <text x="56" y="264" class="ts">比例：睡 7–8 小時　REM 約 100–120 分鐘　深睡約 80–95 分鐘</text>
+      </svg>`,
+      cap:'<b>睡 6 小時，砍掉的不是「最後那一小時」，是整晚最長的兩段 REM。</b>而 REM 負責消除創傷經驗與侵入性意念的情緒負擔，也是睪固酮釋放的窗口。' },
+    { h:'睡 5 小時，睪固酮掉的速度',
+      svg:`<svg viewBox="0 0 600 176" role="img" aria-label="睪固酮下降幅度對照">
+        <text x="14" y="24" class="t">連續 8 晚　每晚睡 5 小時</text>
+        <rect x="14" y="34" width="440" height="26" fill="currentColor" opacity=".55" rx="1"/>
+        <text x="466" y="53" class="tb" style="fill:currentColor">↓ 10–15%</text>
+        <text x="14" y="94" class="t">正常老化　每一年</text>
+        <rect x="14" y="104" width="52" height="26" class="ln" rx="1"/>
+        <rect x="14" y="104" width="52" height="26" fill="currentColor" opacity=".22" rx="1"/>
+        <text x="78" y="123" class="tb">↓ 1–2%</text>
+        <text x="14" y="164" class="ts">睪固酮：男女都有。認知功能的關鍵調節劑，負責肌肉生長與骨質密度。</text>
+      </svg>`,
+      cap:'八個晚上的代價，等於好幾年的自然老化。<b>睡 6 小時＝失去一整個 REM 週期，也失去一整個睪固酮釋放週期。</b>女性睪固酮偏低與睡眠效率下降有關，而且是雙向的。' },
+    { h:'睡覺時大腦在做的兩件事',
+      svg:`<svg viewBox="0 0 600 178" role="img" aria-label="深度睡眠的清毒與記憶鞏固">
+        <rect x="14" y="16" width="278" height="128" class="lc" rx="2"/>
+        <rect x="308" y="16" width="278" height="128" class="lc" rx="2"/>
+        <text x="34" y="44" class="tm" fill="currentColor">CLEAN</text>
+        <text x="34" y="70" class="tb" style="fill:currentColor">類淋巴系統清毒</text>
+        <text x="34" y="96" class="t">大腦的廢物清除系統，在深度睡眠</text>
+        <text x="34" y="116" class="t">時運作。失能會導致神經元損失、</text>
+        <text x="34" y="136" class="t">發炎，甚至可能導致失智。</text>
+        <text x="328" y="44" class="tm" fill="currentColor">ENCODE</text>
+        <text x="328" y="70" class="tb" style="fill:currentColor">形成新的突觸連結</text>
+        <text x="328" y="96" class="t">所有記憶與新資訊都在睡眠時於記</text>
+        <text x="328" y="116" class="t">憶中樞鞏固和編碼。清醒時取得的</text>
+        <text x="328" y="136" class="t">記憶，最初是脆弱的。</text>
+        <text x="300" y="170" class="ts" text-anchor="middle">→　所以「改變行為最重要的一步」發生在你睡著之後，不是白天下的決心</text>
+      </svg>`,
+      cap:'每晚睡 6 小時的人，一週後<b>約 3% 的基因發生負面改變</b>——一半影響免疫系統、增加體內發炎，另一半增加腫瘤進展的速度。' }
+  ],
+  who:[
+    { n:'馬修·沃克', en:'Matthew Walker《為什麼要睡覺？》', d:'「每晚睡不到 7 小時的女性，體重大幅增加的可能性高出 38%。」作者 2015 年以為這是誇張說法，讀了這本書才恍然大悟。' },
+    { n:'《高年級實習生》', en:'The Intern', d:'書中的破題例子。但重點根本不是減肥，是睡眠影響我們改變行為的能力。' },
+    { n:'類淋巴系統', en:'glymphatic system', d:'大腦的廢物清除系統，在深度睡眠期間清除毒素。失能會導致神經元損失、發炎，甚至可能導致失智。', term:1 },
+    { n:'生長激素', en:'growth hormone', d:'主要在深度睡眠期間釋放。幫助恢復所有功能（包括慢性壓力造成的損害）、調節代謝、修復支持神經元的細胞，並且會增加多巴胺釋放。', term:1 },
+    { n:'低電量模式', en:'階段 1 的概念', d:'會損害大腦做可塑性改變的能力。睡眠不足正是把我們推進那個狀態。', term:1 }
+  ]
+},
+
+dopamine:{
+  figs:[
+    { h:'高峰與基準線的差距',
+      svg:`<svg viewBox="0 0 600 268" role="img" aria-label="高峰與基準線差距決定多巴胺釋放量">
+        <text x="14" y="18" class="tm">SAME PEAK　兩個高峰一樣高</text>
+        <line x1="20" y1="42" x2="580" y2="42" stroke="rgba(236,234,246,.28)" stroke-dasharray="4 4"/>
+        <path d="M20 206 C90 206 110 42 150 42 C190 42 210 206 280 206" fill="currentColor" opacity=".16"/>
+        <path d="M20 206 C90 206 110 42 150 42 C190 42 210 206 280 206" class="lc" stroke-width="1.6"/>
+        <line x1="20" y1="206" x2="280" y2="206" class="lc" stroke-dasharray="4 4" opacity=".7"/>
+        <text x="20" y="224" class="ts" style="fill:currentColor">基準線　低</text>
+        <line x1="150" y1="42" x2="150" y2="206" stroke="#eceaf6" stroke-width="1" opacity=".5"/>
+        <path d="M145 52 L150 42 L155 52" fill="none" stroke="#eceaf6" opacity=".5"/>
+        <path d="M145 196 L150 206 L155 196" fill="none" stroke="#eceaf6" opacity=".5"/>
+        <text x="160" y="130" class="tb">落差大</text>
+        <text x="160" y="150" class="ts">釋放的多巴胺　多</text>
+        <path d="M320 152 C390 152 410 42 450 42 C490 42 510 152 580 152 Z" fill="currentColor" opacity=".16"/>
+        <path d="M320 152 C390 152 410 42 450 42 C490 42 510 152 580 152" class="lc" stroke-width="1.6"/>
+        <line x1="320" y1="152" x2="580" y2="152" class="lc" stroke-dasharray="4 4" opacity=".7"/>
+        <text x="320" y="170" class="ts" style="fill:currentColor">基準線　高　←　被即時滿足養高的</text>
+        <line x1="450" y1="42" x2="450" y2="152" stroke="#eceaf6" stroke-width="1" opacity=".5"/>
+        <path d="M445 52 L450 42 L455 52" fill="none" stroke="#eceaf6" opacity=".5"/>
+        <path d="M445 142 L450 152 L455 142" fill="none" stroke="#eceaf6" opacity=".5"/>
+        <text x="460" y="92" class="tb">落差小</text>
+        <text x="460" y="112" class="ts">釋放的多巴胺　少</text>
+        <line x1="14" y1="240" x2="586" y2="240" class="ln"/>
+        <text x="300" y="262" class="t" text-anchor="middle" style="fill:currentColor">高峰與基準線之間的差距愈大，釋放的多巴胺愈多</text>
+      </svg>`,
+      cap:'<b>經常依賴即時滿足，會把基準線養高——之後需要更多多巴胺，才感受得到動力。</b>作者自述：運動前拚命滑社群網站，做起運動就舉步維艱。她的做法是在滑手機和運動之間，留至少 30 分鐘。' },
+    { h:'追求時上升，達成時下降',
+      svg:`<svg viewBox="0 0 600 242" role="img" aria-label="多巴胺在追求與達成階段的變化">
+        <line x1="40" y1="188" x2="580" y2="188" class="ln"/>
+        <text x="40" y="210" class="ts">開始想要</text>
+        <text x="300" y="210" class="ts" text-anchor="middle">向著目標努力</text>
+        <text x="580" y="210" class="ts" text-anchor="end">達成之後</text>
+        <text x="14" y="30" class="tm">DOPAMINE</text>
+        <path d="M40 172 C140 168 200 96 260 74 C300 60 340 52 400 48" class="lc" stroke-width="1.8"/>
+        <path d="M400 48 C424 48 432 96 440 132 C448 166 460 176 480 178 C520 180 550 178 580 178" class="lc" stroke-width="1.8" stroke-dasharray="5 4"/>
+        <line x1="400" y1="30" x2="400" y2="188" stroke="rgba(236,234,246,.3)" stroke-dasharray="4 4"/>
+        <circle cx="400" cy="48" r="4" fill="currentColor"/>
+        <text x="410" y="34" class="tb" style="fill:currentColor">實現目標</text>
+        <text x="410" y="76" class="ts">為避免過度刺激，迅速下降</text>
+        <text x="120" y="120" class="t">它負責預期獎勵</text>
+        <text x="120" y="140" class="t">驅使你去追</text>
+        <text x="300" y="232" class="ts" text-anchor="middle" style="fill:currentColor">多巴胺不是帶來快樂的化學物質，是讓我們起意追求快樂的化學物質</text>
+      </svg>`,
+      cap:'<b>到達謬誤：以為一旦成功、實現目標，就會快樂。</b>受訪者裡有職業運動員，對自己的任何勝利都不滿意。快樂其實來自血清素、催產素、內啡肽的混合——《欲望分子多巴胺》叫它們「此時此地」的化學物質。' },
+    { h:'快樂和痛苦在同一個系統上',
+      svg:`<svg viewBox="0 0 600 210" role="img" aria-label="快樂與痛苦的蹺蹺板平衡">
+        <g transform="rotate(-9 300 120)">
+          <rect x="120" y="112" width="360" height="7" fill="currentColor" opacity=".6" rx="3"/>
+          <circle cx="160" cy="94" r="22" class="lc"/>
+          <text x="160" y="99" class="t" text-anchor="middle" style="fill:currentColor">快樂</text>
+          <circle cx="440" cy="94" r="22" class="ln"/>
+          <text x="440" y="99" class="t" text-anchor="middle">痛苦</text>
+        </g>
+        <path d="M300 120 L276 172 L324 172 Z" fill="currentColor" opacity=".4"/>
+        <line x1="240" y1="172" x2="360" y2="172" class="ln"/>
+        <text x="300" y="200" class="ts" text-anchor="middle">大腦天生要保持平衡　一邊壓下去，另一邊就會翹起來</text>
+        <text x="14" y="24" class="ts">感到快樂後不久，會迎來一陣痛苦——</text>
+        <text x="14" y="46" class="tb" style="fill:currentColor">通常以「我想要更多」的形式出現</text>
+      </svg>`,
+      cap:'2022 年研究估計，年輕人手機成癮比例 <b>61%</b>。解方不是意志力，是把獎勵換成「需要付出努力」的那一種——冷水浴浸到頸部，多巴胺增加約 <b>250%</b>，最多要 3 小時才下降。' }
+  ],
+  who:[
+    { n:'塔爾·班夏哈', en:'Tal Ben-Shahar', d:'「到達謬誤」的提出者。以為一旦成功、得到想要的東西、實現目標就會快樂——但滿足感只持續很短一會兒。' },
+    { n:'安娜·蘭布克', en:'Anna Lembke《多巴胺國度》', d:'痛苦和快樂在同一系統中保持平衡，像蹺蹺板。感到快樂後不久會迎來一陣痛苦，通常以「我想要更多」的形式出現。' },
+    { n:'《欲望分子多巴胺》', en:'The Molecule of More', d:'把血清素、催產素、內啡肽歸類為「此時此地 Here and Now」的化學物質——不專注當下、不培養對現有的感激，它們很容易被多巴胺淹沒。' },
+    { n:'到達謬誤', en:'arrival fallacy', d:'它說我們抵達終點線時會快樂。但實際上不存在終點線——若你要抵達終點線才快樂，就會發現那之後還有另一條，之後又是另一條。', term:1 },
+    { n:'即時滿足', en:'instant gratification', d:'滑社群媒體、玩遊戲、高度加工含糖食品、衝動購物。適量沒問題，問題是它們引發多巴胺快速強烈的釋放，卻不需要你付出任何努力。', term:1 },
+    { n:'無聊', en:'書裡當成一種技能', d:'無聊能開啟大腦某些部分，踏上神遊的創造性旅程。我們正在失去感到無聊的能力——而人經歷的干擾近五成是自找的。', term:1 }
+  ]
+},
+
+trust:{
+  figs:[
+    { h:'自我信賴怎麼自己養自己',
+      svg:`<svg viewBox="0 0 600 236" role="img" aria-label="自我信賴的互惠循環">
+        <rect x="200" y="10" width="200" height="46" class="lc" rx="2"/>
+        <text x="300" y="39" class="tb" text-anchor="middle" style="fill:currentColor">信賴自己</text>
+        <rect x="392" y="96" width="194" height="46" class="ln" rx="2"/>
+        <text x="489" y="125" class="tb" text-anchor="middle">更可能信賴直覺</text>
+        <rect x="200" y="182" width="200" height="46" class="ln" rx="2"/>
+        <text x="300" y="211" class="tb" text-anchor="middle">看到正面結果</text>
+        <rect x="14" y="96" width="194" height="46" class="ln" rx="2"/>
+        <text x="111" y="118" class="t" text-anchor="middle">反過來</text>
+        <text x="111" y="136" class="t" text-anchor="middle">增強自我信賴</text>
+        <path d="M400 40 C462 46 486 68 489 96" class="lc"/><path d="M482 87 L489 96 L494 85" class="lc"/>
+        <path d="M470 142 C440 172 400 182 400 194" class="ln"/><path d="M408 186 L400 194 L399 183" class="ln"/>
+        <path d="M200 205 C140 198 116 176 111 142" class="ln"/><path d="M118 151 L111 142 L106 153" class="ln"/>
+        <path d="M130 96 C160 62 200 50 200 44" class="ln"/><path d="M192 52 L200 44 L201 55" class="ln"/>
+        <text x="300" y="126" class="ts" text-anchor="middle">直覺＝潛意識心靈在沒有</text>
+        <text x="300" y="146" class="ts" text-anchor="middle">意識覺察參與下做的決定</text>
+      </svg>`,
+      cap:'意識容量有限，記憶不會一直浮現但仍然存在，有時會化為<b>起初無法完全理解的直覺</b>。作者寫書提案時「讓直覺負責書寫」——自我信賴讓她不帶恐懼地寫，也不害怕結果。' },
+    { h:'違背了對自己的承諾，然後呢',
+      svg:`<svg viewBox="0 0 600 152" role="img" aria-label="違背承諾時的四步流程">
+        <rect x="8" y="34" width="132" height="62" class="ln" rx="2"/>
+        <rect x="164" y="34" width="132" height="62" class="ln" rx="2"/>
+        <rect x="320" y="34" width="132" height="62" class="ln" rx="2"/>
+        <rect x="476" y="34" width="116" height="62" class="lc" rx="2"/>
+        <text x="74" y="60" class="tm" text-anchor="middle">01</text>
+        <text x="74" y="82" class="t" text-anchor="middle">不要為此自責</text>
+        <text x="230" y="60" class="tm" text-anchor="middle">02</text>
+        <text x="230" y="82" class="t" text-anchor="middle">思索你為什麼這樣做</text>
+        <text x="386" y="54" class="tm" text-anchor="middle">03</text>
+        <text x="386" y="74" class="t" text-anchor="middle">記住大腦喜歡</text>
+        <text x="386" y="92" class="t" text-anchor="middle">恢復自動狀態</text>
+        <text x="534" y="54" class="tm" text-anchor="middle" fill="currentColor">04</text>
+        <text x="534" y="74" class="t" text-anchor="middle" style="fill:currentColor">重回正軌</text>
+        <text x="534" y="92" class="ts" text-anchor="middle">不要沉迷於負面</text>
+        <path d="M140 65 L164 65" class="ln"/><path d="M157 60 L164 65 L157 70" class="ln"/>
+        <path d="M296 65 L320 65" class="ln"/><path d="M313 60 L320 65 L313 70" class="ln"/>
+        <path d="M452 65 L476 65" class="lc"/><path d="M469 60 L476 65 L469 70" class="lc"/>
+        <text x="300" y="136" class="tb" text-anchor="middle" style="fill:currentColor">「大腦是可塑的，它不是鬆緊帶，改變不是線性的。」</text>
+      </svg>`,
+      cap:'<b>自責會產生一種虛假的控制感</b>——你無法改變過去。大腦被設計成可改變，但它的主要任務是讓你活下去，所以會想走阻力最小的路徑。開闢新路線，本來就需要耐心。' },
+    { h:'動力　對照　紀律',
+      svg:`<svg viewBox="0 0 600 206" role="img" aria-label="動力衰減與紀律持平的對照">
+        <line x1="40" y1="160" x2="580" y2="160" class="ln"/>
+        <text x="40" y="182" class="ts">第一天</text>
+        <text x="580" y="182" class="ts" text-anchor="end">三個月後</text>
+        <path d="M40 34 C120 34 150 120 230 146 C320 175 440 158 580 159" stroke="#8a83aa" fill="none" stroke-width="1.6" stroke-dasharray="6 4"/>
+        <text x="52" y="26" class="t" fill="#8a83aa">動力</text>
+        <text x="250" y="132" class="ts">一定會消散</text>
+        <path d="M40 88 L580 88" class="lc" stroke-width="1.8"/>
+        <circle cx="130" cy="88" r="2.6" fill="currentColor"/><circle cx="220" cy="88" r="2.6" fill="currentColor"/>
+        <circle cx="310" cy="88" r="2.6" fill="currentColor"/><circle cx="400" cy="88" r="2.6" fill="currentColor"/>
+        <circle cx="490" cy="88" r="2.6" fill="currentColor"/>
+        <text x="52" y="80" class="t" style="fill:currentColor">紀律與慣例</text>
+        <text x="380" y="80" class="ts" style="fill:currentColor">像發條齒輪不斷重複滴答</text>
+        <text x="300" y="200" class="ts" text-anchor="middle">「動力一定會消散，不要習慣依靠動力——這就是人們通常無法達成任何改變的原因。」</text>
+      </svg>`,
+      cap:'<b>理解到「每個人的動力都會消失」之後，作者才開始重視持之以恆。</b>她的解法是列一張「不容商量」清單，從可實現的開始，再依需要添加。' }
+  ],
+  who:[
+    { n:'馬修·麥康納', en:'Matthew McConaughey', d:'書中引用：「我生命中的大部分問題，都是因為我的頭腦跑在我的心太前面。」' },
+    { n:'個人擔當', en:'personal accountability', d:'自我信賴的三個成分：對自己的能力有信心、建立個人擔當、信守對自己的承諾。', term:1 },
+    { n:'不容商量目標', en:'non-negotiables', d:'作者自己的清單：週一到週五每天活動身體／晚上 9 點關掉手機／睡 8 小時／每天冥想或視覺化想像／不要一起床就看手機／每週至少去海灘游泳兩次。', term:1 },
+    { n:'尾聲', en:'Outro', d:'「所謂勇氣不是沒有恐懼，而是戰勝恐懼。」「恐懼不是敵人，恐懼是你那樣做的理由。」「不要與時間賽跑——美好的事物都需要時間。」全書收尾句：勇於創造你自己吧。' }
+  ]
+}
+
+};
+
+/* =========================================================================
    狀態
    ========================================================================= */
-const KEY = 'soulchill_rewire4_v1';
+const KEY = 'soulchill_rewire4_v2rich';
 let S = { visited:{}, task:null, big:false, done:false };
 try { const r = localStorage.getItem(KEY); if (r) S = Object.assign(S, JSON.parse(r)); } catch(e){}
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
@@ -1213,6 +1695,24 @@ function slabHTML(s){
     s.li.map(x => `<li>${x}</li>`).join('') + `</ul></div>`;
 }
 
+function figsHTML(id){
+  const r = RICH[id]; if (!r || !r.figs) return '';
+  return r.figs.map(f =>
+    `<figure class="fig"><div class="fh">${f.h}</div>` +
+    `<div class="fb">${f.svg}</div>` +
+    `<figcaption class="fc">${f.cap}</figcaption></figure>`).join('');
+}
+
+function whoHTML(id){
+  const r = RICH[id]; if (!r || !r.who) return '';
+  return `<div class="who"><h4>人名　書名　名詞</h4>` +
+    `<div class="sub">這一章出現過的人、書和名詞。</div><div class="grid">` +
+    r.who.map(w =>
+      `<div class="card${w.term ? ' term' : ''}"><div class="n">${w.n}</div>` +
+      `<span class="en">${w.en}</span><div class="d">${w.d}</div></div>`).join('') +
+    `</div></div>`;
+}
+
 function openSlide(id){
   const t = byId[id];
   if (!t) return;
@@ -1238,9 +1738,9 @@ function openSlide(id){
     `<span class="sdir">${DIR[t.dir].label}</span>` +
     `<h2>${t.name}</h2>` +
     `<div class="thesis">${t.thesis}</div>` +
-    pts + (t.slab ? slabHTML(t.slab) : '') +
+    pts + figsHTML(id) + (t.slab ? slabHTML(t.slab) : '') +
+    (t.slab2 ? slabHTML(t.slab2) : '') + whoHTML(id) +
     `<div class="ask"><div class="lbl">聊聊</div><p>${t.ask}</p></div>` +
-    (t.slab2 ? slabHTML(t.slab2) : '') +
     `<div class="links"><h5>從這個神經元連出去</h5>
        <div class="sub">這些不是我配的關聯，是書裡自己接起來的地方。點一個直接跳過去。</div>${links}</div>` +
     `<button class="backstar" onclick="closeSlide()">← 回到神經網</button>`;
