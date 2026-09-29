@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>1:1 個人課表｜Soul Chill</title>
+<meta name="description" content="依你的比賽、你的時間、你的身體排的課表，每週看你練得怎麼樣，再調整下一週">
+<!-- 字體、元件沿用 projects/跑班報名網頁/next.html（Noto Sans TC＋Syncopate＋Style Script） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Soul Chill CIS 色票 */
+  --linen:      #f2efe5;   /* 米白 底色 */
+  --linen-deep: #e8e3d4;
+  --white:      #faf8f1;
+  --forest:     #0f3e36;   /* 深森林綠 文字 */
+  --forest-60:  #466660;
+  --forest-30:  #8fa39e;
+  --forest-ink: #0a2b25;
+  --grass:      #b9ca74;   /* 草植綠 強調 */
+  --line:       #d9d3c1;
+
+  --font-hd: 'Syncopate', 'Noto Sans TC', sans-serif;
+  --font-tc: 'Noto Sans TC', 'PingFang TC', sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--linen);color:var(--forest-ink);font-family:var(--font-tc);-webkit-font-smoothing:antialiased;line-height:1.75}
+body{overflow-x:hidden}
+a{color:var(--forest)}
+
+/* ---------- NAV（沿用跑班頁 .nav / .brand-mark） ---------- */
+.nav{background:var(--linen);border-bottom:1px solid rgba(15,62,54,.08)}
+.nav-inner{max-width:760px;margin:0 auto;padding:12px 20px;display:flex;align-items:center}
+.nav img{height:60px;width:auto;display:block}
+
+/* ---------- HERO（沿用跑班頁 .hero 深綠底＋.btn-primary） ---------- */
+.hero{background:var(--forest);color:var(--linen)}
+.hero-inner{max-width:760px;margin:0 auto;padding:56px 20px 60px}
+.hero h1{font-size:clamp(34px,8vw,56px);line-height:1.15;font-weight:700;letter-spacing:-.01em}
+.hero h1 .accent{color:var(--grass)}
+.hero .tagline{margin-top:22px;font-size:clamp(19px,5vw,24px);line-height:1.6;font-weight:500;color:var(--linen)}
+.hero .tagline span{display:block}
+.hero .lead{margin-top:14px;font-size:clamp(16px,4.2vw,19px);line-height:1.8;color:rgba(242,239,229,.88)}
+.hero .lead span{display:block}
+.seats{
+  display:inline-flex;align-items:center;gap:10px;margin-top:26px;
+  padding:8px 16px;border:1px solid rgba(185,202,116,.5);border-radius:999px;
+  font-size:14.5px;font-weight:500;color:var(--linen);
+}
+.seats .dot{width:8px;height:8px;border-radius:50%;background:var(--grass);flex-shrink:0}
+.cta-row{margin-top:28px}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:16px 28px;border-radius:999px;text-decoration:none;font-size:15.5px;font-weight:700;
+  letter-spacing:.04em;transition:transform .2s, background .2s;
+  background:var(--grass);color:var(--forest-ink);max-width:100%;text-align:center;
+}
+.btn:hover{background:#c8d68c;transform:translateY(-1px)}
+.btn .arr{transition:transform .2s}
+.btn:hover .arr{transform:translateX(3px)}
+
+/* ---------- SECTIONS ---------- */
+.section{max-width:760px;margin:0 auto;padding:52px 20px 8px}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1.5px solid var(--forest)}
+.sec-head .num{font-family:var(--font-hd);font-size:12px;letter-spacing:.2em;font-weight:700;color:var(--forest-30)}
+.sec-head h2{font-size:clamp(24px,6vw,30px);color:var(--forest);font-weight:700;letter-spacing:-.01em;line-height:1.3}
+
+/* 圓點清單（文案用「•」） */
+.dots{list-style:none;display:flex;flex-direction:column;gap:10px}
+.dots li{position:relative;padding-left:22px;font-size:16px;color:var(--forest-ink)}
+.tx{color:var(--forest);font-weight:700;text-decoration:underline;text-decoration-color:var(--grass);text-decoration-thickness:2px;text-underline-offset:3px}
+.dots.sub{margin-top:10px;gap:6px}
+.dots.sub li{font-size:15px}
+.dots.sub li::before{background:transparent;border:1.5px solid var(--grass)}
+.dots li::before{content:"";position:absolute;left:4px;top:.72em;width:7px;height:7px;border-radius:50%;background:var(--grass)}
+.note{margin-top:18px;font-size:15.5px;color:var(--forest);font-weight:500;
+  background:rgba(185,202,116,.18);border-radius:10px;padding:12px 16px}
+
+/* 卡片（沿用跑班頁 .schedule-bonus / .lesson-step） */
+.card{background:var(--white);border:1px solid var(--line);border-left:4px solid var(--grass);border-radius:12px;padding:20px 20px}
+.card + .card{margin-top:14px}
+.card h3{font-size:18px;color:var(--forest);font-weight:700;line-height:1.4}
+.card h3 .ic{margin-right:6px}
+.card p{margin-top:6px;font-size:15px;color:var(--forest-60)}
+.card.premium{border-left-color:var(--forest);background:var(--linen-deep)}
+
+.course{margin-top:16px;padding-top:16px;border-top:1px dashed var(--forest-30)}
+.course h4{font-size:16px;color:var(--forest);font-weight:700}
+.course > p{margin-top:2px;font-size:14.5px;color:var(--forest-60)}
+.course .weeks{list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:4px}
+.course .weeks li{font-size:14.5px;color:var(--forest-ink);display:flex;gap:10px}
+.course .weeks li b{font-family:var(--font-hd);font-size:11px;letter-spacing:.08em;color:var(--forest);background:rgba(185,202,116,.35);border-radius:4px;padding:2px 6px;flex-shrink:0;align-self:flex-start;margin-top:3px;min-width:52px;text-align:center}
+.course .aside{margin-top:10px;font-size:13.5px;color:var(--forest-60)}
+
+/* 步驟（沿用跑班頁 .lesson-step 的角標數字） */
+.steps{list-style:none;display:flex;flex-direction:column;gap:12px}
+.step{position:relative;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:18px 20px 18px 64px}
+.step .n{position:absolute;left:18px;top:16px;width:32px;height:32px;border-radius:50%;background:var(--forest);color:var(--grass);
+  font-family:var(--font-hd);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step h3{font-size:17px;color:var(--forest);font-weight:700;line-height:1.4}
+.step p{margin-top:4px;font-size:15px;color:var(--forest-60)}
+.step p span{display:block}
+
+/* ---------- 結尾 CTA ---------- */
+.end{max-width:760px;margin:52px auto 0;padding:0 20px 56px}
+.end-box{background:var(--forest);color:var(--linen);border-radius:16px;padding:36px 24px;text-align:center}
+.end-box .seats{margin-top:0}
+.end-box p{margin-top:14px;font-size:17px;color:rgba(242,239,229,.9)}
+.end-box .line-q{margin-top:20px;font-size:14.5px}
+.end-box .line-q a{color:var(--grass);text-decoration:underline;text-underline-offset:3px}
+.end-box .cta-row{margin-top:22px}
+
+footer{background:var(--forest-ink);padding:32px 20px 28px;text-align:center}
+footer img{height:80px;width:auto;display:block;margin:0 auto}
+footer .copy{margin-top:14px;font-family:var(--font-hd);font-size:10px;letter-spacing:.2em;color:rgba(242,239,229,.35)}
+
+@media (min-width:720px){
+  .hero-inner{padding:80px 20px 84px}
+  .section{padding-top:68px}
+  .card{padding:24px 28px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <img src="assets/soulcill-running-logo.png" alt="Soul Chill Running Club">
+  </div>
+</nav>
+
+<!-- 標題區 -->
+<header class="hero">
+  <div class="hero-inner">
+    <h1><span class="accent">1:1</span> 個人課表</h1>
+    <p class="tagline">
+      <span>用自己的節奏，慢慢進步</span>
+      <span>讓每一次的練習都不白費，都朝著更好的自己前進</span>
+    </p>
+    <p class="lead">
+      <span>依你的比賽、你的時間、你的身體排的課表</span>
+      <span>每週看你練得怎麼樣，再調整下一週</span>
+    </p>
+    <div class="seats"><span class="dot"></span>十月開 5 個名額</div>
+    <div class="cta-row">
+      <a class="btn" href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2LPHH7po9gEhW7iATGHohyCuzx93-HZ4VNb3QKBpCpGZj5scLYv5KR-f48dw6ZJ2hvcvwQDeBB" target="_blank" rel="noopener">先約 15 分鐘線上聊聊 <span class="arr">→</span></a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- 適合誰 -->
+  <section class="section">
+    <div class="sec-head"><span class="num">01</span><h2>適合誰</h2></div>
+    <ul class="dots">
+      <li>有想跑的比賽，想照自己的狀況準備</li>
+      <li>時間不固定，套現成課表常常跟不上</li>
+      <li>跑一跑就會痛、累，想知道量和強度是不是不適合自己</li>
+      <li>想被看見、被調整，不想一個人猜</li>
+    </ul>
+  </section>
+
+  <!-- 你會得到什麼 -->
+  <section class="section">
+    <div class="sec-head"><span class="num">02</span><h2>你會得到什麼</h2></div>
+
+    <div class="card">
+      <h3><span class="ic">🗓</span>專屬訓練日誌＋每週課表</h3>
+      <p>課表放在你自己的訓練日誌裡，一週一週排</p>
+    </div>
+
+    <div class="card">
+      <h3><span class="ic">🔁</span>每週依你的回填調整</h3>
+      <p>我每週看你的紀錄，再決定下一週要加、要減、還是換內容</p>
+    </div>
+
+    <div class="card premium">
+      <h3><span class="ic">🌿</span>Skool 社群 Premium（價值每個月 1000 元）</h3>
+      <p>1:1 期間同時開通，付費內容都看得到，目前開放的有兩套：</p>
+
+      <div class="course">
+        <h4>8 週全人訓練</h4>
+        <p>一週一個主題，每週有觀念影片＋跟著做的訓練影片</p>
+        <ul class="weeks">
+          <li><b>W1</b>脊椎活動・全呼吸</li>
+          <li><b>W2</b>呼吸肌群放鬆</li>
+          <li><b>W3</b>脊椎活動度・瑜伽</li>
+          <li><b>W4</b>腹內壓呼吸・肌力的地基</li>
+          <li><b>W5</b>肌力・關節穩定度</li>
+          <li><b>W6</b>跑姿・單腳穩定與重心轉移</li>
+          <li><b>W7</b>彈性與收腿</li>
+          <li><b>W8</b>串連與整合</li>
+        </ul>
+        <p class="aside">（有前測和後測，可以看自己前後的差別）</p>
+      </div>
+
+      <div class="course">
+        <h4>10 週跑者肌力訓練</h4>
+        <p>從核心、關節一路練到跑姿，每個動作都有示範影片</p>
+        <ul class="weeks">
+          <li><b>L1</b>核心與脊椎</li>
+          <li><b>L2–L4</b>肩、髖、踝關節</li>
+          <li><b>L5–L7</b>軀幹抗旋轉與旋轉</li>
+          <li><b>L8–L9</b>剛性與彈性</li>
+          <li><b>L10</b>整合跑姿</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 你要做的 -->
+  <section class="section">
+    <div class="sec-head"><span class="num">03</span><h2>你要做的</h2></div>
+    <ul class="dots">
+      <li>照課表練，練不完或要挪天都沒關係，照實填就好</li>
+      <li>每次練完回填：跑了什麼、覺得多累、有什麼感覺</li>
+      <li>手錶有記錄的睡眠之類的數據，想貼也可以，看需求填</li>
+    </ul>
+    <p class="note">回填越清楚，下一週的課表就越貼近你</p>
+  </section>
+
+  <!-- 怎麼進行 -->
+  <section class="section">
+    <div class="sec-head"><span class="num">04</span><h2>怎麼進行</h2></div>
+    <ol class="steps">
+      <li class="step">
+        <span class="n">1</span>
+        <h3>預約 15 分鐘線上聊聊</h3>
+        <p>
+          <span>聊你的目標、現在的訓練和身體狀況</span>
+          <span>看 1:1 是不是真的適合你，還是有別的方案更適合</span>
+          <span>不用先決定，聊完再想就好</span>
+        </p>
+      </li>
+      <li class="step">
+        <span class="n">2</span>
+        <h3>填訓練日誌</h3>
+        <p>我開好你的訓練日誌，你填目標賽事、固定行程、個人最佳成績，還有最近三週練了什麼</p>
+      </li>
+      <li class="step">
+        <span class="n">3</span>
+        <h3>每週循環</h3>
+        <p>你練＋回填 → 我看 → 調整下一週</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- 時間與費用 -->
+  <section class="section">
+    <div class="sec-head"><span class="num">05</span><h2>時間與費用</h2></div>
+    <ul class="dots">
+      <li>線上課表，不含實體課</li>
+      <li class="price">4 週 3,000 元</li>
+      <li>新朋友第一次合作需從 12 週開始，不採月付<br>12 週之後，每 4 週為一個單位<br>曾經是傑西的學生，不在此限</li>
+      <li>中途受傷或退賽，費用不退，但可以轉成其他服務：
+        <ul class="dots sub">
+          <li><a class="tx" href="https://www.skool.com/run-grow-together-9533/classroom" target="_blank" rel="noopener">Skool Premium 訂閱費</a></li>
+          <li><a class="tx" href="https://lin.ee/ipjH3LI" target="_blank" rel="noopener">SOUL CHILL STUDIO 用心生活工作室</a>的服務：瑜伽課（線上、實體皆可）、傑西的徒手筋膜放鬆調整、一對一頌缽療癒等</li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+</main>
+
+<!-- 結尾 CTA -->
+<section class="end">
+  <div class="end-box">
+    <div class="seats"><span class="dot"></span>十月開 5 個名額</div>
+    <p>先聊 15 分鐘，看看適不適合你</p>
+    <div class="cta-row">
+      <a class="btn" href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2LPHH7po9gEhW7iATGHohyCuzx93-HZ4VNb3QKBpCpGZj5scLYv5KR-f48dw6ZJ2hvcvwQDeBB" target="_blank" rel="noopener">預約 15 分鐘線上聊聊 <span class="arr">→</span></a>
+    </div>
+    <p class="line-q">還有其他問題，歡迎到 <a href="https://lin.ee/ipjH3LI" target="_blank" rel="noopener">SOUL CHILL 官方 LINE</a> 問我們</p>
+  </div>
+</section>
+
+<footer>
+  <img src="assets/soul-chill-text-logo.png" alt="Soul Chill Studio">
+  <div class="copy">© 2026 SOUL CHILL STUDIO</div>
+</footer>
+
+</body>
+</html>
