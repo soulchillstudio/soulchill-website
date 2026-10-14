@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b2f29">
+<title>REWIRE 總複習</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+/* Layout: 一頁一站的直式簡報，scroll-snap；背景是會跟著游標「重新接線」的神經網 */
+:root{
+  --ink:#0b2f29; --forest:#0f3e36; --forest-2:#15514a; --leaf:#b9ca74; --leaf-soft:#dfe8b8;
+  --paper:#f2efe5; --mist:#c9d6cc; --dim:#93ab9f;
+  --display:'Noto Serif TC', Georgia, serif; --body:'Noto Sans TC', 'PingFang TC', Arial, sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--body);font-size:clamp(16px,1.25vw,22px);line-height:1.65;overflow:hidden}
+#net{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#glow{position:fixed;width:520px;height:520px;border-radius:50%;pointer-events:none;z-index:0;left:0;top:0;
+  background:radial-gradient(circle, rgba(185,202,116,.16), rgba(185,202,116,0) 65%);transform:translate(-50%,-50%);transition:opacity .3s}
+main{position:relative;z-index:1;height:100%;overflow-y:auto;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+section{min-height:100%;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,2.4vh,32px);
+  padding-block:clamp(48px,8vh,96px);padding-inline:max(16px,7vw)}
+.eyebrow{font-size:.8em;letter-spacing:.22em;color:var(--leaf);font-weight:700;margin:0}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;line-height:1.2}
+h1{font-size:clamp(40px,6.4vw,110px);font-weight:900}
+h2{font-size:clamp(30px,3.8vw,64px);font-weight:700}
+h3{font-size:clamp(20px,1.6vw,30px);font-weight:700}
+p{margin:0}
+.lead{font-size:clamp(18px,1.7vw,30px);color:var(--mist);max-width:44em}
+.grid{display:grid;gap:clamp(12px,1.4vw,22px)}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:820px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.card{position:relative;min-width:0;background:rgba(21,81,74,.55);border:1px solid rgba(185,202,116,.18);border-radius:18px;padding:clamp(16px,1.6vw,28px);
+  backdrop-filter:blur(4px);transition:transform .25s ease,border-color .25s,background .25s;overflow:hidden;--mx:50%;--my:50%}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(360px circle at var(--mx) var(--my),rgba(185,202,116,.20),transparent 60%);opacity:0;transition:opacity .25s;pointer-events:none}
+.card:hover::before{opacity:1}
+.card:hover{border-color:rgba(185,202,116,.55);transform:translateY(-3px)}
+.card .k{color:var(--leaf);font-weight:700;font-size:.85em;letter-spacing:.08em}
+.card p{color:var(--mist)}
+details.card summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+details.card summary::-webkit-details-marker{display:none}
+details.card summary::after{content:"＋";color:var(--leaf);font-weight:700;flex:none;transition:transform .25s}
+details.card[open] summary::after{transform:rotate(45deg)}
+details.card[open]{background:rgba(21,81,74,.85);border-color:rgba(185,202,116,.5)}
+details.card .more{margin-top:12px;display:flex;flex-direction:column;gap:8px;color:var(--mist);font-size:.92em}
+details.card .more b{color:var(--paper)}
+ul.tight{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:6px;color:var(--mist)}
+.quote{font-family:var(--display);font-size:clamp(20px,2vw,36px);color:var(--paper);border-left:4px solid var(--leaf);padding-left:.8em;max-width:30em}
+.pill{display:inline-block;background:var(--leaf);color:var(--ink);font-weight:700;border-radius:999px;padding:.15em .8em;font-size:.85em}
+.note{background:var(--leaf-soft);color:var(--ink);border-radius:16px;padding:clamp(14px,1.4vw,24px)}
+.note p,.note li{color:var(--ink)}
+.flowline{display:flex;flex-wrap:wrap;gap:10px;align-items:center;color:var(--mist)}
+.flowline span{background:rgba(185,202,116,.14);border:1px solid rgba(185,202,116,.35);border-radius:999px;padding:.2em .9em;color:var(--paper)}
+.step{display:flex;gap:14px;align-items:baseline}
+.num{font-family:var(--display);font-size:1.6em;color:var(--leaf);font-weight:900;line-height:1;flex:none}
+.big{font-family:var(--display);font-size:clamp(28px,3.4vw,58px);font-weight:900;color:var(--leaf)}
+.src{font-size:.75em;color:var(--dim)}
+.tri{display:flex;gap:10px;flex-wrap:wrap}
+.tri span{flex:1;min-width:120px;text-align:center;padding:.6em;border-radius:12px;background:rgba(242,239,229,.08);border:1px dashed rgba(185,202,116,.5)}
+nav#dots{position:fixed;right:max(10px,1.4vw);top:50%;transform:translateY(-50%);z-index:2;display:flex;flex-direction:column;gap:10px}
+nav#dots button{width:12px;height:12px;border-radius:50%;border:1px solid var(--leaf);background:transparent;padding:0;cursor:pointer}
+nav#dots button.on{background:var(--leaf);transform:scale(1.3)}
+nav#dots button:focus-visible,details.card summary:focus-visible{outline:2px solid var(--leaf);outline-offset:3px}
+#hint{position:fixed;left:max(16px,7vw);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:2;font-size:.72em;color:var(--dim)}
+@media (max-width:820px){nav#dots{display:none}}
+/* 手機版（2026-10-14 加）：長頁可以自然捲，不強制一頁一停；鍵盤提示收起來 */
+@media (max-width:820px){
+  main{scroll-snap-type:none}
+  section{min-height:100svh;padding-block:56px;padding-inline:20px;justify-content:flex-start}
+  section:first-of-type{justify-content:center}
+  #hint{display:none}
+  .card:hover{transform:none}
+  #glow{display:none}
+  h1{font-size:clamp(30px,9.4vw,40px)}
+  h2{font-size:clamp(26px,7.4vw,34px)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}#glow{display:none}}
+</style>
+
+<canvas id="net" aria-hidden="true"></canvas>
+<div id="glow" aria-hidden="true"></div>
+<nav id="dots" aria-label="跳到某一頁"></nav>
+<p id="hint">← → 或空白鍵換頁・點卡片展開細節</p>
+
+<main id="deck">
+
+<section data-t="封面">
+  <p class="eyebrow">GF 山野塾讀書會・第 5 場・系列最終場</p>
+  <h1>REWIRE<br>神經可塑性・總複習</h1>
+  <p class="lead">複習全書，也聽聽大家把它用在哪裡</p>
+  <p class="src">導讀：Jesse｜2026-10-14（三）｜《REWIRE》Nicole Vignola</p>
+</section>
+
+<section data-t="今天怎麼進行">
+  <p class="eyebrow">今天怎麼進行</p>
+  <h2>複習是配角，大家的故事是主角</h2>
+  <div class="grid g3">
+    <div class="card"><p class="k">第一段</p><h3>全書總複習</h3><p>三個階段、四場的重點，一次串起來</p></div>
+    <div class="card"><p class="k">第二段</p><h3>大家的分享</h3><p>用在生活、幫到身邊的人、自己的改變，正在路上也算</p></div>
+    <div class="card"><p class="k">第三段</p><h3>接下來</h3><p>下一本書、讀書會之後怎麼進行</p></div>
+  </div>
+  <div class="note"><p>💭 我帶複習的時候，大家可以邊聽邊回想：這幾個月，你把哪一個觀念用在自己或別人身上？</p></div>
+</section>
+
+<section data-t="全書地圖">
+  <p class="eyebrow">全書地圖</p>
+  <h2>三個階段，一條路</h2>
+  <div class="grid g3">
+    <div class="card"><p class="k">階段一・第 1–2 場</p><h3>打破循環</h3><p>Break the Cycle<br>先看見自己卡在哪個輪子裡</p></div>
+    <div class="card"><p class="k">階段二・第 3 場</p><h3>改變敘事</h3><p>Shift Your Narrative<br>七個步驟，改寫舊程式</p></div>
+    <div class="card"><p class="k">階段三・第 4 場</p><h3>增強積極性</h3><p>Boost the Positive<br>大腦和身體互相改寫</p></div>
+  </div>
+  <div class="flowline"><span>覺察</span>→<span>改寫</span>→<span>用身體把新的自己養起來</span></div>
+</section>
+
+<section data-t="第 1 場">
+  <p class="eyebrow">第 1 場・階段一 打破循環</p>
+  <h2>我們不是「天生就這樣」</h2>
+  <p class="lead">是卡在 Break the Cycle 這個輪子裡。看見輪子，才有空間停下來</p>
+  <div class="grid g2">
+    <div class="card"><p class="k">微創傷</p><h3>「這沒什麼」的小事</h3><p>可能還在影響你現在的某個反應</p></div>
+    <div class="card"><p class="k">改變要時間</p><h3>18 到 254 天</h3><p>養成一個新習慣需要的時間，因人而異</p></div>
+  </div>
+</section>
+
+<section data-t="第 2 場">
+  <p class="eyebrow">第 2 場・階段一後半・三章（點開看細節）</p>
+  <h2>信念、失去、工具</h2>
+  <div class="grid g3">
+    <details class="card"><summary><h3>確認偏誤</h3></summary>
+      <p>你相信什麼，就會看見什麼</p>
+      <div class="more">
+        <p><b>記憶模板</b>：大腦拿舊模板核對新經驗，為了節能，大多數事走「自動駕駛」</p>
+        <p><b>網狀活化系統 RAS</b>：決定要買寶藍 BMW 後，突然到處都看到它</p>
+        <p><b>疤痕實驗</b>：疤在面試前被偷偷擦掉，受試者仍覺得面試官一直盯著看</p>
+        <p><b>認知三角</b>：思想、情緒、行為互相牽動</p>
+      </div></details>
+    <details class="card"><summary><h3>結束、失去與悲傷</h3></summary>
+      <p>失去時的痛，是真實的，身體也在痛</p>
+      <div class="more">
+        <p><b>為什麼這麼痛</b>：原本的慣例和自動反應不再管用，大腦要重新適應新現實</p>
+        <p><b>四種要補回來的化學物質</b></p>
+        <ul class="tight"><li>多巴胺：做會帶來獎勵的正面活動，運動、訪友</li><li>血清素：運動、曬太陽、大自然、好睡眠</li><li>催產素：有意義的連結和深入的談話</li><li>內啡肽：運動、笑、哭</li></ul>
+        <p>「治癒需要時間，大腦需要時間來解除先前建立的紐帶」</p>
+      </div></details>
+    <details class="card"><summary><h3>神經工具包</h3></summary>
+      <p>主動打斷舊的放電模式，改寫負面迴路</p>
+      <div class="more">
+        <p>①承認大腦在做的事 ②借用提示和觸發 ③反思與重新架構 ④不要自責</p>
+        <p>下一頁展開</p>
+      </div></details>
+  </div>
+  <p class="quote">「直到你將無意識加以意識化之前，它會一直指引你的人生，而你會稱之為命運」<br><span class="src">卡爾・榮格（書中引用）</span></p>
+</section>
+
+<section data-t="神經工具包">
+  <p class="eyebrow">第 2 場・神經工具包</p>
+  <h2>擺脫負面念頭的四步</h2>
+  <div class="grid g2">
+    <details class="card" open><summary><div class="step"><span class="num">1</span><h3>承認並了解大腦在做的事</h3></div></summary>
+      <div class="more"><p>發現自己在反芻時，先承認它正在發生。你和你的大腦沒有不妥，它只是在做最熟悉的事</p><p>成年人要在神經層面改變，需要兩樣東西：<b>注意力＋刻意</b></p></div></details>
+    <details class="card" open><summary><div class="step"><span class="num">2</span><h3>利用提示和觸發做出改變</h3></div></summary>
+      <div class="more"><p>先想好你要建立的正面習慣，再用<b>生理性嘆息</b>削弱舊神經元的放電模式，用新習慣打斷舊意念</p></div></details>
+    <details class="card" open><summary><div class="step"><span class="num">3</span><h3>意念分析：反思與重新架構</h3></div></summary>
+      <div class="more"><p>反芻時情緒腦主導，很難清楚思考。等沒那麼激動時，用事實和邏輯再看一次</p><p><b>寫日記</b>：要寫成完整的句子，跟反芻時破碎的念頭很不一樣</p></div></details>
+    <details class="card" open><summary><div class="step"><span class="num">4</span><h3>不要自責</h3></div></summary>
+      <div class="more"><p>如果自責有用，第一次自責時就改掉了。改成分析「為什麼被觸發」，慶祝小勝利、善待自己</p></div></details>
+  </div>
+  <details class="card"><summary><h3>可以問自己的問題（書裡列了 12 題，挑幾題）</h3></summary>
+    <ul class="tight more"><li>你對自己說的這些話是真話嗎？</li><li>如果是真話，你能改變它們嗎？如果無法改變，你能接受它們嗎？</li><li>如果你感到焦慮，你的身體想告訴你什麼？</li><li>現在你可以聚焦在哪些新故事或想法？</li><li>是不是只是因為你在社群媒體上把自己跟別人比較？</li></ul></details>
+</section>
+
+<section data-t="生理性嘆息">
+  <p class="eyebrow">工具包步驟 2・生理性嘆息</p>
+  <h2>兩次吸氣，一次長長吐氣</h2>
+  <div class="grid g3" id="sigh">
+    <div class="card"><p class="k">1・鼻子吸</p><h3>深吸一口氣</h3><p>用鼻子吸到差不多滿</p></div>
+    <div class="card"><p class="k">2・再補一口</p><h3>不吐氣，再補吸一小口</h3><p>還是用鼻子，把肺撐到最滿</p></div>
+    <div class="card"><p class="k">3・嘴巴吐</p><h3>慢慢、長長地吐到底</h3><p>吐氣比吸氣長很多</p></div>
+  </div>
+  <details class="card"><summary><h3>為什麼有用？原理四點（研究補充，非書中原文）</h3></summary>
+    <div class="grid g4 more">
+      <div><p class="k">1・第二口吸氣</p><p>緊張、呼吸變淺時，有些小肺泡會塌陷。補吸那一口把它們重新撐開，氣體交換的面積變大</p></div>
+      <div><p class="k">2・長長吐氣</p><p>二氧化碳累積會讓人悶、焦躁、想喘。肺泡撐開後慢慢吐到底，一次排出比較多，透不過氣的感覺就降下來</p></div>
+      <div><p class="k">3・吐氣讓心跳變慢</p><p>吸氣時心跳稍快，吐氣時迷走神經活躍、心跳變慢。吐得比吸得長，身體往放鬆那側偏</p></div>
+      <div><p class="k">4・身體本來就會</p><p>人每隔幾分鐘會自動嘆一口大氣，大哭後抽噎、快睡著時也會。腦幹裡有專門負責嘆氣的神經元（2016《Nature》）</p></div>
+    </div>
+    <p class="more" style="color:var(--paper)">不是靠意志力讓自己冷靜，是用呼吸的機械動作，直接把身體調回放鬆的狀態，也就是「身體往上改寫大腦」</p>
+  </details>
+  <div class="grid g2">
+    <div class="note"><p><b>書裡怎麼用</b>：工具包步驟 2 拿它來削弱舊的放電模式、打斷舊意念。作者把做法放在原書第 42 頁（第 1 場的範圍）</p></div>
+    <div class="note"><p><b>研究補充（非書中原文）</b>：史丹佛 2023 年研究（Balban 等，Cell Reports Medicine），每天做 5 分鐘、連續一個月，情緒改善、呼吸變慢，效果比同樣時間的正念冥想更好。平常緊張時做 1–3 次就有感</p></div>
+  </div>
+</section>
+
+<section data-t="第 3 場">
+  <p class="eyebrow">第 3 場・階段二 改變敘事（點開看細節）</p>
+  <h2>大腦約 90% 在無意識運作</h2>
+  <p class="lead">這 90% 的程式是誰寫的？作者給了七個步驟，一支一支改寫成你要的版本</p>
+  <div class="grid g4">
+    <details class="card"><summary><div class="step"><span class="num">1</span><h3>擱下手機</h3></div></summary><div class="more"><p>不要一起床就滑手機，把剛醒來那段放鬆、有創造力的狀態留給自己</p><p>會讓你比較、感覺不好的帳號，取消追蹤</p></div></details>
+    <details class="card"><summary><div class="step"><span class="num">2</span><h3>視覺化與注意力</h3></div></summary><div class="more"><p>菲爾普斯 11 歲開始練，上場前已在腦中游過數百次</p><p>也要預演<b>出狀況的版本</b>，注意力放在問題和解法，不放在反芻</p></div></details>
+    <details class="card"><summary><div class="step"><span class="num">3</span><h3>重複</h3></div></summary><div class="more"><p>改變要 18 到 254 天。你要的是持續終生的改變，不是三週的轉變</p><p>大腦不管你想要什麼，只在乎你每天重複做什麼</p></div></details>
+    <details class="card"><summary><div class="step"><span class="num">4</span><h3>騰出空間</h3></div></summary><div class="more"><p>「觸發」和「反應」之間有一個空間，那就是暫停</p><p>多停一個呼吸也好，每一次暫停都在削弱自動模式</p></div></details>
+    <details class="card"><summary><div class="step"><span class="num">5</span><h3>突破界限</h3></div></summary><div class="more"><p>舊習慣是鋪好的混凝土路，新習慣是土路。第二、三週動力消退就是界限</p><p>靠<b>紀律</b>不靠動機；顧好睡眠；中斷一次不等於失敗，大腦已經在變了</p></div></details>
+    <details class="card"><summary><div class="step"><span class="num">6</span><h3>為挫折做準備</h3></div></summary><div class="more"><p><b>習慣綁定</b>：新習慣接在刷牙這種舊習慣後面</p><p><b>打造環境</b>：前一晚把跑鞋放在門口</p><p>菲爾普斯 2008 年泳鏡進水，盲游 175 公尺仍破世界紀錄</p></div></details>
+    <details class="card"><summary><div class="step"><span class="num">7</span><h3>跨越恐懼與自我破壞</h3></div></summary><div class="more"><p>目標不是變得無畏，是變得勇敢</p><p>大多數人適合<b>積少成多</b>：先對 5 到 10 位朋友分享，再往外推一格</p></div></details>
+    <div class="card" style="background:rgba(185,202,116,.18)"><p class="k">這章開頭</p><h3>生命是「在死亡前持續變化的能力」</h3></div>
+  </div>
+</section>
+
+<section data-t="第 4 場">
+  <p class="eyebrow">第 4 場・階段三 增強積極性（點開看細節）</p>
+  <h2>兩個方向的路</h2>
+  <div class="grid g2">
+    <div class="card"><p class="k">自上而下・大腦 → 身體</p>
+      <div class="grid" style="margin-top:10px">
+        <details class="card"><summary><h3>心靈韌性</h3></summary><div class="more"><p>自願選的壓力（運動、呼吸、冷水澡）是可以練的能力。相信壓力有好處的那組，表現更好</p></div></details>
+        <details class="card"><summary><h3>成長型心態</h3></summary><div class="more"><p>「每次我以為自己被埋葬了，其實我是被栽種了」</p></div></details>
+        <details class="card"><summary><h3>自我信賴</h3></summary><div class="more"><p>違背對自己的承諾會破壞自信。違背了：不自責 → 想想為什麼 → 重回正軌</p></div></details>
+      </div></div>
+    <div class="card"><p class="k">自下而上・身體 → 大腦</p>
+      <div class="grid" style="margin-top:10px">
+        <details class="card"><summary><h3>肌肉</h3></summary><div class="more"><p>動起來，肌肉釋放肌肉因子，經「肌腦軸」跟大腦溝通。第二區：還能邊動邊講話的強度</p></div></details>
+        <details class="card"><summary><h3>睡眠</h3></summary><div class="more"><p>睡眠是改變行為最重要的一步，深睡修復、鞏固新記憶</p></div></details>
+        <details class="card"><summary><h3>多巴胺</h3></summary><div class="more"><p>多巴胺不是快樂本身，是讓我們起意去追。規則：致力獲得<b>需要付出努力</b>的獎勵</p></div></details>
+      </div></div>
+  </div>
+</section>
+
+<section data-t="尾聲">
+  <p class="eyebrow">作者在書的最後</p>
+  <p class="big">大腦是可以改變的</p>
+  <p class="quote">「恐懼不是敵人，恐懼是你那樣做的理由」</p>
+  <p class="quote">「你的競賽是與你自己競爭」</p>
+  <p class="quote">「不要與時間賽跑，美好的事物都需要時間」</p>
+  <p class="lead">最後一步是寬恕：寬恕那些無意或有意給我們編程的人</p>
+  <p class="big" style="font-size:clamp(24px,2.4vw,42px)">勇於創造你自己吧</p>
+  <p class="src">p.506–512</p>
+</section>
+
+<section data-t="帶走的四件事">
+  <p class="eyebrow">Take away・我整理的四件事</p>
+  <h2>整本書，濃縮成四件事</h2>
+  <div class="grid g2">
+    <div class="card"><p class="k">階段一</p><h3>先看見</h3><p>確認偏誤讓你只看見你相信的。把無意識意識化，才有空間改變</p><p class="src">試試：被觸發時，多停一個呼吸</p></div>
+    <div class="card"><p class="k">工具包＋步驟 3</p><h3>注意力＋刻意＋重複</h3><p>大腦只在乎你每天重複做什麼。18 到 254 天，靠紀律不靠動機</p><p class="src">試試：把新習慣綁在刷牙後面</p></div>
+    <div class="card"><p class="k">工具包＋自我信賴</p><h3>不要自責</h3><p>自責會強化舊行為。分析為什麼被觸發，慶祝小勝利，重回正軌</p><p class="src">試試：寫一句完整的日記</p></div>
+    <div class="card"><p class="k">階段三</p><h3>身體也在改寫大腦</h3><p>肌肉因子、睡眠、需要付出努力的獎勵，都在幫大腦換線路</p><p class="src">試試：生理性嘆息，或一趟能邊跑邊聊的慢跑</p></div>
+  </div>
+</section>
+
+<section data-t="分享時間">
+  <p class="eyebrow">💬 分享時間</p>
+  <h2>這幾個月，你用上了哪一個？</h2>
+  <div class="grid g3">
+    <div class="card"><h3>在自己的生活</h3><p>哪個觀念或工具，你真的拿來用了？</p></div>
+    <div class="card"><h3>在身邊的人</h3><p>有沒有用它幫到朋友、學生、家人？</p></div>
+    <div class="card"><h3>在自己身上</h3><p>你注意到自己有什麼學習或改變？</p></div>
+  </div>
+  <p class="lead"><span class="pill">都歡迎</span>　有具體成果、還在實踐的路上都可以分享。想講多少都行，想跳過也 OK</p>
+</section>
+
+<section data-t="接下來">
+  <p class="eyebrow">接下來</p>
+  <h2>讀書會的下一步</h2>
+  <div class="grid g3">
+    <div class="card"><h3>下一本書讀什麼？</h3><p>先想想你想讀的書</p></div>
+    <div class="card"><h3>要不要輪流主辦？</h3><p>每一輪換一個人導讀</p></div>
+    <div class="card"><h3>怎麼進行、多久一次</h3><p>後續在群組一起討論</p></div>
+  </div>
+</section>
+
+<section data-t="謝謝">
+  <h1>謝謝大家<br>這五場一起讀完</h1>
+  <p class="lead" style="color:var(--leaf)">「你是你從事過的最精彩專案，不要退縮」</p>
+  <p class="src">《REWIRE 神經可塑性》Nicole Vignola・p.511</p>
+</section>
+
+</main>
+
+<script>
+(()=>{
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const deck = document.getElementById('deck');
+  const secs = [...deck.querySelectorAll('section')];
+  const dots = document.getElementById('dots');
+  secs.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.title=s.dataset.t;b.setAttribute('aria-label',(i+1)+'・'+s.dataset.t);
+    b.onclick=()=>s.scrollIntoView({behavior:reduce?'auto':'smooth'});dots.appendChild(b)});
+  const btns=[...dots.children];
+  let cur=0;
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.5){cur=secs.indexOf(e.target);btns.forEach((b,i)=>b.classList.toggle('on',i===cur))}}),{root:deck,threshold:[.5]});
+  secs.forEach(s=>io.observe(s));
+  addEventListener('keydown',e=>{
+    if(e.target.closest&&e.target.closest('summary'))return;
+    const go=n=>{n=Math.max(0,Math.min(secs.length-1,n));secs[n].scrollIntoView({behavior:reduce?'auto':'smooth'})};
+    if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}
+    if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}
+  });
+  // 卡片跟著游標亮
+  document.addEventListener('pointermove',e=>{const c=e.target.closest&&e.target.closest('.card');if(!c)return;const r=c.getBoundingClientRect();
+    c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')});
+  // 神經網：游標附近的神經元會亮起、接上線
+  const cv=document.getElementById('net'),ctx=cv.getContext('2d'),glow=document.getElementById('glow');
+  let W,H,dpr,nodes=[],mouse={x:-9999,y:-9999},pulses=[];
+  function size(){dpr=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.round(Math.min(130,W*H/14000));nodes=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:1+Math.random()*1.8,lit:0}))}
+  size();addEventListener('resize',size);
+  addEventListener('pointermove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'});
+  addEventListener('pointerdown',e=>{pulses.push({x:e.clientX,y:e.clientY,r:0})});
+  const LINK=130,REACH=190;
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    for(const p of nodes){
+      if(!reduce){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1}
+      const dx=mouse.x-p.x,dy=mouse.y-p.y,d=Math.hypot(dx,dy);
+      if(d<REACH&&!reduce){p.x+=dx*.004;p.y+=dy*.004;p.lit=Math.min(1,p.lit+.08)}else p.lit*=.96;
+      for(const q of pulses){if(Math.abs(Math.hypot(q.x-p.x,q.y-p.y)-q.r)<14)p.lit=1}
+    }
+    for(let i=0;i<nodes.length;i++){const a=nodes[i];
+      for(let j=i+1;j<nodes.length;j++){const b=nodes[j],d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<LINK){const l=Math.max(a.lit,b.lit);ctx.strokeStyle=`rgba(${l>.1?'185,202,116':'201,214,204'},${(1-d/LINK)*(.10+l*.55)})`;ctx.lineWidth=.6+l*1.2;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}
+      const dm=Math.hypot(mouse.x-a.x,mouse.y-a.y);
+      if(dm<REACH){ctx.strokeStyle=`rgba(185,202,116,${(1-dm/REACH)*.5})`;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(mouse.x,mouse.y);ctx.stroke()}
+      ctx.fillStyle=a.lit>.1?`rgba(185,202,116,${.4+a.lit*.6})`:'rgba(201,214,204,.35)';ctx.beginPath();ctx.arc(a.x,a.y,a.r+a.lit*2.2,0,7);ctx.fill()}
+    for(const q of pulses){q.r+=6;ctx.strokeStyle=`rgba(185,202,116,${Math.max(0,.5-q.r/900)})`;ctx.lineWidth=2;ctx.beginPath();ctx.arc(q.x,q.y,q.r,0,7);ctx.stroke()}
+    pulses=pulses.filter(q=>q.r<450);
+    requestAnimationFrame(frame)}
+  frame();
+})();
+</script>
