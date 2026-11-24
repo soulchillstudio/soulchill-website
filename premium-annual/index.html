@@ -198,7 +198,7 @@ html.editing [data-k]:focus{outline:2px solid var(--forest);background:var(--gra
         <h3>② 自我筋膜放鬆工具</h3>
         <span class="when">12 月的目標，雛形已完成</span>
       </div>
-      <div class="media compact"><video src="media/fascia5.mp4" autoplay muted loop playsinline aria-label="筋膜放鬆工具操作：檢視人體模型、點出疼痛位置、判定筋膜線、依序放鬆流程"></video></div>
+      <div class="media compact"><video id="fascia-vid" src="media/fascia5.mp4" muted loop playsinline preload="auto" aria-label="筋膜放鬆工具操作：檢視人體模型、點出疼痛位置、判定筋膜線、依序放鬆流程"></video></div>
       <div class="text">
         <p class="lead">階段性任務：12 月會先增加淺背線跟淺前線，影響最多的兩條筋膜線
 其他筋膜線會依照時間，慢慢補齊影片內容，有些部分會先以文字版補齊</p>
@@ -218,8 +218,7 @@ html.editing [data-k]:focus{outline:2px solid var(--forest);background:var(--gra
         <p class="lead">除了整合，明年的目標是把它做成遊戲
 讓大家每個月有一些目標，除了自己練習之外，還能挑戰月目標</p>
       </div>
-      <p class="concept-note">⚠️ 下面三張是遊戲化的概念圖
-實際畫面還會更漂亮、更精緻</p>
+      <p class="concept-note">下面三張是遊戲化的概念圖，實際畫面還會更療癒～</p>
       <figure class="art tall"><img src="media/g3.jpg" alt="遊戲化概念圖：星球上的大樹、公告欄、樹屋，兩個角色，上方是睡眠、蔬果、冥想三個量表"><figcaption>你的星球：睡眠、飲食、冥想，就是它的陽光、水、空氣</figcaption></figure>
       <figure class="art"><img src="media/g1.jpg" alt="遊戲化概念圖：三個手機畫面，六角星球、筋膜放鬆、今天可以怎麼照顧自己"><figcaption>每天照顧自己，星球會長出草、樹、菇、花</figcaption></figure>
       <figure class="art"><img src="media/g2.jpg" alt="遊戲化概念圖：兩個角色設定、陽光水空氣、春夏秋冬四季星球、六種植物與月份勳章"><figcaption>兩個角色陪你練，星球跟著四季變化，每個月拿一枚勳章</figcaption></figure>
@@ -258,5 +257,13 @@ html.editing [data-k]:focus{outline:2px solid var(--forest);background:var(--gra
 </div>
 
 
+<script>
+(function(){var v=document.getElementById('fascia-vid');if(!v)return;
+if(!('IntersectionObserver' in window)){v.autoplay=true;v.play&&v.play().catch(function(){});return;}
+new IntersectionObserver(function(es){es.forEach(function(e){
+ if(e.isIntersecting){v.currentTime=0;var p=v.play();if(p)p.catch(function(){});}
+ else{v.pause();}
+});},{threshold:0.6}).observe(v);})();
+</script>
 </body>
 </html>
