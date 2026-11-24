@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta property="og:title" content="Premium 年訂閱計畫｜先喜歡跑步">
+<meta name="description" content="先喜歡跑步 Premium 改成年訂閱：系統初衷、目前進度與早鳥優惠">
+<title>慢慢進步年訂閱</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap">
+<style>
+/* 版面：手機單欄訓練手帳。森林綠封面，米白內頁；工具動畫滿版，文字塊緊貼在下 */
+:root{
+  --paper:#f2efe5; --card:#fbfaf4; --ink:#16241f; --muted:#3f4f48;
+  --forest:#0f3e36; --grass:#b9ca74; --grass-soft:#e3eac2; --line:#d6d1c0;
+  --todo-bg:#fff1c9; --todo-fg:#6b4e00; --on-forest:#f2efe5; --on-forest-soft:#cfd6c4;
+  --f-display:"Noto Serif TC","Songti TC",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Heiti TC",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0d1a17; --card:#14241f; --ink:#eef1ea; --muted:#c3ccc6;
+  --forest:#0a2e28; --grass:#c4d483; --grass-soft:#26361f; --line:#2c3d37;
+  --todo-bg:#3a3214; --todo-fg:#f2d78a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0d1a17; --card:#14241f; --ink:#eef1ea; --muted:#c3ccc6;
+  --forest:#0a2e28; --grass:#c4d483; --grass-soft:#26361f; --line:#2c3d37;
+  --todo-bg:#3a3214; --todo-fg:#f2d78a; color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.85;font-weight:500;-webkit-font-smoothing:antialiased}
+.wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+header.cover{background:var(--forest);color:var(--on-forest)}
+header.cover .wrap{padding-block:44px 36px;display:grid;gap:12px}
+.eyebrow{font-size:14px;letter-spacing:.14em;color:var(--grass);font-weight:700}
+h1{font-family:var(--f-display);font-weight:900;font-size:clamp(34px,9vw,46px);line-height:1.25;margin:0;text-wrap:balance}
+.sub{margin:0;color:var(--on-forest-soft);font-size:18px}
+section{display:grid;gap:18px;padding-top:44px}
+h2{font-family:var(--f-display);font-size:26px;line-height:1.35;margin:0;text-wrap:balance}
+p{margin:0}
+.prose{display:grid;gap:18px}
+section > p{white-space:pre-line}
+.prose p{white-space:pre-line}
+.prose .pull{font-family:var(--f-display);font-size:22px;font-weight:900;line-height:1.5;color:var(--forest);border-left:4px solid var(--grass);padding-left:14px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .prose .pull{color:var(--grass)}}
+:root[data-theme="dark"] .prose .pull{color:var(--grass)}
+.stage{display:grid;gap:0;background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.stage .media{background:var(--forest);display:grid;justify-items:center}
+.stage video{width:100%;max-width:520px;display:block;aspect-ratio:780/1688;height:auto}
+.stage .text{padding:20px 18px 22px;display:grid;gap:12px}
+.stage .when{display:inline-flex;align-self:start;justify-self:start;font-size:14px;font-weight:700;background:var(--grass-soft);color:var(--forest);padding:3px 12px;border-radius:999px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .stage .when{color:var(--grass)}}
+:root[data-theme="dark"] .stage .when{color:var(--grass)}
+.stage h3{margin:0;font-family:var(--f-display);font-size:23px;line-height:1.35}
+.stage .text p{white-space:pre-line}
+.art{margin:0;display:grid;gap:8px;padding:0 18px 16px}
+.art img{width:100%;border-radius:14px;border:1px solid var(--line);display:block}
+.art.tall img{max-width:420px;justify-self:center}
+.art figcaption{font-size:15px;line-height:1.55;color:var(--muted)}
+.art-note{padding:0 18px 20px}
+.concept-note{margin:0 18px 16px;padding:12px 14px;border-radius:12px;background:var(--todo-bg);color:var(--todo-fg);font-weight:700;font-size:15px;line-height:1.6;white-space:pre-line;border-left:4px solid #e0b43a}
+.stage .media.compact{background:var(--card);padding:4px 18px 8px}
+.stage .media.compact video{width:62%;max-width:none;aspect-ratio:600/1146;border-radius:14px;border:1px solid var(--line)}
+.stage .swipe{padding:0 18px 4px;grid-auto-columns:62%;scroll-padding-left:18px}
+.swipe-hint{padding:0 18px 18px}
+.stage .text + .media.compact{margin-top:-6px}
+.swipe{display:grid;grid-auto-flow:column;grid-auto-columns:72%;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.swipe figure{margin:0;scroll-snap-align:start;display:grid;gap:8px}
+.swipe img{width:100%;border-radius:14px;border:1px solid var(--line);display:block}
+.swipe figcaption{font-size:15px;line-height:1.5}
+.swipe figcaption b{display:block;font-size:16px}
+.hint{font-size:14px;color:var(--muted)}
+ul.list{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+ul.list li{padding-left:24px;position:relative}
+ul.list li::before{content:"";position:absolute;left:4px;top:.72em;width:9px;height:9px;border-radius:50%;background:var(--grass)}
+.price-head{background:var(--forest);color:var(--on-forest);border-radius:18px;padding:18px;display:grid;gap:4px}
+.price-head .big{font-family:var(--f-display);font-size:34px;font-weight:900;color:var(--grass);font-variant-numeric:tabular-nums;line-height:1.3}
+.price-head .deal{font-size:19px;font-weight:900;color:var(--on-forest)}
+.price-head small{font-size:15px;color:var(--on-forest-soft)}
+.who{display:grid;gap:12px}
+.who article{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:grid;gap:6px}
+.who h3{margin:0;font-size:19px}
+.who .p{font-family:var(--f-display);font-size:26px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--forest);line-height:1.3}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .who .p{color:var(--grass)}}
+:root[data-theme="dark"] .who .p{color:var(--grass)}
+.who .p small{font-family:var(--f-body);font-size:15px;font-weight:500;color:var(--muted)}
+.who p{font-size:17px}
+.todo{display:inline-block;background:var(--todo-bg);color:var(--todo-fg);font-size:13px;font-weight:700;padding:1px 8px;border-radius:6px;line-height:1.7;white-space:normal}
+.review-note{background:var(--todo-bg);color:var(--todo-fg);font-size:14px;padding:10px 14px;border-radius:10px;margin-top:20px}
+footer{padding-top:44px;display:grid;gap:6px}
+footer .sign{color:var(--muted);font-size:16px}
+
+.week{display:grid;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}
+.week h3{margin:0;font-size:19px}
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.day{border-radius:10px;min-height:66px;display:grid;align-content:center;justify-items:center;gap:2px;padding:6px 2px;font-size:12px;line-height:1.3;text-align:center;font-weight:700}
+.day .d{font-size:11px;font-weight:500;opacity:.75}
+.run{background:var(--forest);color:var(--on-forest)}
+.care{background:var(--grass-soft);color:var(--forest)}
+.opt{background:transparent;color:var(--forest);border:2px dashed var(--forest)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .care,:root:not([data-theme="light"]) .opt{color:var(--grass)} :root:not([data-theme="light"]) .opt{border-color:var(--grass)} :root:not([data-theme="light"]) .run{background:#1f5a4e}}
+:root[data-theme="dark"] .care,:root[data-theme="dark"] .opt{color:var(--grass)} :root[data-theme="dark"] .opt{border-color:var(--grass)} :root[data-theme="dark"] .run{background:#1f5a4e}
+.week p{font-size:16px;white-space:pre-line}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:14px;border-radius:4px;display:inline-block}
+.offer{display:grid;gap:12px}
+.offer article{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:grid;gap:4px}
+.offer h3{margin:0;font-size:19px}
+.offer p{font-size:17px;color:var(--muted)}
+.stage .text .lead{font-weight:700}
+
+[data-k]{transition:opacity .2s}
+
+html.editing [data-k]{outline:2px dashed var(--grass);outline-offset:3px;border-radius:4px;cursor:text}
+html.editing [data-k]:focus{outline:2px solid var(--forest);background:var(--grass-soft)}
+</style>
+<style>body{margin:0}</style>
+</head>
+<body>
+
+
+<header class="cover"><div class="wrap">
+  <div class="eyebrow">先喜歡跑步・慢慢進步 PREMIUM</div>
+  <h1>Premium 年訂閱計畫</h1>
+</div></header>
+
+<div class="wrap">
+  <section>
+    <h2>為什麼要改年訂閱？</h2>
+    <div class="prose">
+      <p>月訂閱比較適合常有新消息、
+需要高頻率更新的內容
+而我現在要做的，是可以一直用下去的完整系統，是陪伴型的</p>
+      <p class="pull">我想要做出真正可以
+「持續給予幫助」的系統工具
+並且持續優化，更新這個系統</p>
+      <p>而不是看完就忘，或想起來又找不到在哪的零散課程</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>這個系統的初衷是什麼？</h2>
+    <div class="prose">
+      <p>就是要讓大家可以在一個系統裡面
+完整知道怎麼照顧自己
+也就是我的全人訓練的六支柱</p>
+      <p>所以它會有個人化的課表安排
+這個課表不只是跑步訓練，還包含我們全人訓練裡的 6 個支柱，並安排一定程度的個人化，給予你現在即刻最需要的內容</p>
+      <p>舉兩個例子：</p>
+    </div>
+    <div class="week">
+      <h3>剛開始跑</h3>
+      <div class="days"><div class="day run"><span class="d">1</span>跑步</div><div class="day care"><span class="d">2</span>呼吸<br>放鬆</div><div class="day run"><span class="d">3</span>跑步</div><div class="day care"><span class="d">4</span>呼吸<br>放鬆</div><div class="day opt"><span class="d">5</span>跑步<br>可加</div><div class="day care"><span class="d">6</span>呼吸<br>放鬆</div><div class="day care"><span class="d">7</span>呼吸<br>放鬆</div></div>
+      <p>初步訓練的跑者，跑步訓練只會佔 7 天裡的 2 天，或最多 3 天
+另外的 4 天，就一定會有呼吸練習和自我筋膜放鬆
+讓你能得到更舒服的身體，和更良好的呼吸習慣等，課表比重會有所不同</p>
+    </div>
+    <div class="week">
+      <h3>已經有在跑</h3>
+      <div class="days"><div class="day run"><span class="d">1</span>跑步</div><div class="day care"><span class="d">2</span>跑步<br>技術</div><div class="day run"><span class="d">3</span>跑步</div><div class="day care"><span class="d">4</span>筋膜<br>放鬆</div><div class="day run"><span class="d">5</span>跑步</div><div class="day care"><span class="d">6</span>瑜珈<br>彈性</div><div class="day run"><span class="d">7</span>跑步</div></div>
+      <p>已經有基礎跑步經驗的人，可能一個禮拜固定跑 2 到 3 次
+跑步訓練可能可以增加到 4 天</p>
+      <p>其他 3 到 4 天就會優化你的跑步技術，也很需要自我筋膜放鬆
+另外可能需要再增加一小部分的瑜珈練習跟彈性訓練，穿插在 7 天的課程安排裡</p>
+    </div>
+    <div class="legend"><span><i class="run"></i>跑步</span><span><i class="care"></i>照顧身體</span><span><i class="opt"></i>看狀況加</span><span>（示意，實際依每個人安排）</span></div>
+    <div class="prose">
+      <p>所以你不太需要去尋找工具，而是依照這個課表去執行
+專注在行動，而不是一直在思考要做什麼事、或該做什麼比較好</p>
+      <p>我也會每個月去觀察大家的訓練狀況，以及大家照顧自己的狀況如何</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>目前的進度</h2>
+    <p>來說一下目前這個系統的進度
+我們會先把這六大支柱裡面最重要的兩個支柱先做起來：</p>
+
+    <div class="stage">
+      <div class="text">
+        <h3>① 個人化課表工具</h3>
+        <span class="when">已完成 8 到 9 成，持續進行中</span>
+        <p class="lead">教你如何安排適合自己強度的跑步訓練</p>
+        <p>剩下的是讓功能更進階，例如目標賽事超過一場等，更複雜的設定</p>
+        <p>已經有超過 30 位同學在使用，訓練內容相當完整
+對初中階跑者來說，是非常足夠且好用的工具</p>
+      </div>
+      <div class="swipe" aria-label="課表工具五個畫面">
+        <figure><img src="media/sl1.jpg" alt="今天"><figcaption><b>今天</b><span><span>打開就知道今天練什麼、跑多遠、什麼配速</span></span></figcaption></figure>
+        <figure><img src="media/sl2.jpg" alt="課表細節"><figcaption><b>課表細節</b><span><span>每一段怎麼跑、配速多少，也能換到別天</span></span></figcaption></figure>
+        <figure><img src="media/sl3.jpg" alt="日曆週"><figcaption><b>日曆・週</b><span><span>這一週怎麼排，一眼看完</span></span></figcaption></figure>
+        <figure><img src="media/sl4.jpg" alt="日曆月"><figcaption><b>日曆・月</b><span><span>整個月的節奏，比賽日也在上面</span></span></figcaption></figure>
+        <figure><img src="media/sl5.jpg" alt="我的進度"><figcaption><b>我的</b><span><span>每週跑量、費力程度的變化，你自己的紀錄</span></span></figcaption></figure>
+      </div>
+      <p class="hint swipe-hint">往左滑看五個畫面（畫面是示範帳號）</p>
+    </div>
+
+    <div class="stage">
+      
+      <div class="text">
+        <h3>② 自我筋膜放鬆工具</h3>
+        <span class="when">12 月的目標，雛形已完成</span>
+      </div>
+      <div class="media compact"><video src="media/fascia5.mp4" autoplay muted loop playsinline aria-label="筋膜放鬆工具操作：檢視人體模型、點出疼痛位置、判定筋膜線、依序放鬆流程"></video></div>
+      <div class="text">
+        <p class="lead">階段性任務：12 月會先增加淺背線跟淺前線，影響最多的兩條筋膜線
+其他筋膜線會依照時間，慢慢補齊影片內容，有些部分會先以文字版補齊</p>
+        <p>後續完成介面優化，並把找到潛在問題筋膜線後、依序放鬆的教學影片錄好
+大家就能直接跟著影片串聯操作，放鬆當下最需要放鬆的筋膜線</p>
+        <p>很多人連局部肌肉都不知道怎麼放鬆
+針對整條筋膜線，操作動作不難，命中率跟效果都會非常好，投資報酬率極高</p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="text">
+        <h3>③ 全人訓練整合並遊戲化</h3>
+        <span class="when">下一個目標，明年 1 月或農曆年前完成</span>
+        <p>等串起來之後，課表會陸續新增呼吸練習、瑜珈、彈性訓練等內容
+讓全人訓練計畫更適合每個人</p>
+        <p class="lead">除了整合，明年的目標是把它做成遊戲
+讓大家每個月有一些目標，除了自己練習之外，還能挑戰月目標</p>
+      </div>
+      <p class="concept-note">⚠️ 下面三張是遊戲化的概念圖
+實際畫面還會更漂亮、更精緻</p>
+      <figure class="art tall"><img src="media/g3.jpg" alt="遊戲化概念圖：星球上的大樹、公告欄、樹屋，兩個角色，上方是睡眠、蔬果、冥想三個量表"><figcaption>你的星球：睡眠、飲食、冥想，就是它的陽光、水、空氣</figcaption></figure>
+      <figure class="art"><img src="media/g1.jpg" alt="遊戲化概念圖：三個手機畫面，六角星球、筋膜放鬆、今天可以怎麼照顧自己"><figcaption>每天照顧自己，星球會長出草、樹、菇、花</figcaption></figure>
+      <figure class="art"><img src="media/g2.jpg" alt="遊戲化概念圖：兩個角色設定、陽光水空氣、春夏秋冬四季星球、六種植物與月份勳章"><figcaption>兩個角色陪你練，星球跟著四季變化，每個月拿一枚勳章</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>年訂閱一樣有的</h2>
+    <ul class="list">
+      <li>每月邀請外部講師，分享實用的知識</li>
+      <li>每月兩場會員直播，回答大家的問題</li>
+      <li>練習的過程中有問題，隨時都可以發問</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>早鳥年訂閱優惠</h2>
+    <div class="price-head">
+      <small>年訂閱原價</small>
+      <span class="big">NT$9,600／年</span>
+      <span class="deal">早鳥給予 7 折以上的超甜優惠</span>
+      <small>期限到 11/30（一）</small>
+    </div>
+    <p>現階段提供新系統建置計畫的早鳥年訂閱優惠</p>
+    <div class="offer">
+      <article><h3>🏃 跑班學生</h3><p>會在 LINE 群組公布專屬優惠</p></article>
+      <article><h3>🌱 現有 Premium 月繳會員</h3><p>會各自私訊，專屬於創始成員的優惠金額</p></article>
+      <article><h3>🙌 直播／年訂閱早鳥「+1」的夥伴</h3><p>我也會個別私訊你</p></article>
+    </div>
+  </section>
+
+  <footer>
+    <p>對年訂閱有任何問題，私訊我就可以～</p>
+    <p class="sign">先喜歡跑步，再慢慢進步 🙌</p>
+  </footer>
+</div>
+
+
+</body>
+</html>
